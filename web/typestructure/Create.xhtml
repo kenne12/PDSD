@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="TypestructureCreateDlg" widgetVar="TypestructureCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateTypestructureTitle}" closeOnEscape="true">
+
+            <h:form id="TypestructureCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 200px"  id="nom" value="#{typestructureController.typestructure.nomFr}"/>                       
+                        
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 200px"  id="nom_en" value="#{typestructureController.typestructure.nomEn}"/>
+
+
+                        <p:outputLabel value="Designation" for="code" />
+                        <p:inputText style=" width: 80px"  id="code" value="#{typestructureController.typestructure.designation}"/>
+
+                        <h:outputText value="#{langues.infrastructure}" />
+                        <p:selectBooleanButton id="value" value="#{typestructureController.typestructure.infrastructure}" onLabel="#{langues.Yes}" offLabel="#{langues.No}" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+
+                        <h:outputText value="#{langues.equipementtraceur}" />
+                        <p:selectBooleanButton id="value1" value="#{typestructureController.typestructure.equipement}" onLabel="#{langues.Yes}" offLabel="#{langues.No}" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{typestructureController.saveTypestructure()}" value="#{langues.Save}" update="display,:TypestructureListForm:datalist,:growl" oncomplete="PF('TypestructureCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('TypestructureCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

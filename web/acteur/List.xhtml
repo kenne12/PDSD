@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+
+        <h:form id="ActeurcomListForm">
+
+            <br/>
+
+            <p:messages id="msgErreur" closable="true"/>
+            <p:growl id="growl" showDetail="true"/>
+
+            <p:panel header="#{langues.ListActeurTitle}">
+                <p:dataTable id="datalist" value="#{acteurcommunautaireController.acteurs}" var="item"
+                             paginator="true"
+                             selectionMode="single"
+                             selection="#{acteurcommunautaireController.acteur}"
+                             rowKey="#{item.idacteur}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             emptyMessage="#{msg.Vide}"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <p:ajax event="rowSelect"   update=":ActeurcomListForm:editButton :ActeurcomListForm:deleteButton" listener="#{acteurcommunautaireController.activeButton()}"/>
+                    <p:ajax event="rowUnselect" update=":ActeurcomListForm:editButton :ActeurcomListForm:deleteButton" listener="#{acteurcommunautaireController.deactiveButton()}" />
+
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.TypeActeur}"/>
+                        </f:facet>
+                        <h:outputText value="#{loginController.language eq 'en' ? item.idtypeacteur.nomEn : item.idtypeacteur.nomFr}"/>
+                    </p:column>
+
+                    <p:column style="width: 15%">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.GroupeFacteur}"/>
+                        </f:facet>
+                        <h:outputText value="#{loginController.language eq 'en' ? item.idgroupeacteur.nomEn : item.idgroupeacteur.nomFr}"/>
+                    </p:column>
+
+
+                    <p:column style="width: 30%">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.nom_francais}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nomFr}"/>
+                    </p:column>
+
+                    <p:column style="width: 30%">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.nom_anglais}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nomEn}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+
+            <center>
+                <p:commandButton id="createButton" icon="ui-icon-plus" update=":ActeurcomCreateForm,editButton,deleteButton,datalist"   value="Ajouer une ligne" actionListener="#{acteurcommunautaireController.prepareCreate()}"  oncomplete="PF('ActeurcomCreateDialog').show()"/>                    
+                <p:commandButton id="editButton"   icon="ui-icon-pencil" update=":ActeurcomCreateForm" value="#{langues.Edit}" actionListener="#{acteurcommunautaireController.prepareEdit()}" oncomplete="PF('ActeurcomCreateDialog').show()" disabled="#{acteurcommunautaireController.detail}"/>
+                <p:commandButton id="deleteButton" icon="ui-icon-trash" update="datalist" actionListener="#{acteurcommunautaireController.delete()}" value="#{langues.Delete}" disabled="#{acteurcommunautaireController.detail}"> 
+                    <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+            </center>
+
+            <ui:include src="/confirmation.xhtml"/>
+        </h:form>
+
+    </ui:composition>
+
+</html>

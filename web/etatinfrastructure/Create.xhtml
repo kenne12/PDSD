@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="CategorieinterventionCreateDlg" widgetVar="CategorieinterventionCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateEtatinfrastructureTitle}">
+            <h:form id="CategorieinterventionCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="#{langues.Code}" for="code" />                        
+                        <p:inputText id="code"  value="#{etatinfrastructureController.etatinfrastructure.code}"/>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />                        
+                        <p:inputText id="nom"  required="true" requiredMessage="#{langues.nom_francais} : #{langues.requis}" value="#{etatinfrastructureController.etatinfrastructure.nomFr}"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />                        
+                        <p:inputText id="nom_en"  required="true" requiredMessage="#{langues.nom_anglais} : #{langues.requis}" value="#{etatinfrastructureController.etatinfrastructure.nomEn}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{etatinfrastructureController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:CategorieinterventionListForm:datalist,:CategorieinterventionListForm:msgErreur" oncomplete="PF('CategorieinterventionCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('CategorieinterventionCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

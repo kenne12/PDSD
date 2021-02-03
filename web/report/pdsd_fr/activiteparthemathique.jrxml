@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="activiteparthemathique" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" isTitleNewPage="true" uuid="5f5ede6b-edb1-464f-a8ff-27d002407781">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+  public.axe.idaxe,
+  public.axe.nom_fr AS axes,
+  public.axe.code AS codeax,
+  public.sousaxe.idsousaxe,
+  public.sousaxe.nom_fr AS sousaxes,
+  public.sousaxe.code AS codesousaxes,
+  public.interventionpnds.idinterventionpnds,
+  public.interventionpnds.nom_fr AS interventionpndss,
+  public.indicateur.idindicateur,
+  public.indicateur.nom_fr AS indicateurs,
+  public.indicateur.ciblenationale,
+  public.activite.nom AS nomactivites,
+  public.thematique.nom_fr AS them,
+  public.activite.responsable,
+  public.thematique.idthematique,
+  public.objectif_opp_district.objectif,
+  public.resultat_attendu_district.resultat,
+  public.typestructure.idtypestructure,
+  public.typestructure.designation,
+  public.interventionpnds.code AS codesinterv,
+  public.district.nom_fr AS districts,
+  sum(public.activite_structure.cout) AS coutglobal
+FROM
+  public.axe
+  INNER JOIN public.sousaxe ON (public.axe.idaxe = public.sousaxe.idaxe)
+  INNER JOIN public.categorieintervention ON (public.sousaxe.idsousaxe = public.categorieintervention.idsousaxe)
+  INNER JOIN public.interventionpnds ON (public.interventionpnds.idcategorieintervention = public.categorieintervention.idcategorieintervention)
+  INNER JOIN public.indicateur ON (public.interventionpnds.idinterventionpnds = public.indicateur.idinterventionpnds)
+  INNER JOIN public.indicateur_district ON (public.indicateur.idindicateur = public.indicateur_district.idindicateur)
+  INNER JOIN public.probleme ON (public.probleme.idindicateur_district = public.indicateur_district.idindicateur_district)
+  INNER JOIN public.activite ON (public.probleme.idprobleme = public.activite.idprobleme)
+  INNER JOIN public.objectif_opp_district ON (public.interventionpnds.idinterventionpnds = public.objectif_opp_district.idintervention)
+  INNER JOIN public.thematique_activite ON (public.activite.idactivite = public.thematique_activite.idactivite)
+  AND (public.thematique_activite.iddistrict = public.indicateur_district.iddistrict)
+  INNER JOIN public.thematique ON (public.thematique_activite.idthematique = public.thematique.idthematique)
+  INNER JOIN public.resultat_attendu_district ON (public.activite.idresultatattendu = public.resultat_attendu_district.idresultat_attendu_district)
+  AND (public.indicateur.idindicateur = public.resultat_attendu_district.idindicateur)
+  INNER JOIN public.district ON (public.objectif_opp_district.iddistrict = public.district.iddistrict)
+  AND (public.resultat_attendu_district.iddistrict = public.district.iddistrict)
+  AND (public.indicateur_district.iddistrict = public.district.iddistrict)
+  INNER JOIN public.typestructure ON (public.activite.idtypestructure = public.typestructure.idtypestructure)
+  INNER JOIN public.activite_structure ON (public.activite.idactivite = public.activite_structure.idactivite)
+  INNER JOIN public.annee ON (public.activite_structure.idannee = public.annee.idannee)
+  INNER JOIN public.chronogramme ON (public.activite.idactivite = public.chronogramme.idactivite)
+  AND (public.annee.idannee = public.chronogramme.idannee)
+WHERE
+  public.district.iddistrict = $P{iddistrict} AND
+  public.thematique.etat = TRUE AND
+  public.thematique.idthematique = 1 AND
+  public.annee.chronogramme = true
+GROUP BY
+  public.axe.idaxe,
+  public.axe.nom_fr,
+  public.axe.code,
+  public.sousaxe.idsousaxe,
+  public.sousaxe.nom_fr,
+  public.sousaxe.code,
+  public.interventionpnds.idinterventionpnds,
+  public.interventionpnds.nom_fr,
+  public.indicateur.idindicateur,
+  public.indicateur.nom_fr,
+  public.indicateur.ciblenationale,
+  public.activite.nom,
+  public.thematique.nom_fr,
+  public.activite.responsable,
+  public.thematique.idthematique,
+  public.objectif_opp_district.objectif,
+  public.resultat_attendu_district.resultat,
+  public.typestructure.idtypestructure,
+  public.typestructure.designation,
+  public.interventionpnds.code,
+  public.district.nom_fr
+ORDER BY
+  public.thematique.idthematique,
+  public.axe.code,
+  public.sousaxe.code,
+  public.axe.nom_fr,
+  public.sousaxe.nom_fr]]>
+	</queryString>
+	<field name="idaxe" class="java.lang.Integer"/>
+	<field name="axes" class="java.lang.String"/>
+	<field name="codeax" class="java.lang.String"/>
+	<field name="idsousaxe" class="java.lang.Integer"/>
+	<field name="sousaxes" class="java.lang.String"/>
+	<field name="codesousaxes" class="java.lang.String"/>
+	<field name="idinterventionpnds" class="java.lang.Integer"/>
+	<field name="interventionpndss" class="java.lang.String"/>
+	<field name="idindicateur" class="java.lang.Integer"/>
+	<field name="indicateurs" class="java.lang.String"/>
+	<field name="ciblenationale" class="java.lang.Double"/>
+	<field name="nomactivites" class="java.lang.String"/>
+	<field name="them" class="java.lang.String"/>
+	<field name="responsable" class="java.lang.String"/>
+	<field name="idthematique" class="java.lang.Integer"/>
+	<field name="objectif" class="java.lang.String"/>
+	<field name="resultat" class="java.lang.String"/>
+	<field name="idtypestructure" class="java.lang.Integer"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="codesinterv" class="java.lang.String"/>
+	<field name="districts" class="java.lang.String"/>
+	<field name="coutglobal" class="java.lang.Double"/>
+	<variable name="variable1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{coutglobal}]]></variableExpression>
+	</variable>
+	<variable name="variable2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{coutglobal}]]></variableExpression>
+	</variable>
+	<group name="axesgroup">
+		<groupExpression><![CDATA[$F{idaxe}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField>
+					<reportElement mode="Opaque" x="2" y="0" width="771" height="22" backcolor="#CCFFFF" uuid="81176829-6ccc-43ba-bc75-026770380ea9"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="16" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codeax} + " : " + $F{axes}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="sousaxegroup">
+		<groupExpression><![CDATA[$F{idsousaxe}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField>
+					<reportElement mode="Opaque" x="2" y="0" width="771" height="21" backcolor="#CCCCCC" uuid="a49367e8-9909-4789-ae8d-002221e5139e"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="16" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codesousaxes} + ": " + $F{sousaxes}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="524" splitType="Stretch">
+			<staticText>
+				<reportElement x="537" y="85" width="236" height="29" uuid="cc5a535e-f8ed-46f9-ac95-cb782055b4a7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[The Minister's Office]]></text>
+			</staticText>
+			<image>
+				<reportElement x="319" y="4" width="166" height="188" uuid="2ef1c203-07c7-4a48-b0a8-862bda2630e6"/>
+				<imageExpression><![CDATA["logominsante1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="9" y="58" width="263" height="31" uuid="d21d1ba3-0a28-46d4-8dd4-18980b3f90b1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ministère de la Santé Publique]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="18" width="236" height="24" uuid="51a418c1-1234-4ff0-8fb9-e064df73ae68"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Republic of Cameroon]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="40" width="229" height="20" uuid="bb98c3b3-4541-4eff-acdc-bca6df86aafd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="18" width="238" height="27" uuid="7b4f0a20-cac2-437d-8b59-b810f6e00832"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[République du Cameroun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="82" width="262" height="30" uuid="2484b83a-246b-421c-ba3a-97ab19cceb51"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cabinet du Ministère]]></text>
+			</staticText>
+			<image>
+				<reportElement x="55" y="162" width="902" height="270" uuid="b4258b65-f6e0-4dd6-a59b-a2447bf3b054"/>
+				<imageExpression><![CDATA["PLMI.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="537" y="59" width="236" height="30" uuid="4cd73858-729a-4b31-8f23-e3af00e32199"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ministry of Public Health]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="42" width="249" height="20" uuid="f85569e4-cb09-4d3f-a751-e8829170ea33"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail – Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="310" height="48" uuid="b9653eb1-9f8a-41ed-978d-e25b10d087c4"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Programme National de Lutte Contre La Mortalité Maternelle et Infanto-Juvenille]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="112" width="265" height="43" uuid="ba6b3ed4-622a-4d20-a3e1-218e93ebfdc5"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[National Program for Combating Maternal and Child Mortality ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="114" y="449" width="535" height="61" forecolor="#006600" uuid="6439ebfe-6c8f-4e66-b616-ab0a0230306a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="50" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{districts}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="0" width="152" height="49" backcolor="#CCFFFF" uuid="4d708164-1989-4ad6-9792-066953d989ba"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INTERVENTION DU PNDS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="272" y="0" width="128" height="49" backcolor="#CCFFFF" uuid="7084a5c4-4af7-417e-9cb1-0ed20a540a65"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INDICATEUR TRACEUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="540" y="0" width="120" height="49" backcolor="#CCFFFF" uuid="a151e650-bcfb-43da-a4f5-51095da4b94c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTIVITES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="660" y="0" width="41" height="49" backcolor="#CCFFFF" uuid="09ebc09b-097f-40dd-960e-277c0f46fd4c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONCERNE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="701" y="0" width="72" height="49" backcolor="#CCFFFF" uuid="126064a7-1a24-4d97-a8e5-a46ab7211179"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTANT DE MISE EN OEUVRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="154" y="0" width="118" height="49" backcolor="#CCFFFF" uuid="4013d83f-e0f9-4e22-8e7c-09fb9da7933a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBJECTIF OPERATIONNEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="0" width="140" height="49" backcolor="#CCFFFF" uuid="c800a579-b97d-4ace-9126-89363231809a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESULTAT ATTENDU]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="2" y="0" width="152" height="40" isPrintWhenDetailOverflows="true" uuid="83a713a5-de2f-468a-a526-fbed44291bca"/>
+				<box leftPadding="2" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codesinterv} + " : " +$F{interventionpndss}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="272" y="0" width="128" height="40" isPrintWhenDetailOverflows="true" uuid="3c83c997-f6c2-497b-9540-3b6e25022768"/>
+				<box leftPadding="2" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{indicateurs}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="540" y="0" width="120" height="40" isPrintWhenDetailOverflows="true" uuid="ee308a37-8fc3-44fa-a3bc-141c30deeb4c"/>
+				<box leftPadding="3" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomactivites}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="660" y="0" width="41" height="40" isPrintWhenDetailOverflows="true" uuid="6d37c834-d7f0-4843-994d-89ea2ab95f51"/>
+				<box rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="701" y="0" width="72" height="40" isPrintWhenDetailOverflows="true" uuid="655f7450-6194-4b39-a1a5-521be665f906"/>
+				<box rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coutglobal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="154" y="0" width="118" height="40" isPrintWhenDetailOverflows="true" uuid="a572e241-f200-469c-be2c-be55d2319403"/>
+				<box leftPadding="2" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objectif}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="400" y="0" width="140" height="40" isPrintWhenDetailOverflows="true" uuid="aa14569e-83b9-4ab4-82ff-f43bce41d5b6"/>
+				<box leftPadding="2" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resultat}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="0" width="699" height="42" uuid="dc5220ba-6ede-473e-83e4-1f4d5761f3c2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[MONTANT TOTAL DE MISE EN OEUVRE ]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="701" y="0" width="72" height="42" uuid="68009949-8754-4735-a407-d644428720f3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="13" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

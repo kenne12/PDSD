@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="MedicamentListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>I-#{langues.ListMorbiditedistrictTitle}</h2>
+        </center>
+
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('MedicamentListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <p:dataTable id="datalist"
+                     value="#{morbiditedistrictController.morbidites}"
+                     var="item"
+                     rowKey="#{item.idmorbidite}"
+                     paginator="true"
+                     rows="80"
+                     style="width: 90%;margin-left: 5% "
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{morbiditedistrictController.morbidite}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{morbiditedistrictController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('MedicamentListForm:viewButton').click();" listener="#{morbiditedistrictController.activeButton()}"/>
+
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column rowspan="2" colspan="5" headerText="#{langues.morbiditedistrict}" />
+                    <p:column colspan="#{morbiditedistrictController.rubriquemorbidites.size()}" headerText="#{langues.rubriquemorbidite}" />
+                </p:row>
+                <p:row>
+                    <ui:repeat value="#{morbiditedistrictController.rubriquemorbidites}" var="medicament">
+                        <p:column headerText="#{loginController.language eq 'en' ? medicament.nomEn : medicament.nomFr}"/>
+                    </ui:repeat>
+                </p:row>
+            </p:columnGroup>
+
+            <p:column colspan="5" style= "height: 30px" >
+                <h:outputText value="#{item.code}  --  #{loginController.language eq 'en' ? item.nomEn : item.nomFr}" />
+            </p:column>
+
+            <p:columns value="#{morbiditedistrictController.rubriquemorbidites}" var="var">
+                <h:outputText value="#{morbiditedistrictController.findRubriquemorbidite(item, var)}"/>
+            </p:columns>
+
+        </p:dataTable>
+        
+        <p:separator style="width: 90%;margin-left: 5% "/>
+
+        <center>
+            <p:panelGrid columns="2">
+                <p:outputLabel for="commentaire" value="#{langues.commentairetab}: "/>
+                <p:inputTextarea  id="commentaire" disabled="true" style="color: red" value="#{morbiditedistrictController.commentairetab.commentaire}" rows="8" cols="150">
+                    <p:ajax event="keyup"/>
+                </p:inputTextarea>
+            </p:panelGrid>
+        </center>
+
+        <p:separator style="width: 90%;margin-left: 5%"/>
+
+        <center>
+            <p:commandButton id="editButton" update=":MedicamentCreateForm,growl,:MedicamentCreateForm:commentaire" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{morbiditedistrictController.uptadeTable()}" oncomplete="PF('MedicamentCreateDialog').show()"/>
+        </center>
+
+    </h:form>
+</ui:composition>

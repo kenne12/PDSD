@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Login</title>        
+        <h:outputStylesheet library="css" name="pfcrud.css"/>
+        <h:outputScript library="js" name="js.js"/>
+    </h:head>
+    <body id="login-body"  style="background: no-repeat darkgray center;">         
+        <f:view locale="#{loginController.language}">
+            <h:form id="loginForm" style="background: aliceblue" >            
+                <p:growl id="growl"/>
+                <p:panel header="#{langues.formulaire_connexion}" style="position: absolute; width: 20%; margin-left: 40%; margin-top: 20%;">
+                    <p:messages id="msgError"/>
+                    <h:panelGrid columns="2"  cellpadding="1">
+                        
+                        <p:outputLabel value="#{langues.login}" />
+                        <p:inputText id="login" value="#{loginController.compteutilisateur.login}" required="true" requiredMessage="#{langues.login} incorrect"/>
+                        
+                        <p:outputLabel value="#{langues.password}"/>
+                        <p:password id="pwd" value="#{loginController.compteutilisateur.password}" required="true" requiredMessage="#{langues.password} incorrect"/>
+
+                        <p:outputLabel value="#{langues.langue}"/>
+                        <p:selectOneMenu value="#{loginController.language}">
+                            <f:selectItem itemLabel="#{langues.francais}" itemValue="fr"/>
+                            <f:selectItem itemLabel="#{langues.anglais}" itemValue="en"/>
+                        </p:selectOneMenu>
+                                                
+                        <p:commandButton style="float: right;" actionListener="#{loginController.validateUsernamePassword()}" value="#{langues.connexion}" update=":loginForm:login,:loginForm:pwd,:loginForm:msgError"/>
+                    </h:panelGrid>
+
+                </p:panel>
+            </h:form>
+        </f:view>
+    </body>
+</html>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="TypeMatiereListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <p:panel header="#{langues.ListUtilisateurTitle}">
+
+            <p:dataTable id="datalist"
+                         value="#{compteUtilisateurController.compteutilisateurInactifs}"
+                         var="item"
+                         rowKey="#{item.idcompte}"
+                         paginator="true"
+                         rows="10"
+                         style="text-align: center;"
+                         rowsPerPageTemplate="10,20,30,40,50">
+                         
+
+
+                <p:column filterBy="#{item.idutilisateur.nom} #{item.idutilisateur.prenom}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.utilisateur}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idutilisateur.nom} #{item.idutilisateur.prenom}"/>
+                </p:column>
+
+
+                <p:column filterBy="#{item.login}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.login}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.login}"/>
+                </p:column>
+
+
+                <p:column filterBy="#{item.password}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.password}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.password}"/>
+                </p:column>
+
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.activer}"/>
+                    </f:facet>
+                    <p:selectBooleanCheckbox value="#{item.etat}">
+                        <p:ajax update="datalist"  listener="#{compteUtilisateurController.changeStatus(item, 'activer')}"/>  
+                    </p:selectBooleanCheckbox>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+    </h:form>
+
+</ui:composition>

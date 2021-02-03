@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="synthesedesacteurscommunautaires" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="3" bottomMargin="3" whenResourceMissingType="Empty" uuid="b4424986-db34-411c-bd4d-85e8b5625eb3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.structurecommunautaire.idstructurecommunautaire,
+  public.structurecommunautaire.effectif,
+  public.structurecommunautaire.nom_en AS struccom,
+  public.district.iddistrict,
+  public.district.nom_en AS districts,
+  public.typestructurecommunautaire.idtypestructurecommunautaire,
+  public.typestructurecommunautaire.nom_en AS typ,
+  public.etatfonctstructcom.idetatfonctstructcom,
+  public.etatfonctstructcom.nom_en AS etats,
+  public.commentairetab.commentaire
+FROM
+  public.structurecommunautaire
+  INNER JOIN public.district ON (public.structurecommunautaire.iddistrict = public.district.iddistrict)
+  INNER JOIN public.typestructurecommunautaire ON (public.structurecommunautaire.idtypestructurecommunautaire = public.typestructurecommunautaire.idtypestructurecommunautaire)
+  INNER JOIN public.etatfonctstructcom ON (public.structurecommunautaire.idetatfonctstructcom = public.etatfonctstructcom.idetatfonctstructcom)
+  INNER JOIN public.commentairetab ON (public.district.iddistrict = public.commentairetab.iddistrict)
+WHERE
+  public.district.iddistrict = $P{iddistrict} AND
+  public.commentairetab.numerotab = 9
+ORDER BY
+  public.district.nom_en,
+  public.structurecommunautaire.nom_en]]>
+	</queryString>
+	<field name="idstructurecommunautaire" class="java.lang.Integer"/>
+	<field name="effectif" class="java.lang.Integer"/>
+	<field name="struccom" class="java.lang.String"/>
+	<field name="iddistrict" class="java.lang.Integer"/>
+	<field name="districts" class="java.lang.String"/>
+	<field name="idtypestructurecommunautaire" class="java.lang.Integer"/>
+	<field name="typ" class="java.lang.String"/>
+	<field name="idetatfonctstructcom" class="java.lang.Integer"/>
+	<field name="etats" class="java.lang.String"/>
+	<field name="commentaire" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="27" y="0" width="610" height="19" forecolor="#0000FF" uuid="7f0c4b1e-9def-4ff3-9ac0-7adc49d22feb"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Table 10: Summary of Community Structures involved in the field of health]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="27" y="37" width="220" height="33" forecolor="#000000" backcolor="#CCFFFF" uuid="d24488ef-4a88-468d-9009-d75932264baf"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[AREA OF HEALTH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="247" y="37" width="269" height="33" forecolor="#000000" backcolor="#CCFFFF" uuid="20922fb1-9a05-4e68-8094-c8678a0da744"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NAME OF THE COMMUNITY STRUCTURE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="516" y="37" width="161" height="33" forecolor="#000000" backcolor="#CCFFFF" uuid="ead51001-aec4-4939-8f82-34f1a53454a1"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[LEVEL OF FUNCTIONALITY OF THE ORGANIZATION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="677" y="37" width="83" height="33" forecolor="#000000" backcolor="#CCFFFF" uuid="afc7f69a-f376-4e63-9329-de2f5acb34fa"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NUMBER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="27" y="0" width="733" height="37" forecolor="#000000" backcolor="#CCFFFF" uuid="a68722cd-02d0-42f7-a44e-308e105dadf4"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Summary of Community Structures]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="27" y="0" width="220" height="35" uuid="14f2d618-2c0a-465c-95e0-b689fe10756e"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{districts}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="247" y="0" width="269" height="35" uuid="d9dc6aea-959c-4d50-a414-d79ded2490a0"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{struccom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="516" y="0" width="161" height="35" uuid="dd1f605a-7090-4762-9f3b-94c4efc90842"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{etats}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="677" y="0" width="83" height="35" uuid="eefbf252-f75a-480b-b361-a064f0334df0"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{effectif}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="46" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="27" y="0" width="733" height="46" uuid="2853bd9a-117a-484b-9bc6-548d8d015cde"/>
+				<box topPadding="5" leftPadding="4" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{commentaire}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

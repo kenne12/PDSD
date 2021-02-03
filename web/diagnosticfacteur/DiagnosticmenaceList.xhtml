@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="MenaceListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <center>
+            <h2>III - MENACES</h2>
+        </center>
+
+
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('MenaceListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{menaceController.menaces}"
+                     var="item"
+                     rowKey="#{item.idmenace}"
+                     paginator="true"
+                     rows="10"
+                     style="width: 70%;margin-left: 15%"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{menaceController.menace}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{menaceController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('MenaceListForm:viewButton').click();" listener="#{menaceController.activeButton()}"/>
+
+            
+
+            <p:column style="width: 90px">
+                <f:facet name="header">
+                    <h:outputText value="Acteur/Facteur"/>
+                </f:facet>
+                <h:outputText value="#{item.idacteursfacteurs.nom}"/>
+            </p:column>
+
+            <p:column style="width: 200px">
+                <f:facet name="header">
+                    <h:outputText value="Ménaces"/>
+                </f:facet>
+                <h:outputText value="#{item.nom}"/>
+            </p:column>
+
+        </p:dataTable>
+
+
+        <center>
+            <p:commandButton id="createButton" update=":MenaceCreateForm,growl" icon="ui-icon-plus" value="#{langues.Create}" actionListener="#{menaceController.prepareCreate()}" oncomplete="PF('MenaceCreateDialog').show()"/>
+            <p:commandButton id="editButton" update=":MenaceCreateForm,growl" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{menaceController.prepareEdit()}" oncomplete="PF('MenaceCreateDialog').show()" disabled="#{menaceController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{menaceController.deleteMenace()}" update=":growl,datalist" disabled="#{menaceController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+
+
+
+    </h:form>
+</ui:composition>

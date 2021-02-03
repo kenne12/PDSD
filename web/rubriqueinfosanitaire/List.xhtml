@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="RubriqueinfosanitaireListForm">
+
+        <p:panel header="#{langues.ListRubriqueinfosanitaireTitle}">
+
+            <p:contextMenu id="RubriqueinfosanitaireDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('RubriqueinfosanitaireListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('RubriqueinfosanitaireListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('RubriqueinfosanitaireListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('RubriqueinfosanitaireListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                 
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{rubriqueinfosanitaireController.rubriqueinfosanitaires}"
+                         var="item"
+                         rowKey="#{item.idrubriqueinfosanitaire}"
+                         paginator="true"
+                         style="width: 80%;margin-left: 10%"
+                         rows="10"
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         draggableColumns="true"
+                         resizableColumns="true"
+                         scrollHeight="100"
+                         selection="#{rubriqueinfosanitaireController.rubriqueinfosanitaire}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{rubriqueinfosanitaireController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{rubriqueinfosanitaireController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('RubriqueinfosanitaireListForm:viewButton').click();" listener="#{rubriqueinfosanitaireController.activeButton()}"/>
+
+
+                <p:column style="width: 10%"  filterBy="#{item.code}">
+                    <f:facet name="header">
+                        <h:outputText value="Code"/>
+                    </f:facet>
+                    <h:outputText value="#{item.code}"/>
+                </p:column>
+
+                <p:column style="width: 40%"  filterBy="#{item.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_francais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 40%"  filterBy="#{item.nomEn}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.nomEn}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{rubriqueinfosanitaireController.prepareCreate()}" update=":RubriqueinfosanitaireCreateForm" oncomplete="PF('RubriqueinfosanitaireCreateDialog').show()"/>
+            <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{rubriqueinfosanitaireController.prepareEdit()}" update=":RubriqueinfosanitaireCreateForm"  oncomplete="PF('RubriqueinfosanitaireCreateDialog').show()" disabled="#{rubriqueinfosanitaireController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{rubriqueinfosanitaireController.deleteRubriqueinfosanitaire()}" update=":growl,datalist" disabled="#{rubriqueinfosanitaireController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

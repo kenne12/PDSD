@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="NotationproblemeListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>LISTE DES ACTIVITES PAR INTERVENTION</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('NotationproblemeListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <br/>
+
+        <p:panel style="background-color: blanchedalmond" id="axe" header="#{activitedefaultController.axe.code} - #{loginController.language eq 'en' ? activitedefaultController.axe.nomEn : activitedefaultController.axe.nomFr}">
+
+            <p:panel id="sousaxe" header="#{activitedefaultController.sousaxe.code} - #{loginController.language eq 'en' ? activitedefaultController.sousaxe.nomEn : activitedefaultController.sousaxe.nomFr}">
+
+                <p:dataTable id="datalist"
+                             value="#{activitedefaultController.activiteDefaults}"
+                             var="item"
+                             rowKey="#{item.idactiviteDefault}"
+                             paginator="true"
+                             rows="100"
+                             style="width: 100%;"
+                             rowIndexVar="index"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             draggableColumns="true"
+                             resizableColumns="true"
+                             scrollHeight="100"
+                             selection="#{activitedefaultController.activiteDefault}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                    <p:ajax event="rowSelect" update=":NotationproblemeListForm:editButton,:NotationproblemeListForm:deleteButton" listener="#{activitedefaultController.activeButton()}" />
+                    <p:ajax event="rowDblselect" onsuccess="document.getElementById('NotationproblemeListForm:viewButton').click();" listener="#{activitedefaultController.activeButton()}"/>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" colspan="2" headerText="#{langues.interventionpnds}"/>
+                            <p:column rowspan="2" colspan="2" headerText="#{langues.Indicateur}"/>
+                            <p:column rowspan="2" colspan="2" headerText="#{langues.nom_francais}"/>
+                            <p:column rowspan="2" colspan="2" headerText="#{langues.nom_anglais}"/>
+                            <p:column rowspan="2"  headerText="#{langues.cout}"/>
+                            <p:column rowspan="2"  headerText="#{langues.sourcefinancement}"/>
+                            <p:column rowspan="2"  headerText="#{langues.typestructure}"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column style="height: 40px;word-wrap: break-word" colspan="2">
+                        <h:outputText  class="hardBreak" value="#{item.idindicateur.idinterventionpnds.code} - #{loginController.language eq 'en' ? item.idindicateur.idinterventionpnds.nomEn : item.idindicateur.idinterventionpnds.nomFr}"/>
+                    </p:column>
+
+                    <p:column colspan="2">
+                        <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idindicateur.nomEn : item.idindicateur.nomFr}"/>
+                    </p:column>
+
+                    <p:column colspan="2">
+                        <h:outputText class="hardBreak" value="#{item.nomFr}"/>                       
+                    </p:column>
+
+                    <p:column colspan="2">
+                        <h:outputText class="hardBreak" value="#{item.nomEn}"/>                       
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText class="hardBreak" value="#{item.coutUnitaire}">
+                            <f:convertNumber/>
+                        </h:outputText>                       
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idsourcefi.nomEn : item.idsourcefi.nomFr}"/>                       
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idtypestructure.nomEn : item.idtypestructure.nomFr}"/>                       
+                    </p:column>
+
+                </p:dataTable>
+
+                <center>
+                    <p:commandButton id="createButton" update=":NotationproblemeCreateForm,growl" actionListener="#{activitedefaultController.prepareCreate()}" icon="ui-icon-pencil" value="#{langues.Create}"  oncomplete="PF('NotationproblemeCreateDialog').show()"/>
+                    <p:commandButton id="editButton" update=":NotationproblemeCreateForm,growl" actionListener="#{activitedefaultController.prepareEdit()}" icon="ui-icon-pencil" value="#{langues.Edit}"  oncomplete="PF('NotationproblemeCreateDialog').show()" disabled="#{activitedefaultController.detail}"/>
+                    <p:commandButton id="deleteButton" icon="ui-icon-trash" update="datalist,growl" actionListener="#{activitedefaultController.delete()}" value="#{langues.Delete}" disabled="#{activitedefaultController.detail}"> 
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </center>
+
+                <h:panelGrid style="width: 70%;margin-left: 15%" columns="2">
+                    <p:commandButton value="#{langues.sous_axe_precedent}" update="axe,sousaxe,datalist" actionListener="#{activitedefaultController.precSousAxe()}" oncomplete="javascript:location.reload();"/>
+                    <p:commandButton value="#{langues.sous_axe_suivant}" update="axe,sousaxe,datalist" style="margin-left: 50%" actionListener="#{activitedefaultController.nextSousaxe()}" oncomplete="javascript:location.reload();"/>
+                </h:panelGrid>
+
+            </p:panel>
+
+            <h:panelGrid style="width: 80%;margin-left: 10%" columns="2">
+                <p:commandButton value="#{langues.axe_precedent}" update="axe,sousaxe,datalist" actionListener="#{activitedefaultController.precAxe()}" oncomplete="javascript:location.reload();"/>
+                <p:commandButton style="margin-left: 60%" value="#{langues.axe_suivant}" update="axe,sousaxe,datalist" actionListener="#{activitedefaultController.nextAxe()}" oncomplete="javascript:location.reload();"/>
+            </h:panelGrid>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+
+    </h:form>
+</ui:composition>

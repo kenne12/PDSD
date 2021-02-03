@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="ForceCreateDlg" widgetVar="ForceCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateForceTitle} ">
+            <h:form id="ForceCreateForm">
+                <h:panelGroup id="display">
+
+                    
+                        <p:panelGrid columns="2">
+
+                            <p:outputLabel for="type" value="#{langues.Acteurfacteur}"/>
+                            <p:selectOneMenu id="type" value="#{ffomGouvernanceController.acteursfacteurs.idacteursfacteurs}" required="true" requiredMessage="#{langues.valeur}  : #{langues.requis} ">
+                                <f:selectItem itemLabel="#{langues.choisir}"/>
+                                <f:selectItems value="#{ffomGouvernanceController.acteursfacteurss}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idacteursfacteurs}"/>
+                                <p:ajax listener="#{ffomGouvernanceController.updateActeurFacteur()}" update="display,acteur,facteur"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel rendered="#{ffomGouvernanceController.showActeur}" for="acteur" value="#{langues.Acteur}"/>
+                            <p:selectOneMenu rendered="#{ffomGouvernanceController.showActeur}" id="acteur" value="#{ffomGouvernanceController.acteur.idacteur}" required="true" requiredMessage="#{langues.Acteur} : #{langues.requis}">
+                                <f:selectItem itemLabel="#{langues.choisir}"/>
+                                <f:selectItems value="#{ffomGouvernanceController.acteurs}" var="etat" itemLabel="#{loginController.language eq 'en' ? etat.nomEn : etat.nomFr}" itemValue="#{etat.idacteur}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel rendered="#{ffomGouvernanceController.showFacteur}" for="facteur" value="#{langues.facteur}"/>
+                            <p:selectOneMenu rendered="#{ffomGouvernanceController.showFacteur}" id="facteur" value="#{ffomGouvernanceController.facteur.idfacteur}" required="true" requiredMessage="#{langues.facteur} : #{langues.requis}">
+                                <f:selectItem itemLabel="#{langues.choisir}"/>
+                                <f:selectItems value="#{ffomGouvernanceController.facteurs}" var="facteur" itemLabel="#{loginController.language eq 'en' ? facteur.nomEn : facteur.nomFr}" itemValue="#{facteur.idfacteur}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="nom" value="#{langues.nom}"/>
+                            <p:inputTextarea cols="70" rows="5" id="nom" value="#{ffomGouvernanceController.force.nom}"/>
+
+                        </p:panelGrid>
+                        <p:commandButton actionListener="#{ffomGouvernanceController.createForce()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:ForceListForm,:ForceListForm:growl,:Force1ListForm,:Force1ListForm:datalist" oncomplete="PF('ForceCreateDialog').hide()"/>
+                        <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('ForceCreateDialog').hide()"/>
+
+                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

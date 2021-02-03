@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.generer_pdsd}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+
+                <!--<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                    <f:facet name="default">
+                        <h:outputText value="" />
+                    </f:facet>
+
+                    <f:facet name="complete">
+                        <h:outputText value="Trnsfert terminé" />
+                    </f:facet>
+                </p:ajaxStatus> 
+
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />
+                </p:dialog>-->
+
+                <h:form id="UtilisateurListForm">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <center>
+
+                        <p:panelGrid>
+
+                            <center>
+                                <p:commandButton style="width:150px;height: 150px;border-radius: 10%"  value="Consolider"  actionListener="#{consolidationController.consilidate()}"/>
+                            </center>
+
+                        </p:panelGrid>
+
+                    </center>
+
+                </h:form>
+
+            </f:view>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

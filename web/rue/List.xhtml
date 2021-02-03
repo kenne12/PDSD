@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="RueListForm">
+
+        <p:panel header="Liste Rues">
+            
+            <p:dataTable id="datalist"
+                         value="#{rueController.rues}"
+                         var="item"
+                         rowKey="#{item.idrue}"
+                         paginator="true"
+                         rows="10"
+                         style="width: 60%;margin-left: 20% "
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         draggableColumns="true"
+                         resizableColumns="true"
+                         scrollHeight="100"
+                         selection="#{rueController.rue}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{rueController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{rueController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('RueListForm:viewButton').click();" listener="#{rueController.activeButton()}"/>
+
+                <p:column style="width: 20px">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Numero}"/>
+                    </f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+
+                <p:column style="width: 300px" sortBy="#{item.nom}" filterBy="#{item.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
+                
+                <p:column style="width: 300px" sortBy="#{item.idquartier.nom}" filterBy="#{item.idquartier.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.quartier}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idquartier.nom}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{rueController.prepareCreate()}" update=":RueCreateForm" oncomplete="PF('RueCreateDialog').show()"/>
+            <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{rueController.prepareEdit()}" update=":RueCreateForm"  oncomplete="PF('RueCreateDialog').show()" disabled="#{rueController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{rueController.delete()}" update=":growl,datalist" disabled="#{rueController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

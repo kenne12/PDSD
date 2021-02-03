@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="PeriodeListForm">
+
+
+        <p:contextMenu id="PeriodeDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('PeriodeListForm:createButton').click();" icon="ui-icon-plus"/>
+            <p:menuitem value="#{langues.View}" onclick="document.getElementById('PeriodeListForm:viewButton').click();" icon="ui-icon-search"/>
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('PeriodeListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('PeriodeListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>                 
+        </p:contextMenu>
+        <p:dataTable id="datalist"
+                     value="#{periodeController.periodes}"
+                     var="item"
+                     rowKey="#{item.idperiode}"
+                     paginator="true"
+                     rows="10"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     rowIndexVar="index"
+                     selection="#{periodeController.periode}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:PeriodeDataTableContextMenu" listener="#{periodeController.activeButton()}" />
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:PeriodeDataTableContextMenu" listener="#{periodeController.deactiveButton()}" />
+            <p:ajax event="contextMenu" update="@form:createButton  @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('PeriodeListForm:viewButton').click();"  listener="#{periodeController.activeButton()}" />
+            
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.ListPeriodeTitle}"/>
+            </f:facet> 
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Numero}"/>
+                </f:facet>
+                <h:outputText value="#{index+1}"/>
+            </p:column>
+
+
+            <p:column sortBy="#{item.nom}" filterBy="#{item.nom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom}"/>
+                </f:facet>
+                <h:outputText value="#{item.nom}"/>
+            </p:column>
+
+
+            <p:column sortBy="#{item.code}" filterBy="#{item.code}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Code}"/>
+                </f:facet>
+                <h:outputText value="#{item.code}"/>
+            </p:column>
+
+
+            <p:column  filterBy="#{loginController.language eq 'en' ? item.idperiodicite.nomEn : item.idperiodicite.nomFr}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.periodicite}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idperiodicite.nomEn : item.idperiodicite.nomFr}"/>
+            </p:column>
+
+            <p:column  filterBy="#{item.idperiodederattachement.nom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.periodederattachement}"/>
+                </f:facet>
+                <h:outputText value="#{item.idperiodederattachement.nom}"/>
+            </p:column>
+
+        </p:dataTable>
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{periodeController.prepareCreate()}" update=":PeriodeCreateForm" oncomplete="PF('PeriodeCreateDialog').show()"/>             
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{periodeController.prepareEdit()}" update=":PeriodeCreateForm" oncomplete="PF('PeriodeCreateDialog').show()" disabled="#{periodeController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{periodeController.delete()}" update=":growl,datalist" disabled="#{periodeController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+
+        <h:form id="ParametrecoutListForm">
+
+
+            <p:messages id="msgErreur" closable="true"/>
+            <p:growl id="growl" showDetail="true"/>
+
+
+            <center>
+                <h2>#{langues.parametrecoutequipement}</h2>
+            </center>
+            
+            <p:dataTable id="datalist" value="#{parametrecoutEquipementController.parametrecoutequipements}" var="item"
+                         paginator="true"
+                         selectionMode="single"
+                         selection="#{parametrecoutEquipementController.parametrecoutequipement}"
+                         rowKey="#{item.idparametrecoutequipement}"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                         rowIndexVar="index"
+                         emptyMessage="#{msg.Vide}"
+                         widgetVar="fonctionTable"
+                         draggableColumns="true"
+                         resizableColumns="true">
+
+                <p:ajax event="rowSelect"   update=":ParametrecoutListForm:editButton :ParametrecoutListForm:deleteButton" listener="#{parametrecoutEquipementController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update=":ParametrecoutListForm:editButton :ParametrecoutListForm:deleteButton" listener="#{parametrecoutEquipementController.deactiveButton()}" />
+
+
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.typestructure}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idtypestructure.nomEn : item.idtypestructure.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.typeequipementtraceur}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idtypeequipement.nomEn : item.idtypeequipement.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.ListParamcoutinfrastructureTitle_coutunitaire}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.coutunitaire}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.etatequipement}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idetatequipement.nomEn : item.idetatequipement.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 20%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.default_operation} : #{langues.francais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.defaultoperationFr}"/>
+                </p:column>
+
+                <p:column style="width: 20%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.default_operation} : #{langues.anglais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.defaultoperationEn}"/>
+                </p:column>
+
+            </p:dataTable> 
+
+            <center>
+                <p:commandButton id="createButton" icon="ui-icon-plus" update=":ParametrecoutCreateForm"   value="Ajouter" actionListener="#{parametrecoutEquipementController.prepareCreate()}"  oncomplete="PF('ParametrecoutCreateDialog').show()"/>                    
+                <p:commandButton id="editButton"   icon="ui-icon-pencil" update=":ParametrecoutCreateForm"  value="#{langues.Edit}" actionListener="#{parametrecoutEquipementController.prepareEdit()}" oncomplete="PF('ParametrecoutCreateDialog').show()" disabled="#{parametrecoutEquipementController.detail}"/>
+                <p:commandButton id="deleteButton" icon="ui-icon-trash" update="datalist" actionListener="#{parametrecoutEquipementController.delete()}" value="#{langues.Delete}" disabled="#{parametrecoutEquipementController.detail}"> 
+                    <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+            </center>
+
+            <ui:include src="/confirmation.xhtml"/>
+        </h:form>
+
+    </ui:composition>
+
+</html>

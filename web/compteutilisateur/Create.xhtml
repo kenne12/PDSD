@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="CompteUtilisateurCreateDlg" widgetVar="CompteUtilisateurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateCompteutilisateurTitle}">
+            <h:form id="CompteUtilisateurCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="#{langues.utilisateur}" for="utilisateur" />
+                        <p:selectOneMenu id="utilisateur" value="#{compteUtilisateurController.utilisateur.idutilisateur}" required="true" requiredMessage="#{langues.utilisateur} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{compteUtilisateurController.utilisateurs}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idutilisateur}"/>                     
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.login}" for="login" />
+                        <p:inputText id="login" value="#{compteUtilisateurController.compteutilisateur.login}" required="true" requiredMessage="#{langues.login} : #{langues.requis}" />
+
+                        <p:outputLabel value="#{langues.password}" for="password" />
+                        <p:inputText id="password" value="#{compteUtilisateurController.compteutilisateur.password}" required="true" requiredMessage="#{langues.password} : #{langues.requis}" />
+
+                        <p:outputLabel value="#{langues.repeat_password}" for="repeat" />
+                        <p:inputText id="repeat" value="#{compteUtilisateurController.repeatPassword}"  required="true" requiredMessage="#{langues.password} : #{langues.requis}" />
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{compteUtilisateurController.saveCompte()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:CompteUtilisateurListForm:datalist,:CompteUtilisateurListForm:msgErreur" oncomplete="handleSubmit(args,'CompteUtilisateurCreateDialog');"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{msg.Cancel}" onclick="PF('CompteUtilisateurCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

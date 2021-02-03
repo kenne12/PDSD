@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+
+
+        <ui:define name="title">
+            <h:outputText value="pdsd"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+                <h:form id="CategorieinterventionListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{etatfonctStructureCommunautaireController.etatfonctstructcoms}" var="item"
+                                 selectionMode="single" 
+                                 selection="#{etatfonctStructureCommunautaireController.etatfonctstructcom}"
+                                 paginator="true"
+                                 rowKey="#{item.idetatfonctstructcom}"
+                                 rows="80"
+                                 rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                                 style="margin-top:1% !important; text-align:left; margin-left:20%; margin-right: 20%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+
+                        <p:ajax event="rowSelect"   update=":CategorieinterventionListForm:createButton :CategorieinterventionListForm:editButton :CategorieinterventionListForm:deleteButton" listener="#{etatfonctStructureCommunautaireController.activeButton()}"/>
+                        <p:ajax event="rowUnselect" update=":CategorieinterventionListForm:createButton :CategorieinterventionListForm:editButton :CategorieinterventionListForm:deleteButton" listener="#{etatfonctStructureCommunautaireController.deactiveButton()}" />
+
+                        <f:facet name="header"> 
+                            <h:outputText value="#{langues.ListEtatfonctstructcomTitle}"/>
+                        </f:facet> 
+
+
+                        <p:column style="width: 10% !important;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.Numero}"/>
+                            </f:facet>
+                            <h:outputText value="#{index+1}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_francais}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nomFr}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_anglais}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nomEn}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <center>
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{etatfonctStructureCommunautaireController.prepareCreate()}" update=":CategorieinterventionCreateForm" oncomplete="PF('CategorieinterventionCreateDialog').show()"/>                    
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{etatfonctStructureCommunautaireController.prepareEdit()}" update=":CategorieinterventionCreateForm" oncomplete="PF('CategorieinterventionCreateDialog').show()" disabled="#{etatfonctStructureCommunautaireController.detail}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}"  update=":CategorieinterventionDeleteForm" oncomplete="PF('CategorieinterventionDeleteDialog').show()" disabled="#{etatfonctStructureCommunautaireController.detail}"/> 
+                    </center>
+
+                </h:form>
+
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="Delete.xhtml"/>
+
+            </f:view>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

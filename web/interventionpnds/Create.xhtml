@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="InterventionpndsCreateDlg" widgetVar="InterventionpndsCreateDialog" header="#{langues.CreateInterventionpndsTitle}" closeOnEscape="true">
+
+            <h:form id="InterventionpndsCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{langues.strategie}" for="strategie" />
+                        <p:selectOneMenu autoWidth="false" style="width: 685px" id="strategie" value="#{interventionpndsController.interventionpnds.idcategorieintervention}" required="true" requiredMessage="#{langues.valeur} #{langues.requis}" converter="categorieinterventionConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{interventionpndsController.catinterventions}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel=" #{idregionItem.code} #{loginController.language eq 'en' ? idregionItem.nomEn : idregionItem.nomFr}"/>                                           
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.Code}" for="code"/>
+                        <p:inputText   id="code" value="#{interventionpndsController.interventionpnds.code}"/>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom_fr" />
+                        <p:inputTextarea rows="10" cols="120"  id="nom_fr" value="#{interventionpndsController.interventionpnds.nomFr}"  required="true" requiredMessage="#{langues.nom_francais} : #{langues.requis}"/>
+                        
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputTextarea rows="10" cols="120"  id="nom_en" value="#{interventionpndsController.interventionpnds.nomEn}"  required="true" requiredMessage="#{langues.nom_anglais} : #{langues.requis}"/>
+
+                        <p:outputLabel value="#{langues.description}" for="no" />
+                        <p:inputTextarea rows="10" cols="120"  id="no" value="#{interventionpndsController.interventionpnds.description}" title="description"  required="true" requiredMessage="le champs description  est obligatoire"/>
+                        
+                        <p:outputLabel value="#{langues.visible_au_niveau_region}" for="region" />
+                        <h:selectBooleanCheckbox id="region" value="#{interventionpndsController.interventionpnds.region}"/>
+
+                        <p:outputLabel value="#{langues.visible_au_niveau_district}" for="district" />
+                        <h:selectBooleanCheckbox id="district" value="#{interventionpndsController.interventionpnds.district}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{interventionpndsController.saveInterventionpnds()}" value="#{langues.Save}" update="display,:InterventionpndsListForm:datalist,:growl" oncomplete="PF('InterventionpndsCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('InterventionpndsCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

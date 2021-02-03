@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:body>
+        <ui:composition> 
+            
+            <div id="header">
+                <div id="batrapilogodiv"><h:graphicImage library="images" name="logo_camer.png" id ="batrapilogo"/></div>
+                <div id="HeaderMiddlediv" style=" color: floralwhite; text-decoration-style: solid">
+                    <br/>
+
+                    <h1>
+                        <a href="#" style="text-decoration: none;">
+                            <center class="logo_colour">
+                                #{langues.AppName}  #{loginController.language eq 'en' ? loginController.utilisateurdistrict.iddistrict.nomEn:loginController.utilisateurdistrict.iddistrict.nomFr}
+                            </center >
+                        </a>
+                    </h1>
+
+                </div>
+                <div id="medicallogodiv"><h:graphicImage library="images" name="tree111.png" id ="medicallogo"/></div>
+            </div>
+            
+            <div id="menu">
+                <ui:include src="/appmenu.xhtml"/>
+            </div>
+
+        </ui:composition>
+    </h:body>
+</html>
+

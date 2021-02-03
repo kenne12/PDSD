@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CategorieinterventionDeleteDlg" widgetVar="CategorieinterventionDeleteDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.ConfirmationHeader}">
+            <h:form id="CategorieinterventionDeleteForm">
+                <h:panelGroup id="display" rendered="#{categorieStructureComController.categoriestructurecom!=null}">                    
+                    <center><h:graphicImage  value="/resources/images/cancel.png" width="40" height="40" style="cursor:pointer;" /></center>
+                    <hr size="3" style="background-color: appworkspace;"/>
+                    <h:outputText value="#{langues.ConfirmDeleteMessage}" style=" font-weight: bold !important; font-style: italic;"/>
+                    <hr size="3" style="background-color: appworkspace;"/>
+                    <p:commandButton style="float: right;" value="#{langues.Yes}" icon="ui-icon-check" actionListener="#{categorieStructureComController.delete()}"  update="display,:CategorieinterventionListForm:datalist,:CategorieinterventionListForm:msgErreur" oncomplete="PF('CategorieinterventionDeleteDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" value="#{langues.No}" icon="ui-icon-close" onclick="PF('CategorieinterventionDeleteDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

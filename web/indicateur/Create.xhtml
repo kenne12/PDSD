@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="IndicateurCreateDlg" widgetVar="IndicateurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateIndicateurTitle}" closeOnEscape="true">
+
+            <h:form id="IndicateurCreateForm">
+
+                <h:panelGroup id="display">
+                    <div style=" border: solid 0.5px ; width: 1250px ; height: 650px; overflow: auto;">
+                        <h:panelGrid columns="2" columnClasses="column">
+                            <p:panelGrid columns="2" columnClasses="column">
+
+                                <p:outputLabel value="#{langues.nom_francais}" for="nom_fr" />
+                                <p:inputTextarea style=" width: 500px"  rows="4" cols="30" id="nom_fr" value="#{indicateurController.indicateur.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                                <p:inputTextarea style=" width: 500px"  rows="4" cols="30" id="nom_en" value="#{indicateurController.indicateur.nomEn}"/>
+
+                                <p:outputLabel value="#{langues.CreateIndicateurLabel_objectif}" for="objectif" />
+                                <p:inputTextarea  style=" width: 500px" rows="4" cols="30" id="objectif" value="#{indicateurController.indicateur.objectifFr}"/>
+
+                                <p:outputLabel value="#{langues.CreateIndicateurLabel_description}" for="description" />
+                                <p:inputTextarea  style=" width: 500px"  rows="4" cols="30" id="description" value="#{indicateurController.indicateur.description}"  />
+
+                                <p:outputLabel value="#{langues.CreateIndicateurLabel_numerateur}" for="numerateur" />
+                                <p:inputText  style=" width: 500px" id="numerateur" value="#{indicateurController.indicateur.numerateur}"  size="254" />
+
+                                <p:outputLabel value="#{langues.CreateIndicateurLabel_denominateur}" for="denominateur" />
+                                <p:inputText style=" width: 500px"  id="denominateur" value="#{indicateurController.indicateur.denominateur}"  size="254"/>
+
+                                <p:outputLabel value="#{langues.CreateIndicateurLabel_baseline}" for="baseline" />
+                                <p:inputText style=" width: 100px"  id="baseline" value="#{indicateurController.indicateur.baseline}" />
+
+                                <p:outputLabel value="#{langues.CreateIndicateurLabel_anneebaseline}" for="anneebaseline" />
+                                <p:inputText style=" width: 100px" id="anneebaseline" value="#{indicateurController.indicateur.anneebaseline}" />
+
+                                <p:outputLabel value="#{langues.CreateIndicateurLabel_coef}" for="coef" />
+                                <p:inputText style=" width: 100px" id="coef" value="#{indicateurController.indicateur.coef}"/>
+
+                                <p:outputLabel value="#{langues.cibles}" for="cible"/>
+                                <p:inputText value="#{indicateurController.indicateur.ciblenationale}" id="cible"/>
+
+                                <p:outputLabel value="#{langues.interventionpnds}" for="intervention"/>
+                                <p:selectOneMenu filter="true" autoWidth="false" style="width: 480px" id="intervention" value="#{indicateurController.interventionpnds.idinterventionpnds}" required="true" requiredMessage="Intervention : obligatoire">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{indicateurController.interventionpndss}" var="item" itemLabel="#{item.code} #{loginController.language eq 'en' ? item.nomEn : item.nomFr}" itemValue="#{item.idinterventionpnds}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{langues.inverse}" for="inverse"/>
+                                <p:selectBooleanCheckbox id="inverse" value="#{indicateurController.indicateur.inverse}"/>
+
+                                <p:outputLabel value="#{langues.modele_probleme}" for="modeleprobleme" />
+                                <p:inputTextarea  style=" width: 500px" rows="4" cols="30" id="modeleprobleme" value="#{indicateurController.indicateur.modeleprobleme}"  maxlength="254"/>
+
+                                <p:outputLabel value="#{langues.modele_acquis}" for="modeleacquis" />
+                                <p:inputTextarea  style=" width: 500px" rows="4" cols="30" id="modeleacquis" value="#{indicateurController.indicateur.modeleacquis}"  maxlength="254"/>
+
+
+                            </p:panelGrid>  
+
+                            <h:panelGrid columns="1" columnClasses="column"> 
+
+
+                                <p:panel header="#{langues.autre}">
+                                    <p:panelGrid columns="2" columnClasses="column"> 
+
+
+                                        <p:outputLabel value="#{langues.Categorie_indicateur}" for="idcategorie" />
+                                        <p:selectOneMenu autoWidth="false"  style=" width: 300px" id="idcategorie" value="#{indicateurController.categorieindicateur.idcategorie}" required="true" requiredMessage="Categorie : obligatoire" filter="true">
+                                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                            <f:selectItems value="#{indicateurController.categorieindicateurs}"
+                                                           var="categorie"
+                                                           itemValue="#{categorie.idcategorie}"
+                                                           itemLabel="#{loginController.language eq 'en' ? categorie.nomEn : categorie.nomFr}"/>                                                           
+                                        </p:selectOneMenu>
+
+
+                                        <p:outputLabel value="#{langues.periodicite}" for="idperiodicite" />
+                                        <p:selectOneMenu style=" width: 300px"  id="idperiodicite" value="#{indicateurController.periodicite.idperiodicite}" required="true" requiredMessage="Periodicité : obligatoire"  filter="true">
+                                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                            <f:selectItems value="#{indicateurController.periodicites}"
+                                                           var="periodicite"
+                                                           itemValue="#{periodicite.idperiodicite}"
+                                                           itemLabel="#{loginController.language eq 'en' ? periodicite.nomEn : periodicite.nomFr}"/>                                                           
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="#{langues.unite}" for="idunite" />
+                                        <p:selectOneMenu style=" width: 300px"  id="idunite" value="#{indicateurController.unite.idunite}" required="true"  filter="true">
+                                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                            <f:selectItems value="#{indicateurController.unites}"
+                                                           var="unite"
+                                                           itemValue="#{unite.idunite}"
+                                                           itemLabel="#{unite.nom}"/>                                                           
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="#{langues.niveaucollecte}" for="niveaucollecte" />
+                                        <p:selectOneMenu style=" width: 300px"  id="niveaucollecte" value="#{indicateurController.niveaucollecte.idniveaucollecte}" required="true"  filter="true">
+                                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                            <f:selectItems value="#{indicateurController.niveaucollectes}"
+                                                           var="niveau"
+                                                           itemValue="#{niveau.idniveaucollecte}"
+                                                           itemLabel="#{loginController.language eq 'en' ? niveau.nomEn : niveau.nomFr}"/>                                                           
+                                        </p:selectOneMenu>
+
+
+                                        <p:outputLabel value="#{langues.Condition_de_reussite}" for="condition" />
+                                        <p:inputTextarea rows="8" cols="60" id="condition" value="#{indicateurController.indicateur.conditionreussiteFr}"  maxlength="254"/>
+
+                                    </p:panelGrid>
+                                </p:panel>
+
+                                <p:panel header="#{langues.autre}">
+                                    <p:panelGrid columns="2" columnClasses="column"> 
+
+                                        <p:outputLabel value="#{langues.dianum}" for="dianum" />
+                                        <p:inputText style=" width: 100px" id="dianum" value="#{indicateurController.indicateur.diamnum}" title="#{langues.CreateIndicateurTitle_coef}"/>
+
+                                        <p:outputLabel value="#{langues.diadeno}" for="diadeno" />
+                                        <p:inputText style=" width: 100px" id="diadeno" value="#{indicateurController.indicateur.diamdeno}" title="#{langues.CreateIndicateurTitle_coef}"/>
+
+                                        <p:outputLabel value="#{langues.diavat}" for="diavalat" />
+                                        <p:inputText style=" width: 100px" id="diavalat" value="#{indicateurController.indicateur.diamvalatt}" title="#{langues.CreateIndicateurTitle_coef}"/>
+
+                                        <p:outputLabel value=" #{langues.diavar}" for="diavalrel" />
+                                        <p:inputText style=" width: 100px" id="diavalrel" value="#{indicateurController.indicateur.diamvalrel}" title="#{langues.CreateIndicateurTitle_coef}"/>
+
+                                        <h:outputText value="#{langues.cercle}" />
+                                        <p:selectBooleanButton id="value1" value="#{indicateurController.indicateur.cercle}" onLabel="Oui" offLabel="Non" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+
+                                    </p:panelGrid>
+                                </p:panel>
+
+                            </h:panelGrid>                         
+                        </h:panelGrid>     
+                        <p:commandButton disabled="#{indicateurController.viewCreateButton}" actionListener="#{indicateurController.save()}" value="#{langues.Save}" update="display,:IndicateurListForm:datalist,:growl" oncomplete="PF('IndicateurCreateDialog').hide()">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('IndicateurCreateDialog').hide()"/>
+                    </div>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

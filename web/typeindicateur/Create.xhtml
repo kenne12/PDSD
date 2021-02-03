@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="TypeindicateurCreateDlg" widgetVar="TypeindicateurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="AJOUTER / MODIFIER LES TYPES D'INDICATEURS " closeOnEscape="true">
+
+            <h:form id="TypeindicateurCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 200px"  id="nom" value="#{typeindicateurController.typeindicateur.nom}"  size="254" maxlength="254" required="true" requiredMessage="#{langues.nom_francais} ; #{langues.requis}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{typeindicateurController.saveTypeindicateur()}" value="#{langues.Save}" update="display,:TypeindicateurListForm:datalist,:growl" oncomplete="PF('TypeindicateurCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('TypeindicateurCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

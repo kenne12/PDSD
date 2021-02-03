@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="OpportuniteListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <center>
+            <h2>II - OPPORTUNITES</h2>
+        </center>
+
+
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('OpportuniteListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+  
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{opportuniteController.opportunites}"
+                     var="item"
+                     rowKey="#{item.idopportunite}"
+                     paginator="true"
+                     rows="10"
+                      style="width: 70%;margin-left: 15%"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{opportuniteController.opportunite}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{opportuniteController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('OpportuniteListForm:viewButton').click();" listener="#{opportuniteController.activeButton()}"/>
+
+           
+            
+             <p:column style="width: 90px">
+                <f:facet name="header">
+                    <h:outputText value="Acteur/Facteur"/>
+                </f:facet>
+                 <h:outputText value="#{item.idacteursfacteurs.nom}"/>
+            </p:column>
+            
+             <p:column style="width: 200px">
+                <f:facet name="header">
+                    <h:outputText value="Opportunité"/>
+                </f:facet>
+                <h:outputText value="#{item.nom}"/>
+            </p:column>
+            
+        </p:dataTable>
+
+
+         <center>
+            <p:commandButton id="createButton" update=":OpportuniteCreateForm,growl" icon="ui-icon-plus" value="#{langues.Create}" actionListener="#{opportuniteController.prepareCreate()}" oncomplete="PF('OpportuniteCreateDialog').show()"/>
+            <p:commandButton id="editButton" update=":OpportuniteCreateForm,growl" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{opportuniteController.prepareEdit()}" oncomplete="PF('OpportuniteCreateDialog').show()" disabled="#{opportuniteController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{opportuniteController.deleteOpportunite()}" update=":growl,datalist" disabled="#{opportuniteController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+
+  
+      
+    </h:form>
+</ui:composition>

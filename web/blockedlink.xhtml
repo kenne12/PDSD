@@ -1,0 +1,28 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    <ui:define name="body">
+        
+        <ui:define name="title">
+            <h:outputText value="lien désactivé"></h:outputText>
+        </ui:define>
+        
+        <script type="text/javascript" src="#{request.contextPath}/date_heure.js"></script>
+        <div style="min-height: 300px">
+            <center>
+                <strong>
+                    <span style="font-size: 50px;color: red">
+                        Erreur : Lien désactivé par l'administrateur !
+                    </span>
+                </strong>
+                <br/>
+                <span id="date_heure" style="font-size: 100px;"></span>
+                <script type="text/javascript">window.onload = date_heure('date_heure');</script>
+            </center>
+        </div>
+    </ui:define>
+</ui:composition>

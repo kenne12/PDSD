@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.Categorie_intervention}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+
+                <h:form id="CategorieinterventionListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{categorieInterventionController.categorieinterventions}" var="item"
+                                 selectionMode="single" 
+                                 selection="#{categorieInterventionController.categorieintervention}"
+                                 paginator="true"
+                                 rowKey="#{item.idcategorieintervention}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top:1% !important; text-align:left;font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+
+                        <p:ajax event="rowSelect"   update=":CategorieinterventionListForm:createButton :CategorieinterventionListForm:editButton :CategorieinterventionListForm:deleteButton" listener="#{categorieInterventionController.activeButton()}"/>
+                        <p:ajax event="rowUnselect" update=":CategorieinterventionListForm:createButton :CategorieinterventionListForm:editButton :CategorieinterventionListForm:deleteButton" listener="#{categorieInterventionController.deactiveButton()}" />
+
+                        <f:facet name="header"> 
+                            <h:outputText value="#{langues.ListCategorieinterventionTitle}"/>
+                        </f:facet> 
+
+
+                        <p:column style="width: 20%;height: 30px;word-wrap: break-word">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.Axe}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.idsousaxe.idaxe.code} #{item.idsousaxe.idaxe.nomFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 40%;word-wrap: break-word">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.sousaxe}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.idsousaxe.code} #{item.idsousaxe.nomFr}"/>
+                        </p:column>
+
+
+                        <p:column style="width: 40%;word-wrap: break-word">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_francais}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.code} #{item.nomFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 40%;word-wrap: break-word">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_anglais}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.code} #{item.nomEn}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <center>
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{categorieInterventionController.prepareCreate()}" update=":CategorieinterventionCreateForm" oncomplete="PF('CategorieinterventionCreateDialog').show()"/>                    
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{categorieInterventionController.prepareEdit()}" update=":CategorieinterventionCreateForm" oncomplete="PF('CategorieinterventionCreateDialog').show()" disabled="#{categorieInterventionController.detail}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}"  update=":CategorieinterventionDeleteForm" oncomplete="PF('CategorieinterventionDeleteDialog').show()" disabled="#{categorieInterventionController.detail}"/> 
+                    </center>
+
+                </h:form>
+
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="Delete.xhtml"/>
+
+            </f:view>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

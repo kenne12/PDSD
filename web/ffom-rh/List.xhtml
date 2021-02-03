@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+
+        <h:form id="ForceListForm">
+
+            <br/>
+
+            <center>
+                <h2>#{langues.FORCESFAIBLESOPPORTUNITEMENACESDU_PILIERR_H} </h2>
+            </center>
+
+            <p:messages id="msgErreur" closable="true"/>
+            <p:growl id="growl" showDetail="true"/>
+
+            <p:commandButton update="force,faiblesse,opportunite,menace,growl,msgErreur" style="margin-left: 50%" value="#{langues.init}" disabled="#{ffomRhController.showLoadButton}" actionListener="#{ffomRhController.createFfom()}"/>
+
+            <p:panelGrid style="width: 50%;margin-left: 15%" columns="2">
+
+                <p:commandButton id="force" actionListener="#{ffomRhController.update()}" disabled="#{ffomRhController.showForce}" update=":Force1ListForm,Force1CreateDlg,:Force1ListForm:datalist" oncomplete="PF('Force1CreateDialog').show()" value="#{langues.force}"/>
+
+                <p:commandButton id="faiblesse" actionListener="#{ffomRhController.update()}" disabled="#{ffomRhController.showFaiblesse}" update=":Faiblesse1ListForm,Faiblesse1CreateDlg,:Faiblesse1ListForm:datalist" value="#{langues.faiblesse}" oncomplete="PF('Faiblesse1CreateDialog').show()"/>
+
+                <p:inputTextarea disabled="true" cols="80" rows="20" value="#{ffomRhController.ffom.force}"/>
+
+                <p:inputTextarea disabled="true"  cols="80" rows="20" value="#{ffomRhController.ffom.faiblesse}"/>
+
+                <p:commandButton id="opportunite" actionListener="#{ffomRhController.update()}" disabled="#{ffomRhController.showOpportunite}" value="#{langues.opportunite}" update=":Opportunite1ListForm,Opportunite1CreateDlg,:Opportunite1ListForm:datalist" oncomplete="PF('Opportunite1CreateDialog').show()"/>
+
+                <p:commandButton id="menace" actionListener="#{ffomRhController.update()}" disabled="#{ffomRhController.showMenace}" value="#{langues.menace}" update=":Menace1ListForm,Menace1CreateDlg,:Menace1ListForm:datalist" oncomplete="PF('Menace1CreateDialog').show()"/>
+
+                <p:inputTextarea disabled="true" cols="80" rows="20" value="#{ffomRhController.ffom.opportunite}"/>
+
+                <p:inputTextarea disabled="true" cols="80" rows="20" value="#{ffomRhController.ffom.menace}"/>
+
+            </p:panelGrid>
+
+            <ui:include src="/confirmation.xhtml"/>
+
+        </h:form>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="priorisationpb" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="3" bottomMargin="3" whenResourceMissingType="Empty" uuid="82580036-7ea5-402a-a7dd-4acb0a0064f1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.probleme.totalpoint,
+  public.rubriquenotationprobleme.idrubriquenotationprobleme,
+  public.rubriquenotationprobleme.nom_fr AS rubriuques,
+  public.sousrubriquenotationprobleme.scoremax,
+  public.sousrubriquenotationprobleme.nom_fr AS sousrubriques,
+  public.notationprobleme.idnotationprobleme,
+  public.notationprobleme.valeur,
+  public.probleme.idprobleme,
+  public.probleme.nom AS problemes
+
+FROM
+  public.notationprobleme
+  INNER JOIN public.sousrubriquenotationprobleme ON (public.notationprobleme.idsousrubriquenotationprobleme = public.sousrubriquenotationprobleme.idsousrubriquenotationprobleme)
+  INNER JOIN public.rubriquenotationprobleme ON (public.sousrubriquenotationprobleme.idrubriquenotationprobleme = public.rubriquenotationprobleme.idrubriquenotationprobleme)
+  INNER JOIN public.probleme ON (public.notationprobleme.idprobleme = public.probleme.idprobleme)
+  INNER JOIN public.indicateur_district ON (public.probleme.idindicateur_district = public.indicateur_district.idindicateur_district)
+  INNER JOIN public.district ON (public.district.iddistrict = public.indicateur_district.iddistrict)
+
+WHERE
+  public.district.iddistrict = $P{iddistrict}
+ORDER BY
+public.probleme.totalpoint DESC,
+  public.notationprobleme.valeur,
+  public.probleme.nom,
+  public.rubriquenotationprobleme.nom_fr]]>
+	</queryString>
+	<field name="totalpoint" class="java.lang.Double"/>
+	<field name="idrubriquenotationprobleme" class="java.lang.Integer"/>
+	<field name="rubriuques" class="java.lang.String"/>
+	<field name="scoremax" class="java.lang.Double"/>
+	<field name="sousrubriques" class="java.lang.String"/>
+	<field name="idnotationprobleme" class="java.lang.Long"/>
+	<field name="valeur" class="java.lang.Double"/>
+	<field name="idprobleme" class="java.lang.Integer"/>
+	<field name="problemes" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="26" width="578" height="20" forecolor="#3333FF" uuid="8a3f3ad7-355c-45db-b239-a9c2edd07c82"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tableau 24 : Priorisation des problèmes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="681" height="21" uuid="d3c594ef-b13c-4c6c-8028-617848aab412"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[II.2.2 PRIORISATION DES PROBLEMES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="99" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="754" height="99" uuid="730bcb51-6a88-4c28-8b6d-18ebabd1461d"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="241" height="38" backcolor="#CCFFFF" uuid="52733719-6187-416a-9a5e-6840947ad266"/>
+							<box leftPadding="2" rightPadding="1">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[PROBLEME PAR ORDRE DE PRIORITE]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="group1" width="0">
+					<bucket order="Descending" class="java.lang.Double">
+						<bucketExpression><![CDATA[$F{totalpoint}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents/>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="problemes" width="241" totalPosition="End">
+					<bucket order="Descending" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{problemes}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="241" height="34" uuid="e92d297e-9944-48a8-ac0c-4f33f60c4724"/>
+								<box leftPadding="3" rightPadding="2"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="14" isBold="false" isItalic="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{problemes}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="sousrubriques" height="38" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{sousrubriques}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true" pattern="#,##0">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="1" width="110" height="37" backcolor="#CCFFFF" uuid="e70c726b-45fd-4a2b-9447-9935f42cd05a"/>
+								<box leftPadding="3" rightPadding="2"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="11" isBold="true" isItalic="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{sousrubriques}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="58" height="38" backcolor="#CCFFFF" uuid="16c04163-9bb0-4012-a742-d162d1376d04"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="valeurMeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{valeur}]]></measureExpression>
+				</measure>
+				<measure name="measure1" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{totalpoint}]]></measureExpression>
+				</measure>
+				<crosstabCell width="111" height="34">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="111" height="34" uuid="2eab28cb-0dd4-4113-9309-fe8d71424f02"/>
+							<box leftPadding="3" rightPadding="2"/>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{valeurMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="111" height="0" rowTotalGroup="problemes">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="58" height="34" columnTotalGroup="sousrubriques">
+					<cellContents backcolor="#CCFFFF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="58" height="34" uuid="033b8a20-b6ed-443a-8c09-3de4554f776f"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.25"/>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{measure1}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="58" height="0" rowTotalGroup="problemes" columnTotalGroup="sousrubriques">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group1">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group1" columnTotalGroup="sousrubriques">
+					<cellContents/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

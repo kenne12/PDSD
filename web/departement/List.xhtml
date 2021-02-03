@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="DepartementListForm">
+
+        <p:panel header="#{langues.ListDepartementTitle}">
+            <p:contextMenu id="DepartementDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('DepartementListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('DepartementListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('DepartementListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('DepartementListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{departementController.departements}"
+                         var="item"
+                         rowKey="#{item.iddepart}"
+                         paginator="true"
+                         style="width: 60%;margin-left: 20%"
+                         rows="10"
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{departementController.selected}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DepartementDataTableContextMenu" listener="#{departementController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:DepartementDataTableContextMenu" listener="#{departementController.deactiveButton()}" />
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('DepartementListForm:viewButton').click();" listener="#{departementController.activeButton()}"/>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Numero}"/>
+                    </f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+
+                <p:column filterBy="#{item.idregion.idregion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.region}"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ?  item.idregion.nomEn : item.idregion.nomFr}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nom}" filterBy="#{item.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.ListDepartementTitle_nom}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.coordonnegps}" filterBy="#{item.coordonnegps}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.CreateDepartementLabel_coordonnegps}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.coordonnegps}"/>
+                </p:column>
+
+            </p:dataTable>
+            <center>
+                <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{departementController.prepareCreate()}" update=":DepartementCreateForm" oncomplete="PF('DepartementCreateDialog').show()"/>
+                <p:commandButton id="viewButton"    icon="ui-icon-search" value="#{langues.View}" update=":DepartementViewForm" oncomplete="PF('DepartementViewDialog').show()" disabled="#{departementController.detail}"/>
+                <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" update=":DepartementEditForm" oncomplete="PF('DepartementEditDialog').show()" disabled="#{departementController.detail}"/>
+                <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{departementController.delete()}" update=":growl,datalist" disabled="#{departementController.detail}">
+                    <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+            </center>
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

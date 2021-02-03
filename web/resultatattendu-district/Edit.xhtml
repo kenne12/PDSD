@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog  id="NotationproblemeEditDlg"  widgetVar="NotationproblemeEditDialog" modal="true" resizable="true" appendTo="@(body)" header="MODIFIER LES RESULTATS ATTENDUS PAR DISTRICT">
+            <h:form id="NotationproblemeEditForm">
+
+                <h:panelGroup id="display">
+
+                    <div style=" border: solid 0.5px ; width: 1200px ; height: 550px; overflow: auto;">
+                        <br/>
+
+                        <center>
+
+                            <p:panelGrid columns="2">
+                                
+                                <p:outputLabel value="#{langues.interventionpnds}"/>
+                                <p:inputTextarea cols="120" rows="6" disabled="true" value="#{loginController.language eq 'en' ? resultatAttenduDistrictController.resultatAttenduDistrict.idindicateur.idinterventionpnds.nomEn : resultatAttenduDistrictController.resultatAttenduDistrict.idindicateur.idinterventionpnds.nomFr}"/>
+                                
+                                <p:outputLabel value="#{langues.objectif_opérationnel}"/>
+                                <p:inputTextarea cols="120" rows="6" disabled="true" value="#{resultatAttenduDistrictController.objectifOppDistrict.objectif}"/>
+
+                                <p:outputLabel value="#{langues.Indicateur}" for="indicateur"/>
+                                <p:inputTextarea cols="120" rows="6" disabled="true" id="indicateur" value="#{loginController.language eq 'en' ? resultatAttenduDistrictController.resultatAttenduDistrict.idindicateur.nomEn : resultatAttenduDistrictController.resultatAttenduDistrict.idindicateur.nomFr}"/>
+                              
+                                <p:outputLabel for="resultat" value="#{langues.resultat_attendu}"/>
+                                <p:inputTextarea id="resultat" required="true" requiredMessage="#{langues.resultat_attendu} : #{langues.requis}" cols="150" rows="15"  value="#{resultatAttenduDistrictController.resultatAttenduDistrict.resultat}"/>
+
+                            </p:panelGrid>
+
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{resultatAttenduDistrictController.edit()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:Tablematieren1ListForm:datalist,:Tablematieren1ListForm:growl" oncomplete="PF('NotationproblemeEditDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('NotationproblemeEditDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

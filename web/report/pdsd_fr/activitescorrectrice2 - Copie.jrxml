@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="activitescorrectrice2" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="3" bottomMargin="3" uuid="6dfc2fac-70bb-4582-bc23-06ab8d6c6f92">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.axe.idaxe,
+  public.axe.nom_fr AS axes,
+  public.axe.objectifstrategue_fr AS objectifaxe,
+  public.axe.code AS codeax,
+  public.sousaxe.idsousaxe,
+  public.sousaxe.nom_fr AS sousaxes,
+  public.sousaxe.code AS codesousaxes,
+  public.sousaxe.objectif_fr AS objectifsousaxe,
+  public.interventionpnds.idinterventionpnds,
+  public.interventionpnds.nom_fr AS interventionpndss,
+  public.indicateur.idindicateur,
+  public.indicateur.nom_fr AS indicateurs,
+  public.indicateur.objectif_fr AS objectifindicateurs,
+  public.indicateur.ciblenationale,
+  public.indicateur_district.valeur AS valeurindicateurs,
+  public.probleme.idprobleme,
+  public.probleme.nom AS problemes,
+  public.activite.responsable,
+  public.activite.nom AS nomactivites,
+  public.probleme.cause as cause,
+  public.typestructure.idtypestructure,
+  public.typestructure.nom_fr as nom
+FROM
+  public.axe
+  INNER JOIN public.sousaxe ON (public.axe.idaxe = public.sousaxe.idaxe)
+  INNER JOIN public.categorieintervention ON (public.sousaxe.idsousaxe = public.categorieintervention.idsousaxe)
+  INNER JOIN public.interventionpnds ON (public.interventionpnds.idcategorieintervention = public.categorieintervention.idcategorieintervention)
+  INNER JOIN public.indicateur ON (public.interventionpnds.idinterventionpnds = public.indicateur.idinterventionpnds)
+  INNER JOIN public.indicateur_district ON (public.indicateur.idindicateur = public.indicateur_district.idindicateur)
+  INNER JOIN public.probleme ON (public.probleme.idindicateur_district = public.indicateur_district.idindicateur_district)
+  INNER JOIN public.activite ON (public.probleme.idprobleme = public.activite.idprobleme)
+  INNER JOIN public.typestructure ON (public.activite.idtypestructure = public.typestructure.idtypestructure)
+
+WHERE
+
+  public.indicateur_district.iddistrict = $P{iddistrict}
+ORDER BY
+  public.axe.code,
+  public.sousaxe.code,
+  public.axe.nom_fr,
+  public.sousaxe.nom_fr]]>
+	</queryString>
+	<field name="idaxe" class="java.lang.Integer"/>
+	<field name="axes" class="java.lang.String"/>
+	<field name="objectifaxe" class="java.lang.String"/>
+	<field name="codeax" class="java.lang.String"/>
+	<field name="idsousaxe" class="java.lang.Integer"/>
+	<field name="sousaxes" class="java.lang.String"/>
+	<field name="codesousaxes" class="java.lang.String"/>
+	<field name="objectifsousaxe" class="java.lang.String"/>
+	<field name="idinterventionpnds" class="java.lang.Integer"/>
+	<field name="interventionpndss" class="java.lang.String"/>
+	<field name="idindicateur" class="java.lang.Integer"/>
+	<field name="indicateurs" class="java.lang.String"/>
+	<field name="objectifindicateurs" class="java.lang.String"/>
+	<field name="ciblenationale" class="java.lang.Double"/>
+	<field name="valeurindicateurs" class="java.lang.Double"/>
+	<field name="idprobleme" class="java.lang.Integer"/>
+	<field name="problemes" class="java.lang.String"/>
+	<field name="responsable" class="java.lang.String"/>
+	<field name="nomactivites" class="java.lang.String"/>
+	<field name="cause" class="java.lang.String"/>
+	<field name="idtypestructure" class="java.lang.Integer"/>
+	<field name="nom" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="59" width="578" height="20" forecolor="#0000FF" uuid="c1596bcf-d482-4228-aa76-20ac8c8215b7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tableau 26 : Activités correctrices des faibles performances observées dans le DS ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="31" width="681" height="21" uuid="3e48bde3-746c-44d5-b36c-bc5b51479bee"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[III.1 ACTIVITE PAR AXES, SOUS AXES, STRATEGIE D'INTERVENTION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="0" width="681" height="21" uuid="96702fbc-0bd3-41cf-8bc2-383bad7cbea3"/>
+				<textElement>
+					<font fontName="Times New Roman" size="18" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[III- CADRE LOGIQUE D'INTERVENTION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="140" height="44" backcolor="#CCFFFF" uuid="9d680d86-5d7b-46ec-995e-143e4d43871e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[axes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="140" y="0" width="125" height="44" backcolor="#CCFFFF" uuid="53a2aaed-ee1c-451c-9e71-faf3794ebc70"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[sousaxes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="265" y="0" width="107" height="44" backcolor="#CCFFFF" uuid="43db8b10-8e2a-4526-9948-625c7783cc47"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Intervention]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="372" y="0" width="92" height="44" backcolor="#CCFFFF" uuid="866eb49d-559f-4fd1-9d9b-7f97c2389a0f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[problemes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="464" y="0" width="90" height="44" backcolor="#CCFFFF" uuid="4a5e79bd-e1eb-4988-b03f-aab601fabaa5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[cause]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="554" y="0" width="113" height="44" backcolor="#CCFFFF" uuid="8c17bb03-b857-4f7d-b050-032ba78e434d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Activité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="667" y="0" width="44" height="44" backcolor="#CCFFFF" uuid="ec687f82-f2e7-43a4-996f-570aceff4fe5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[responsable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="711" y="0" width="49" height="44" backcolor="#CCFFFF" uuid="71cb7005-6489-4f1d-924c-6597ed26b183"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concerne]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="63" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="140" y="0" width="125" height="55" uuid="ed925aab-4e81-4256-9584-94d63336eef6"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codesousaxes}+" : "+$F{sousaxes}+"\n OBJECTIF STRATEGIQUE : "+$F{objectifsousaxe}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="265" y="0" width="107" height="55" uuid="1543a5b7-ef21-4e51-8d0c-df9e11ce442a"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{interventionpndss}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="372" y="0" width="92" height="55" uuid="ef8396b2-b2a4-4ae6-ba6b-e9c0fe718956"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{problemes}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="464" y="0" width="90" height="55" uuid="423c0e3b-8d11-4404-9be1-69830046a1f1"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cause}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="554" y="0" width="113" height="55" uuid="5db2a016-7aca-4a01-81dc-da430ef6ad13"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomactivites}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="667" y="0" width="44" height="55" uuid="c85941c2-9314-4d1a-9a6e-0a8b25a1a5b2"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="711" y="0" width="49" height="55" uuid="624daffa-a0c9-41db-ad56-2ec483c6e46e"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="140" height="55" uuid="94fe8491-876c-4cc1-b149-314a60e2f500"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codeax}+" : "+$F{axes}+"\nOBJECTIF STRATEGIQUE: "+$F{objectifaxe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="199" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="199" uuid="1e8232c3-e427-4e40-b193-2c8e6221d291"/>
+				<rowGroup name="codeax" width="70">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{codeax}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="bb2a7246-c2bc-4d1d-bd6b-482897e59ac8"/>
+								<textFieldExpression><![CDATA[$V{codeax}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="codesousaxes" width="70">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{codesousaxes}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="c82ea416-ade5-4018-a616-56da3dd96b7e"/>
+								<textFieldExpression><![CDATA[$V{codesousaxes}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group1" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{interventionpndss}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="94cc8ad8-247b-414b-991b-587b6e2b47c9"/>
+								<textFieldExpression><![CDATA[$V{group1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group2" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{problemes}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="fd8e4dbd-0a73-448c-b17e-3bfc5a4225ee"/>
+								<textFieldExpression><![CDATA[$V{group2}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group3" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{cause}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="981d262b-ee3b-45d9-b304-04f61a8f5f7e"/>
+								<textFieldExpression><![CDATA[$V{group3}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group4" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{nomactivites}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="2367a787-9b81-4e73-b092-5d353b7b9b44"/>
+								<textFieldExpression><![CDATA[$V{group4}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group5" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{responsable}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="9aff6199-ed2e-4b0b-a91f-980d52e9dbfa"/>
+								<textFieldExpression><![CDATA[$V{group5}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="axes" height="30">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{axes}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque"/>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="idaxeMeasure" class="java.lang.Integer">
+					<measureExpression><![CDATA[$F{idaxe}]]></measureExpression>
+				</measure>
+				<crosstabCell width="4" height="25">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="codeax">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="608eaf41-7f99-4932-a348-96bda7cce4f6"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="axes">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="141d3995-9fd2-42fd-871f-b37acf25289f"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="codeax" columnTotalGroup="axes">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="9bb22701-d551-45b6-a35b-fffaf9174663"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="codesousaxes">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="0b24661f-ea86-4a6f-81e1-52007434aa92"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="codesousaxes" columnTotalGroup="axes">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="900afc00-b5f7-404b-9b9a-e0ea87b19ce9"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group1">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group1" columnTotalGroup="axes">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group2">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group2" columnTotalGroup="axes">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group3">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group3" columnTotalGroup="axes">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group4">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group4" columnTotalGroup="axes">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group5">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group5" columnTotalGroup="axes">
+					<cellContents/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

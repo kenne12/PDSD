@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="DepenseListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>#{langues.SITUATION_DES_DEPENSES} </h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('DepenseListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <center>
+            <p:panelGrid   columns="2" columnClasses="column">
+
+                <p:outputLabel value="#{langues.structure}" for="structure"/>
+                <p:selectOneMenu id="structure" value="#{depenseController.structure.idstructure}" required="true" requiredMessage="#{langues.structure} : #{langues.requis}" filter="true">
+                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                    <f:selectItems value="#{depenseController.structures}" var="structure" itemLabel="#{loginController.language eq 'en' ? structure.nomEn : structure.nomFr}" itemValue="#{structure.idstructure}"/>
+                    <p:ajax update="datalist" listener="#{depenseController.initStructure()}" />
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+        </center>
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{depenseController.naturedepenses}"
+                     var="item"
+                     rowKey="#{item.idnaturedepense}"
+                     paginator="true"
+ 
+                     style="width: 90%;margin-left: 5% "
+                     rowIndexVar="index"
+                      rows="80"
+                     rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{depenseController.naturedepense}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{depenseController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('DepenseListForm:viewButton').click();" listener="#{depenseController.activeButton()}"/>
+
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column rowspan="2" colspan="2" headerText="#{langues.naturedepense}"/>
+                    <p:column colspan="#{depenseController.annees.size()}" headerText="#{langues.Annee}" />
+                </p:row>
+                <p:row>
+                    <ui:repeat value="#{depenseController.annees}" var="annee">
+                        <p:column headerText="#{annee.nom}"/>
+                    </ui:repeat>
+                </p:row>
+            </p:columnGroup>
+
+            <p:column colspan="2">
+                <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}" />
+            </p:column>
+
+            <p:columns value="#{depenseController.annees}" var="var">
+                <h:outputText value="#{depenseController.findDepense(item, var).valeur}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:columns>
+
+        </p:dataTable>
+
+        <p:separator style="width: 90%;margin-left: 5% "/>
+
+        <center>
+            <p:panelGrid columns="2">
+                <p:outputLabel for="commentaire" value="#{langues.commentairetab}"/>
+                <p:inputTextarea  id="commentaire" disabled="true" style="color: red" value="#{depenseController.commentairetab.commentaire}" rows="8" cols="150">
+                    <p:ajax event="keyup"/>
+                </p:inputTextarea>
+            </p:panelGrid>
+        </center>
+
+        <p:separator style="width: 90%;margin-left: 5%"/>
+
+        <center>
+            <p:commandButton id="editButton" update=":DepenseCreateForm,growl,:DepenseCreateForm:commentaire" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{depenseController.loadTable()}" oncomplete="PF('DepenseCreateDialog').show()"/>
+        </center>
+
+    </h:form>
+</ui:composition>

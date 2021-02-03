@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog style=" width: 800px" showEffect="scale" footer="#{langues.footer}" hideEffect="scale" id="EtapeadministrativeCreateDlg" widgetVar="EtapeadministrativeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateFacteurdistrictTitle}" closeOnEscape="true">
+
+            <h:panelGrid columns="1" columnClasses="column">
+
+                <h:form id="EtapeadministrativeCreateForm">
+                    <h:panelGroup>
+                        <p:panelGrid columns="2" columnClasses="column">
+
+
+                            <p:outputLabel value="#{langues.facteur}" for="access"/> 
+                            <p:pickList style="width: 1000px" id="access" value="#{facteurdistrictController.dualList}" var="menu" effect="bounce"
+                                        itemValue="#{menu}" itemLabel="#{loginController.language eq 'en' ? menu.nomEn : menu.nomFr}" showSourceControls="false" showTargetControls="false" showCheckbox="false"
+                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="facteurConverter"  required="true" requiredMessage="les menus sont requis">
+
+                                <f:facet name="sourceCaption">#{langues.DISPONIBLES}</f:facet>
+                                <f:facet name="targetCaption">#{langues.SELECTIONNEES}</f:facet>       
+                            </p:pickList>
+
+                        </p:panelGrid>
+                    </h:panelGroup>
+
+                    <p:commandButton actionListener="#{facteurdistrictController.transfertEtape()}" update=":EtapeadministrativeValidateForm,:EtapeadministrativeValidateForm:datalist1" value="transferer">
+
+                    </p:commandButton>
+
+                </h:form>
+
+                <h:form id="EtapeadministrativeValidateForm">
+
+                    <h:panelGroup>
+
+                        <p:dataTable id="datalist1"
+                                     value="#{facteurdistrictController.facteurdistrictTest}"
+                                     var="obj"
+                                     paginator="true"
+                                     rows="10"
+                                     rowIndexVar="index"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     draggableColumns="true"
+                                     resizableColumns="true"
+                                     scrollHeight="100"
+                                     editable="true"
+                                     style="width: 1200px"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                            <p:ajax event="rowSelect"    listener="#{facteurdistrictController.activeButton()}" />
+                            <p:ajax event="rowUnselect"  listener="#{facteurdistrictController.deactiveButton()}"/>
+
+
+                            <p:column style="width: 300px">
+                                <f:facet name="header">
+                                    <h:outputText value="#{langues.facteur}"/>
+                                </f:facet>
+                                <h:outputText value="#{obj.idfacteur.nomFr}"/>
+                            </p:column>
+
+                            <p:column style="width: 800px" headerText="#{langues.Observation}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{obj.observation}" /></f:facet>
+                                    <f:facet name="input"><p:inputText style="width:1100px" id="modelInput" value="#{obj.observation}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+
+                            <p:column style="width:35px">
+                                <p:rowEditor />
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:panelGroup>
+
+                    <p:commandButton actionListener="#{facteurdistrictController.save()}" value="#{langues.Save}" update=":EtapeadministrativeListForm:datalist,:growl" oncomplete="PF('EtapeadministrativeCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('EtapeadministrativeCreateDialog').hide()"/>
+
+                </h:form>
+
+            </h:panelGrid>
+
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

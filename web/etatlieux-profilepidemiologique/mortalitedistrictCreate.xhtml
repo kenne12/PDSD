@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog  id="MedicamentCreateDlg" footer="#{langues.footer1}" widgetVar="MedicamentCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="#{langues.CreateMortalitedistrictTitle}">
+            <h:form id="MedicamentCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <div style=" border: solid 0.5px ; width: 1200px ; height: 500px; overflow: auto;">
+
+                        <p:dataTable id="datalist" value="#{mortalitedistrictController.mortalitedistricts}" var="item"
+                                     paginator="true"
+                                     rows="10"
+                                     editMode="cell"
+                                     editable="true"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top:1% !important; text-align:left; margin-left:15%; margin-right: 15%; font-weight: bold; font-style: oblique;"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{msg.Vide}"
+                                     widgetVar="fonctionTable"
+                                     draggableColumns="true"
+                                     resizableColumns="true">
+
+
+                            <f:facet name="header"> 
+                                <h:outputText value="#{loginController.language eq 'en' ? mortalitedistrictController.mortalite.nomEn : mortalitedistrictController.mortalite.nomFr}"/>
+                            </f:facet> 
+
+                            <p:column style="width:50%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{langues.rubriquemortalite}"/>
+                                </f:facet>
+                                <h:outputText value="#{loginController.language eq 'en' ? item.idrubriquemortalite.nomEn : item.idrubriquemortalite.nomFr}"/>
+                            </p:column>
+
+                            <p:column style="width:25%" headerText="#{langues.valeur}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{item.valeur}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText  value="#{item.valeur}">
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+  
+                        </p:dataTable>
+
+                        <br/>
+
+                        <center>
+                            <p:panelGrid columns="2">
+                                <p:outputLabel for="commentaire" value="#{langues.commentairetab}"/>
+                                <p:inputTextarea id="commentaire" value="#{mortalitedistrictController.commentairetab.commentaire}" rows="8" cols="90">
+                                    <p:ajax event="keyup"/>
+                                </p:inputTextarea>
+                            </p:panelGrid>
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{mortalitedistrictController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:MedicamentListForm:datalist,:MedicamentListForm:growl,:MedicamentListForm:commentaire" oncomplete="PF('MedicamentCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('MedicamentCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

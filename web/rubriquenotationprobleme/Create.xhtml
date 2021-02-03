@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="RubriquenotationproblemeCreateDlg" widgetVar="RubriquenotationproblemeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateRubriquenotationproblemeTitle}" closeOnEscape="true">
+
+            <h:form id="RubriquenotationproblemeCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 200px"  id="nom" value="#{rubriquenotationproblemeController.rubriquenotationprobleme.nomFr}" required="true" requiredMessage="#{langues.nom_francais} : #{langues.requis}"/>
+                        
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 200px"  id="nom_en" value="#{rubriquenotationproblemeController.rubriquenotationprobleme.nomEn}" required="true" requiredMessage="#{langues.nom_anglais} : #{langues.requis}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rubriquenotationproblemeController.saveRubriquenotationprobleme()}" value="#{langues.Save}" update="display,:RubriquenotationproblemeListForm:datalist,:growl" oncomplete="PF('RubriquenotationproblemeCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('RubriquenotationproblemeCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

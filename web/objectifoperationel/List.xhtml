@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="InterventionpndsListForm">
+
+        <p:panel header="#{langues.objectifop}">
+
+            <p:contextMenu id="InterventionpndsDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('InterventionpndsListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('InterventionpndsListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('InterventionpndsListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('InterventionpndsListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                 
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{interventionpndsController.interventionpndss}"
+                         var="item"
+                         rowKey="#{item.idinterventionpnds}"
+                         paginator="true"
+
+                         rows="10"
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         draggableColumns="true"
+                         resizableColumns="true"
+                         scrollHeight="100"
+                         selection="#{interventionpndsController.interventionpnds}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{interventionpndsController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{interventionpndsController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('InterventionpndsListForm:viewButton').click();" listener="#{interventionpndsController.activeButton()}"/>
+
+                <p:column style="width: 15% ;height: 40px">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Axe}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.idcategorieintervention.idsousaxe.idaxe.code} #{ loginController.language eq 'en' ? item.idcategorieintervention.idsousaxe.idaxe.nomEn : item.idcategorieintervention.idsousaxe.idaxe.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 25%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.sousaxe}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.idcategorieintervention.idsousaxe.code} #{loginController.language eq 'en' ? item.idcategorieintervention.idsousaxe.nomEn : item.idcategorieintervention.idsousaxe.nomFr}"/>
+                </p:column>
+
+                <p:column style="width:20%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Categorie_intervention}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.idcategorieintervention.code} #{loginController.language eq 'en' ? item.idcategorieintervention.nomEn : item.idcategorieintervention.nomFr}"/>
+                </p:column>
+
+                <p:column filterBy="#{item.nomFr}" style="width:20%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_francais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.code} #{item.nomFr}"/>
+                </p:column>
+
+                <p:column filterBy="#{item.nomEn}" style="width:20%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.code} #{item.nomEn}"/>
+                </p:column>
+
+                <p:column filterBy="#{item.objectifOpEn}" style="width:20%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.objectifen}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value=" #{item.objectifOpEn}"/>
+                </p:column>
+
+                <p:column filterBy="#{item.objectifOpFr}" style="width:20%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.objectiffr}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value=" #{item.objectifOpFr}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{interventionpndsController.prepareCreate()}" update=":InterventionpndsCreateForm" oncomplete="PF('InterventionpndsCreateDialog').show()"/>
+            <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{interventionpndsController.prepareEdit()}" update=":InterventionpndsCreateForm"  oncomplete="PF('InterventionpndsCreateDialog').show()" disabled="#{interventionpndsController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{interventionpndsController.deleteInterventionpnds()}" update=":growl,datalist" disabled="#{interventionpndsController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

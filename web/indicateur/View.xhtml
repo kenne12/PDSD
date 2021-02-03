@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog  showEffect="scale" hideEffect="scale" id="IndicateurViewDlg" widgetVar="IndicateurViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.ViewIndicateurTitle}" closeOnEscape="true">
+
+            <h:form id="IndicateurViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{indicateurController.selected != null}">
+
+                        <h:outputText value="#{langues.Numero}"/>
+                        <h:outputText value="#{indicateurController.selected.idindicateur}" />
+
+                        <h:outputText value="#{langues.nom_francais}"/>
+                        <h:outputText value="#{indicateurController.selected.nomFr}" />
+                        
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                        <h:outputText value="#{indicateurController.selected.nomEn}" />
+
+                        <h:outputText value="#{langues.ViewIndicateurLabel_objectif}"/>
+                        <h:outputText value="#{indicateurController.selected.objectifFr}" />
+
+                        <h:outputText value="#{langues.ViewIndicateurLabel_description}"/>
+                        <h:outputText value="#{indicateurController.selected.description}" />
+
+                        <h:outputText value="#{langues.ViewIndicateurLabel_numerateur}"/>
+                        <h:outputText value="#{indicateurController.selected.numerateur}" />
+
+                        <h:outputText value="#{langues.ViewIndicateurLabel_denominateur}"/>
+                        <h:outputText value="#{indicateurController.selected.denominateur}" />
+
+                        <h:outputText value="#{langues.ViewIndicateurLabel_baseline}"/>
+                        <h:outputText value="#{indicateurController.selected.baseline}" />
+
+                        <h:outputText value="#{langues.ViewIndicateurLabel_anneebaseline}"/>
+                        <h:outputText value="#{indicateurController.selected.anneebaseline}" />
+
+                        <h:outputText value="#{langues.dianum}"/>
+                        <h:outputText value="#{indicateurController.selected.diamnum}"/>
+
+                        <h:outputText value="#{langues.diadeno}"/>
+                        <h:outputText value="#{indicateurController.selected.diamdeno}" />
+
+                        <h:outputText value="#{langues.diavat}"/>
+                        <h:outputText value="#{indicateurController.selected.diamvalatt}" />
+
+                        <h:outputText value="#{langues.diavar}"/>
+                        <h:outputText value="#{indicateurController.selected.diamvalrel}" />
+
+                        <h:outputText value="#{langues.cercle}"/>
+                        <p:selectBooleanButton id="value1" value="#{indicateurController.selected.cercle}" onLabel="Oui" offLabel="Non" onIcon="ui-icon-check" disabled="true" offIcon="ui-icon-close" style="width:80px"/>
+
+
+                        <h:outputText value="#{langues.ViewIndicateurLabel_coef}"/>
+                        <h:outputText value="#{indicateurController.selected.coef}" title="#{langues.ViewIndicateurTitle_coef}"/>
+
+                        <h:outputText value="#{langues.unite}"/>
+                        <h:outputText value="#{indicateurController.selected.idunite.nom}"/>
+
+                        <h:outputText value="#{langues.periodicite}"/>
+                        <h:outputText value="#{loginController.language eq 'en' ?  indicateurController.selected.idperiodicite.nomEn : indicateurController.selected.idperiodicite.nomFr}"/>
+
+                        <h:outputText value="#{langues.Categorie_indicateur}"/>
+                        <h:outputText value="#{loginController.language eq 'en' ?  indicateurController.selected.idcategorie.nomEn : indicateurController.selected.idcategorie.nomFr}"/>
+                                              
+                    </p:panelGrid>
+                    <p:commandButton value="#{langues.Close}" onclick="PF('IndicateurViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

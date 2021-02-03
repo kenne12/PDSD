@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="partiehaute" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22b18984-92f8-4047-825e-03c1daa22832">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.partiehaute.idpartiehaute,
+  public.partiehaute.introduction_fr,
+  public.partiehaute.presentationgenerale_fr,
+  public.partiehaute.situationgeographique_fr,
+  public.partiehaute.situationeconomique_fr,
+  public.partiehaute.situationsocioculturelle_fr,public.partiehaute.carte
+FROM
+  public.partiehaute
+  INNER JOIN public.district ON (public.partiehaute.iddistrict = public.district.iddistrict)
+WHERE
+  public.district.iddistrict = $P{iddistrict}]]>
+	</queryString>
+	<field name="idpartiehaute" class="java.lang.Integer"/>
+	<field name="introduction_fr" class="java.lang.String"/>
+	<field name="presentationgenerale_fr" class="java.lang.String"/>
+	<field name="situationgeographique_fr" class="java.lang.String"/>
+	<field name="situationeconomique_fr" class="java.lang.String"/>
+	<field name="situationsocioculturelle_fr" class="java.lang.String"/>
+	<field name="carte" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="0" width="705" height="22" uuid="85ddbe69-80c1-4dc9-8f17-21390713a011"/>
+				<textElement>
+					<font fontName="Times New Roman" size="18" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[INTRODUCTION]]></text>
+			</staticText>
+			<line>
+				<reportElement x="23" y="22" width="689" height="1" uuid="2462b777-8bbe-494e-96d6-15d135ae2bef"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="39" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="23" y="0" width="689" height="39" uuid="7fbfc9ef-4042-416d-8039-53661eff7c3c"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{introduction_fr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="475" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="17" width="740" height="22" uuid="b3839ac9-2781-4ae1-a6e3-ef4dd4512ca1"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[I.1- DISTRICT MAP]]></text>
+			</staticText>
+			<image>
+				<reportElement x="68" y="44" width="1591" height="431" uuid="bad4095b-ba4b-4201-88d8-7d37e29ebaca"/>
+				<imageExpression><![CDATA["images/"+$F{carte}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="-1" width="740" height="22" uuid="11ea71a6-057e-4b05-aaca-3fa7b4f28bb8"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[I- SITUATIONAL ANALYSIS ]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

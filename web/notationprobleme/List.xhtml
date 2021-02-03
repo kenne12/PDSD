@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="NotationproblemeListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>#{langues.PRIORISATION_DES_PROBLEMES}</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('NotationproblemeListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <br/>
+
+        <p:panel style="background-color: blanchedalmond" id="axe" header="#{notationproblemeController.axe.code} - #{loginController.language eq 'en' ? notationproblemeController.axe.nomEn : notationproblemeController.axe.nomFr}">
+
+            <p:panel id="sousaxe" header="#{notationproblemeController.sousaxe.code} - #{loginController.language eq 'en' ? notationproblemeController.sousaxe.nomEn : notationproblemeController.sousaxe.nomFr}">
+
+                <p:dataTable id="datalist"
+                             value="#{notationproblemeController.problemes}"
+                             var="item"
+                             rowKey="#{item.idprobleme}"
+                             paginator="true"
+                             rows="100"
+                             style="width: 100%;"
+                             rowIndexVar="index"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             draggableColumns="true"
+                             resizableColumns="true"
+                             scrollHeight="100"
+                             selection="#{notationproblemeController.probleme}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                    <p:ajax event="rowSelect" listener="#{notationproblemeController.activeButton()}" />
+                    <p:ajax event="rowDblselect" onsuccess="document.getElementById('NotationproblemeListForm:viewButton').click();" listener="#{notationproblemeController.activeButton()}"/>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" colspan="3" headerText="#{langues.probleme}"/>                            
+                            <p:column colspan="#{notationproblemeController.sousrubriquenotationproblemes.size()}" headerText="#{langues.rubriquenotationprobleme}" />
+                            <p:column style="width: 25px" headerText="Total" rowspan="2"/>
+                        </p:row>
+                        <p:row>
+                            <ui:repeat value="#{notationproblemeController.sousrubriquenotationproblemes}" var="sr">
+                                <p:column class="hardBreak" headerText="#{loginController.language eq 'en' ? sr.nomEn : sr.nomFr}" />
+                            </ui:repeat>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column style="height: 40px" colspan="3" >
+                        <h:outputText class="hardBreak" value="#{item.nom}" />
+                    </p:column>
+
+                    <p:columns value="#{notationproblemeController.sousrubriquenotationproblemes}" var="var" style="text-align: center" >
+                        <h:outputText class="hardBreak" value="#{notationproblemeController.findResult(item,var).valeur}"/>
+                    </p:columns>
+
+                    <p:column>
+                        <h:outputText class="hardBreak" value="#{item.totalpoint}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                <center>
+                    <p:commandButton id="editButton" update=":NotationproblemeCreateForm,growl,:NotationproblemeCreateForm:datalist" actionListener="#{notationproblemeController.uptadeTable()}" icon="ui-icon-pencil" value="#{langues.Edit}"  oncomplete="PF('NotationproblemeCreateDialog').show()"/>
+                </center>
+
+                <h:panelGrid style="width: 70%;margin-left: 15%" columns="2">
+                    <p:commandButton value="#{langues.sous_axe_precedent}" update="axe,sousaxe,datalist" actionListener="#{notationproblemeController.precSousAxe()}" oncomplete="javascript:location.reload();"/>
+                    <p:commandButton value="#{langues.sous_axe_suivant}" update="axe,sousaxe,datalist" style="margin-left: 50%" actionListener="#{notationproblemeController.nextSousaxe()}" oncomplete="javascript:location.reload();"/>
+                </h:panelGrid>
+
+            </p:panel>
+
+            <h:panelGrid style="width: 80%;margin-left: 10%" columns="2">
+                <p:commandButton value="#{langues.axe_precedent}" update="axe,sousaxe,datalist" actionListener="#{notationproblemeController.precAxe()}" oncomplete="javascript:location.reload();"/>
+                <p:commandButton style="margin-left: 60%" value="#{langues.axe_suivant}" update="axe,sousaxe,datalist" actionListener="#{notationproblemeController.nextAxe()}" oncomplete="javascript:location.reload();"/>
+            </h:panelGrid>
+
+        </p:panel>
+
+    </h:form>
+</ui:composition>

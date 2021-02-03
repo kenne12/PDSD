@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturemicroplan" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3885a3d8-a16d-4a01-b372-fa5991b29ac9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idstructure" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Batrapi\\Developpement\\Projet JEE\\pdsd_reports\\pdsd_fr\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.region.idregion,
+  public.region.nom_fr as regions,
+  public.district.iddistrict,
+  public.district.nom_fr as districts,
+  public.structure.idstructure,
+  public.structure.nom_fr as structures
+FROM
+  public.district
+  INNER JOIN public.region ON (public.district.idregion = public.region.idregion)
+  INNER JOIN public.structure ON (public.district.iddistrict = public.structure.iddistrict)
+WHERE
+  public.structure.idstructure = $P{idstructure}]]>
+	</queryString>
+	<field name="idregion" class="java.lang.Integer"/>
+	<field name="regions" class="java.lang.String"/>
+	<field name="iddistrict" class="java.lang.Integer"/>
+	<field name="districts" class="java.lang.String"/>
+	<field name="idstructure" class="java.lang.Integer"/>
+	<field name="structures" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="555" splitType="Stretch">
+			<staticText>
+				<reportElement x="529" y="111" width="229" height="20" uuid="71f06bd7-85c3-4061-9b80-25f0201e6605"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Regional Delegation of Public Health]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="529" y="91" width="229" height="20" uuid="5e919a0e-4811-4a20-8630-8e7cc1882798"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ministry of Public Health]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-12" x="769" y="31" width="5" height="483" forecolor="#FFFF33" backcolor="#FFFF33" uuid="cec283a6-039f-4247-a9a2-641ac4133557"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="47" y="70" width="249" height="20" uuid="e5737335-397f-4a26-9a55-10fc35dbac54"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail – Patrie]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-10" x="33" y="31" width="5" height="484" forecolor="#FFFF33" backcolor="#FFFF33" uuid="173ac01e-5ac6-4c08-b9f8-2cdc77cbce02"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-6" x="21" y="525" width="763" height="5" forecolor="#FF6666" backcolor="#FF6666" uuid="be785487-11b6-400b-b1c5-b82e989503ee"/>
+				<graphicElement>
+					<pen lineColor="#FF0033"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-7" x="780" y="20" width="5" height="510" forecolor="#FF6666" backcolor="#FF6666" uuid="c1e18abf-c8fa-438d-b6ba-0006ca2bd208"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-9" x="38" y="31" width="736" height="5" forecolor="#FFFF33" backcolor="#FFFF33" uuid="f04c47ef-5d62-4fc9-86d6-88e69941da23"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="47" y="90" width="249" height="20" uuid="54782e8d-402e-4148-9a1c-bba37ad9f62a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ministère de la Santé Publique]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="529" y="71" width="229" height="20" uuid="69c1ba14-9dea-49ed-a6e8-a2ec313572ea"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="56" y="50" width="240" height="20" uuid="4879cc4d-8070-4620-8315-4723dc371aec"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[République du Cameroun]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-4" x="10" y="540" width="783" height="5" forecolor="#99FF99" backcolor="#99FF99" uuid="ed66d46e-03ac-43be-8b31-268217ae45a6"/>
+			</rectangle>
+			<image>
+				<reportElement x="350" y="36" width="166" height="188" uuid="07a9ba51-6adc-42b8-b63b-08ad08a67b1a"/>
+				<imageExpression><![CDATA["logominsante1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="47" y="110" width="249" height="20" uuid="578dc557-d655-4b9a-b959-3ec21036a6f4"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Délégation Régionale de la Santé Publique]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-11" x="33" y="514" width="741" height="5" forecolor="#FFFF33" backcolor="#FFFF33" uuid="a7bd3c73-0560-4c48-85f6-7020c38fe4c8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-8" x="21" y="20" width="5" height="506" forecolor="#FF6666" backcolor="#FF6666" uuid="04e0198a-e33c-4143-99b5-6c96abc1b155"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="529" y="50" width="229" height="20" uuid="31777380-a7e1-42f5-9c06-9e31ee7fcaa3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Republic of Cameroon]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-3" x="793" y="10" width="5" height="535" forecolor="#99FF99" backcolor="#99FF99" uuid="74f5fe79-f10a-4e7a-993b-652e2fd68918"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-5" x="27" y="20" width="758" height="5" forecolor="#FF6666" backcolor="#FF6666" uuid="30223d59-9e18-439c-ba05-51a8a092e1f5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-2" x="10" y="14" width="5" height="531" forecolor="#99FF99" backcolor="#99FF99" uuid="7c589273-081b-4084-bb28-4b7257584121"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="10" y="10" width="783" height="5" forecolor="#99FF99" backcolor="#99FF99" uuid="7fc2c3d2-3474-47cf-88d2-2b3abb6453db"/>
+			</rectangle>
+			<image>
+				<reportElement x="104" y="161" width="713" height="180" uuid="a65510c4-44aa-4e2c-8f3a-8f591a22f6ce"/>
+				<imageExpression><![CDATA["pdsd3.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="177" y="342" width="471" height="68" forecolor="#006600" uuid="75b1d01b-212e-41a3-8770-0a6a31eb24a7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="48" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regions}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="407" width="471" height="55" forecolor="#006600" uuid="5d22ce8e-832b-4d0c-9b38-ec6b254fe49a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="40" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{districts}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="465" width="471" height="55" forecolor="#006600" uuid="cc729dca-036a-4e28-9666-e26a6239b3c9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="34" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structures}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="64" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="707" height="64" uuid="46a7d19b-9e6a-4e10-920c-dc151194ab04"/>
+				<subreportParameter name="idstructure">
+					<subreportParameterExpression><![CDATA[$P{idstructure}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["microplan.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

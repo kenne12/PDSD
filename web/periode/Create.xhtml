@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="PeriodeCreateDlg" widgetVar="PeriodeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreatePeriodeTitle}" closeOnEscape="true">
+
+            <h:form id="PeriodeCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+
+                        <p:outputLabel value="#{langues.periodederattachement}" for="perioderattachement" />
+                        <p:selectOneMenu style=" width: 200px" id="perioderattachement" value="#{periodeController.periodederattachement.idperiodederattachement}" required="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{periodeController.periodederattachements}"                                           
+                                           var="idperioderattachementItem" itemValue="#{idperioderattachementItem.idperiodederattachement}" itemLabel="#{idperioderattachementItem.nom}" />
+                        </p:selectOneMenu> 
+
+
+                        <p:outputLabel value="#{langues.periodicite}" for="periodicite" />
+                        <p:selectOneMenu style=" width: 200px" id="periodicite" value="#{periodeController.periodicite.idperiodicite}" required="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{periodeController.periodicites}"
+                                           var="periodicite" itemValue="#{periodicite.idperiodicite}"  itemLabel="#{loginController.language eq 'en' ? periodicite.nomEn : periodicite.nomFr}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.nom}" for="nom" />
+                        <p:inputText  style=" width: 200px" id="nom" value="#{periodeController.periode.nom}" size="254" maxlength="254"/>
+
+                        <p:outputLabel value="#{langues.Code}" for="code" />
+                        <p:inputText style=" width: 200px" id="code" value="#{periodeController.periode.code}" size="254" maxlength="254"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{periodeController.save()}" value="#{langues.Save}" update="display,:PeriodeListForm:datalist,:growl" oncomplete="PF('PeriodeCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('PeriodeCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

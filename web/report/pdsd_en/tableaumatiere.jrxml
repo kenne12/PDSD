@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tableaumatiere" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="10" uuid="b8091d51-6b25-4bc6-af0a-0d8de13a98db">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+  public.tabniveau3ok.n31 as n3,
+  public.tabniveau2ok.n21 as n2,
+  public.tabniveau1ok.idtablematiere_n1,
+  public.tabniveau1ok.niveau11 as niveau1,
+
+  public.tabniveau1ok.nu1,
+  public.tabniveau2ok.idtablematiere_n2,
+  public.tabniveau1ok.iddistrict,
+  public.tabniveau3ok.idtablematiere_n3,
+  public.tabniveau3ok.defaultnumpage,
+  public.tabniveau2ok.nu2,
+  public.tabniveau3ok.nu3
+FROM
+  public.tabniveau1ok
+  LEFT OUTER JOIN public.tabniveau2ok ON (public.tabniveau1ok.idtablematiere_n1 = public.tabniveau2ok.idtablematiere_n1)
+  LEFT OUTER JOIN public.tabniveau3ok ON (public.tabniveau2ok.idtablematiere_n2 = public.tabniveau3ok.idtablematiere_n2)
+WHERE
+  public.tabniveau1ok.iddistrict = $P{iddistrict}
+ORDER BY
+  public.tabniveau1ok.niveau11,
+  public.tabniveau2ok.n21,
+  public.tabniveau3ok.n31,
+  public.tabniveau1ok.nu1]]>
+	</queryString>
+	<field name="n3" class="java.lang.String"/>
+	<field name="n2" class="java.lang.String"/>
+	<field name="idtablematiere_n1" class="java.lang.Integer"/>
+	<field name="niveau1" class="java.lang.String"/>
+	<field name="nu1" class="java.lang.Integer"/>
+	<field name="idtablematiere_n2" class="java.lang.Long"/>
+	<field name="iddistrict" class="java.lang.Integer"/>
+	<field name="idtablematiere_n3" class="java.lang.Long"/>
+	<field name="defaultnumpage" class="java.lang.Integer"/>
+	<field name="nu2" class="java.lang.Integer"/>
+	<field name="nu3" class="java.lang.Integer"/>
+	<group name="niveau1">
+		<groupExpression><![CDATA[$F{idtablematiere_n1}]]></groupExpression>
+		<groupHeader>
+			<band height="19">
+				<textField>
+					<reportElement x="14" y="4" width="728" height="14" forecolor="#3333FF" uuid="e2076e1c-6ec0-4b37-85ec-2d7e19676a01"/>
+					<textElement>
+						<font fontName="Times New Roman" size="12" isBold="true" isItalic="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{niveau1}+""==null ?"":
+$F{niveau1}+""]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="742" y="3" width="50" height="14" forecolor="#3333FF" uuid="d7163459-fb05-4d09-a618-20b82c5816ac"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nu1}==null?"":
+$F{nu1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="11" y="18" width="728" height="1" uuid="05d79690-1274-4d14-822d-42bcc9efdac7"/>
+					<graphicElement>
+						<pen lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="niveau2">
+		<groupExpression><![CDATA[$F{idtablematiere_n2}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="39" y="5" width="700" height="14" uuid="4d8362cb-b399-490b-b0a4-05d108d68ab0"/>
+					<textElement>
+						<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{n2}==null? " ":
+$F{n2}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="742" y="4" width="50" height="14" forecolor="#3333FF" uuid="d468071c-e91f-4aca-9fa7-0a63bcb7f1f0"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nu2}==null?"":
+$F{nu2}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="39" y="19" width="701" height="1" uuid="0732f5ac-11aa-4cf3-b2f0-d5985ce3a681"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="463" height="24" forecolor="#3333FF" uuid="84e78f11-7847-4639-9e6a-547fbb999f58"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[TABLE OF CONTENTS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="79" y="5" width="660" height="14" isRemoveLineWhenBlank="true" uuid="9ae14ca1-3d77-4835-938d-a45af98e14eb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{n3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="742" y="6" width="50" height="14" forecolor="#3333FF" uuid="142c48ce-a5f4-4b50-8614-e13cbb8d997b"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nu3}==null?"":
+$F{nu3}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement isPrintRepeatedValues="false" x="79" y="20" width="661" height="1" uuid="245683d9-b629-4d47-bd9b-56a181aa0cc3"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

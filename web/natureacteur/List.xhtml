@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="NatureacteurListForm">
+
+        <p:panel header="Liste Natureacteurs">
+
+            <p:contextMenu id="NatureacteurDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('NatureacteurListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('NatureacteurListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('NatureacteurListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('NatureacteurListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                 
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{natureacteurController.natureacteurs}"
+                         var="item"
+                         rowKey="#{item.idnatureacteur}"
+                         paginator="true"
+                         style="width: 60%;margin-left: 20%"
+                         rows="10"
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         draggableColumns="true"
+                         resizableColumns="true"
+                         scrollHeight="100"
+                         selection="#{natureacteurController.natureacteur}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{natureacteurController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{natureacteurController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('NatureacteurListForm:viewButton').click();" listener="#{natureacteurController.activeButton()}"/>
+
+                <p:column style="width: 20px">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Numero}"/>
+                    </f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+
+                <p:column style="width: 300px" sortBy="#{item.code}" filterBy="#{item.code}">
+                    <f:facet name="header">
+                        <h:outputText value="Code"/>
+                    </f:facet>
+                    <h:outputText value="#{item.code}"/>
+                </p:column>
+                
+                <p:column style="width: 300px" sortBy="#{item.nom}" filterBy="#{item.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Nom"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{natureacteurController.prepareCreate()}" update=":NatureacteurCreateForm" oncomplete="PF('NatureacteurCreateDialog').show()"/>
+            <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{natureacteurController.prepareEdit()}" update=":NatureacteurCreateForm"  oncomplete="PF('NatureacteurCreateDialog').show()" disabled="#{natureacteurController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{natureacteurController.deleteNatureacteur()}" update=":growl,datalist" disabled="#{natureacteurController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

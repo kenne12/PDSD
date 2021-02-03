@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="EtapeadministrativeListForm">
+
+        <p:panel header="#{langues.ListListetableauDistrictTitle}">
+
+            <p:dataTable id="datalist"
+                         value="#{listetableaudistrictController.listetableauDistricts}"
+                         var="item"
+                         rowKey="#{item.idlistetableauDistrict}"
+                         paginator="true"
+                         rows="10"
+                         style="width: 70%;margin-left: 15%"
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         draggableColumns="true"
+                         resizableColumns="true"
+                         scrollHeight="100"
+                         selection="#{listetableaudistrictController.listetableauDistrict}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{listetableaudistrictController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{listetableaudistrictController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('EtapeadministrativeListForm:viewButton').click();" listener="#{listetableaudistrictController.activeButton()}"/>
+
+                <p:column style="width: 20px" >
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Numero}"/>
+                    </f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+
+                <p:column style="width: 300px">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.listetableau}"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ? item.idlisttableau.nomEn : item.idlisttableau.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 300px">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.ListTablematieren1DistrictTitle_numeropage}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.numpage}"/>
+                </p:column>
+                
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{listetableaudistrictController.prepareCreate()}" update=":EtapeadministrativeCreateForm,:EtapeadministrativeCreateForm:access,:EtapeadministrativeValidateForm" oncomplete="PF('EtapeadministrativeCreateDialog').show()"/>
+            <p:commandButton id="editButton"  update=":EtapeadministrativeEditForm"  icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{listetableaudistrictController.prepareEdit()}" oncomplete="PF('EtapeadministrativeEditDialog').show()" disabled="#{listetableaudistrictController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{listetableaudistrictController.deleteListetableauDistrict()}" update=":growl,datalist" disabled="#{listetableaudistrictController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

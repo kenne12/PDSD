@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.resultatattendu}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+
+                <h:form id="Tablematieren1ListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{resultatAttenduController.resultatattendus}" 
+                                 var="item"
+                                 editMode="cell"
+                                 editable="true"
+                                 paginator="true"
+                                 selectionMode="single"
+                                 rowKey="#{item.idresultatattendu}"
+                                 selection="#{resultatAttenduController.resultatattendu}"
+                                 rows="25"
+                                 rowsPerPageTemplate="10,20,30,40,50,60"
+                                 style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+                        <p:ajax event="rowSelect" update=":Tablematieren1ListForm:editButton,:Tablematieren1ListForm:deleteButton" listener="#{resultatAttenduController.activeButton()}" />
+
+                        <f:facet name="header"> 
+                            <h:outputText value="#{langues.resultatattendu}"/>
+                        </f:facet> 
+
+                        <p:column style="width: 30%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.interventionpnds}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.idindicateur.idinterventionpnds.code} #{loginController.language eq 'en' ? item.idindicateur.idinterventionpnds.nomEn : item.idindicateur.idinterventionpnds.nomFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 35%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.Indicateur}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idindicateur.nomEn : item.idindicateur.nomFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 35%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="Objectif"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idindicateur.idinterventionpnds.objectifOpEn : item.idindicateur.idinterventionpnds.objectifOpFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 35%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.resultatfr}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.resultatFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 35%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.resultaten}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.resultatEn}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <center>
+                        <p:commandButton  id="importButton"  value="#{langues.importer}" actionListener="#{resultatAttenduController.loadData()}" update="datalist,growl,importButton" disabled="#{resultatAttenduController.importer}"/>
+                        <p:commandButton id="addButton"   icon="ui-icon-plus" value="#{langues.Create}" actionListener="#{resultatAttenduController.prepareCreate()}" update="datalist,growl,editButton,:ResultatattenduCreateForm" oncomplete="PF('ResultatattenduCreateDialog').show()"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{resultatAttenduController.prepareEdit()}" update="datalist,growl,editButton,:ResultatattenduEditForm" oncomplete="PF('ResultatattenduEditDialog').show()" disabled="#{resultatAttenduController.detail}"/>                        
+                        <p:commandButton id="deleteButton"   icon="ui-icon-trash" value="#{langues.Delete}" actionListener="#{resultatAttenduController.delete()}" update="datalist,growl,deleteButton" disabled="#{resultatAttenduController.detail}">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+                   <ui:include src="/confirmation.xhtml"/>
+                </h:form>
+                <ui:include src="/resultatattendu/Edit.xhtml"/>
+                <ui:include src="/resultatattendu/Create.xhtml"/>
+
+            </f:view>
+
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

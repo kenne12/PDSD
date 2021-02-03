@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale"  id="PeriodederattachementViewDlg" widgetVar="PeriodederattachementViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.ViewPeriodederattachementTitle}" closeOnEscape="true">
+
+            <h:form id="PeriodederattachementViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{periodederattachementController.selected != null}">
+
+                        <h:outputText value="#{langues.Numero}"/>
+                        <h:outputText value="#{periodederattachementController.selected.idperioderattachement}"/>
+
+                        <h:outputText value="#{langues.nom}"/>
+                        <h:outputText value="#{periodederattachementController.selected.nom}"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton value="#{langues.Close}" onclick="PF('PeriodederattachementViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

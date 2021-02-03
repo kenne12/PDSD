@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liste_des_indicateurs" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0c875dac-4afe-4417-a1b0-08435f9f73d9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\batrapiproject\\projetjee\\PDSD\\web\\report\\listeindicateur\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     periode."nom" AS periode_nom
+FROM
+     "public"."periode" periode
+WHERE periode.idperiode = 18;]]>
+	</queryString>
+	<field name="periode_nom" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="551" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-1" x="6" y="4" width="788" height="5" forecolor="#99FF99" backcolor="#99FF99" uuid="053c2a28-882d-4428-b10d-243613942a7b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-11" x="29" y="508" width="741" height="5" forecolor="#FFFF33" backcolor="#FFFF33" uuid="fb411d0e-4ffa-4f3c-ba76-2dee626e0434"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-9" x="34" y="25" width="736" height="5" forecolor="#FFFF33" backcolor="#FFFF33" uuid="55a5efe3-115a-490b-9f75-8b3ba6246788"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-4" x="6" y="541" width="783" height="5" forecolor="#99FF99" backcolor="#99FF99" uuid="3a8d38e4-fd19-4f2a-9b76-145eec280e39"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-3" x="789" y="9" width="5" height="537" forecolor="#99FF99" backcolor="#99FF99" uuid="edd3ce20-c555-4ba6-ba23-8b8d1cf4ac85"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-6" x="18" y="524" width="763" height="5" forecolor="#FF6666" backcolor="#FF6666" uuid="ce88b76f-3a27-4381-a752-93d9e5717ac5"/>
+				<graphicElement>
+					<pen lineColor="#FF0033"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-8" x="17" y="14" width="5" height="515" forecolor="#FF6666" backcolor="#FF6666" uuid="cb804c09-fd6a-4206-975f-c23c80c0aec7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-2" x="6" y="9" width="5" height="537" forecolor="#99FF99" backcolor="#99FF99" uuid="8b54fefa-759f-4c36-929f-ce332db45d5f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-5" x="23" y="14" width="758" height="5" forecolor="#FF6666" backcolor="#FF6666" uuid="5ba190c6-ad38-40cf-8a11-826837c1768f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-10" x="29" y="25" width="5" height="484" forecolor="#FFFF33" backcolor="#FFFF33" uuid="afc8a125-8dc3-4bef-bbd2-e9afc8fa2aa2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-7" x="776" y="14" width="5" height="510" forecolor="#FF6666" backcolor="#FF6666" uuid="5a185698-cd4b-407b-bd35-7181c9509ac9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-12" x="765" y="25" width="5" height="483" forecolor="#FFFF33" backcolor="#FFFF33" uuid="8f2559a8-aebd-4ce8-9f95-c78a32ab4a52"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="51" y="51" width="240" height="20" uuid="729cdd53-b1f3-422b-a505-b62d31eab301"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[République du Cameroun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="92" width="229" height="20" uuid="28e007e1-ba0f-4d5a-9668-11c6b3ad80d9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ministry of Public Health]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="72" width="229" height="20" uuid="6d34cf39-ba92-48ca-a990-3435fb6c6d01"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="112" width="229" height="20" uuid="0eceeb7a-9ab6-4281-beb6-41fb349f4a4b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Regional Delegation of Public Health]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="71" width="249" height="20" uuid="9f7bf8e9-2a47-4305-be21-4305498c4a58"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail – Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="51" width="229" height="20" uuid="e0321f4b-423d-48d0-bf4d-96b494a53eb5"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Republic of Cameroon]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="91" width="249" height="20" uuid="686a122b-8526-49e1-9199-5cb292d65ea3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Ministère de la Santé Publique]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="111" width="249" height="20" uuid="61552220-f821-43aa-bd04-f684ef073d59"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Délégation Régionale de la Santé Publique]]></text>
+			</staticText>
+			<image>
+				<reportElement x="338" y="29" width="166" height="188" uuid="ea5bc9de-d341-4e79-9ad2-6ebeae32d359"/>
+				<imageExpression><![CDATA["logominsante1.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="165" y="236" width="598" height="126" uuid="b063372b-50bc-484e-8240-688e3d341210"/>
+				<imageExpression><![CDATA["pdsd1.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="153" y="375" width="471" height="55" forecolor="#006600" uuid="51a3d644-b56d-4b08-a7fb-aaf4d6334648"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="34" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periode_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="440" width="726" height="55" forecolor="#006600" uuid="948261ef-37ad-496c-baba-527ca543f3c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="30" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DESCRIPTIVE SHEET OF INDICATORS"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="27" splitType="Stretch">
+			<subreport>
+				<reportElement x="6" y="0" width="788" height="26" uuid="f3f230a9-c5eb-4cf5-bc29-ada0598ca45e"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["liste_indicateur.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

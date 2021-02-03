@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="RecetteListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>#{langues.micro_projet_structure}</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('RecetteListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <center>
+            <p:panelGrid   columns="4" columnClasses="column">
+
+                <p:outputLabel value="#{langues.structure}" for="structure"/>
+                <p:selectOneMenu id="structure" value="#{microprojetController.structure.idstructure}" required="true" requiredMessage="#{langues.structure}: #{langues.requis}" filter="true">
+                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                    <f:selectItems value="#{microprojetController.structures}" var="structure" itemLabel="#{loginController.language eq 'en' ? structure.nomEn : structure.nomFr}" itemValue="#{structure.idstructure}"/>
+                    <p:ajax update="datalist" listener="#{microprojetController.initStructure()}" />
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+        </center>
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{microprojetController.activiteStructures}"
+                     var="item"
+                     paginator="true"
+                     rows="80"
+                     rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                     style="width: 90%;margin-left: 5% "
+                     rowIndexVar="index"   
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:column style="width: 300px" filterBy="#{item.idactivite.nom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Active}"/>
+                </f:facet>
+                <h:outputText class="hardBreak" value="#{item.idactivite.nom}"/>
+            </p:column>
+
+            <p:column style="width: 300px" filterBy="#{loginController.language eq 'en' ? item.idactivite.idsourcefi.nomEn : item.idactivite.idsourcefi.nomFr}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.sourcefinancement}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idactivite.idsourcefi.nomEn : item.idactivite.idsourcefi.nomFr}"/>
+            </p:column>
+
+            <p:column style="width: 100px" filterBy="#{item.idactivite.responsable}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.CreateActiviteLabel_responsable}"/>
+                </f:facet>
+                <h:outputText value="#{item.idactivite.responsable}"/>
+            </p:column>
+
+            <p:column style="width: 100px" filterBy="#{item.cout}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.montant}"/>
+                </f:facet>
+                <h:outputText value="#{item.cout}"/>
+            </p:column>
+
+
+        </p:dataTable>
+
+        <center>
+            <h:commandButton id="editButton"  value="#{langues.imprimer}" actionListener="#{microprojetController.print()}"/>
+        </center>
+
+    </h:form>
+</ui:composition>

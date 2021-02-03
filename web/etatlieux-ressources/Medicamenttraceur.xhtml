@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="MedicamentListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>#{langues.MEDICAMENTS_TRACEURS_ESSENTIELS}</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('MedicamentListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <center>
+            <p:panelGrid   columns="2" columnClasses="column">
+                <p:outputLabel value="#{langues.Annee}"/>
+                <p:selectOneMenu value="#{medicamenttraceurStructureController.annee.idannee}" required="true" requiredMessage="#{langues.Annee} : #{langues.requis}" filter="true">
+                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                    <f:selectItems value="#{medicamenttraceurStructureController.annees}" var="annee" itemLabel="#{annee.nom}" itemValue="#{annee.idannee}"/>
+                    <p:ajax update="datalist,commentaire" listener="#{medicamenttraceurStructureController.updateCommentaire()}"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </center>
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{medicamenttraceurStructureController.structures}"
+                     var="item"
+                     rowKey="#{item.idstructure}"
+                     paginator="true"
+                     rows="300"
+                     style="width: 90%;margin-left: 5% "
+                     rowIndexVar="index"
+                    rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{medicamenttraceurStructureController.structure}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{medicamenttraceurStructureController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('MedicamentListForm:viewButton').click();" listener="#{medicamenttraceurStructureController.activeButton()}"/>
+
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column class="hardBreak" rowspan="2" colspan="5" headerText="#{langues.nom}" />
+                    <p:column class="hardBreak" colspan="#{medicamenttraceurStructureController.medicamenttraceurs.size()}" headerText="#{langues.medicamenttraceur}" />
+                </p:row>
+                <p:row>
+                    <ui:repeat value="#{medicamenttraceurStructureController.medicamenttraceurs}" var="medicament">
+                        <p:column class="hardBreak" headerText="#{loginController.language eq 'en' ? medicament.nomEn : medicament.nomFr}"/>
+                    </ui:repeat>
+                </p:row>
+            </p:columnGroup>
+
+            <p:column colspan="5" >
+                <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}" />
+            </p:column>
+
+            <p:columns value="#{medicamenttraceurStructureController.medicamenttraceurs}" var="var">
+                <h:outputText class="hardBreak" value="#{medicamenttraceurStructureController.findMedicamenttraceur(item, var)}"/>
+            </p:columns>
+
+        </p:dataTable>
+        
+        <p:separator style="width: 90%;margin-left: 5% "/>
+
+        <center>
+            <p:panelGrid columns="2">
+                <p:outputLabel for="commentaire" value="#{langues.commentairetab}"/>
+                <p:inputTextarea  id="commentaire" disabled="true" style="color: red" value="#{medicamenttraceurStructureController.commentairetab.commentaire}" rows="8" cols="150">
+                    <p:ajax event="keyup"/>
+                </p:inputTextarea>
+            </p:panelGrid>
+        </center>
+
+        <p:separator style="width: 90%;margin-left: 5%"/>
+
+        <center>
+            <p:commandButton id="editButton" update=":MedicamentCreateForm,growl,:MedicamentCreateForm:commentaire" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{medicamenttraceurStructureController.uptadeTable()}" oncomplete="PF('MedicamentCreateDialog').show()"/>
+        </center>
+
+    </h:form>
+</ui:composition>

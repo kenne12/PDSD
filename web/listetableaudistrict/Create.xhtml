@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog style=" width: 800px" showEffect="scale" hideEffect="scale" id="EtapeadministrativeCreateDlg" widgetVar="EtapeadministrativeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateListetableauDistrictTitle}" closeOnEscape="true">
+
+            <h:panelGrid columns="1" columnClasses="column">
+
+                <h:form id="EtapeadministrativeCreateForm">
+                    <h:panelGroup>
+                        <p:panelGrid columns="2" columnClasses="column">
+
+                            <p:outputLabel value="#{langues.listetableau}" for="access"/> 
+                            <p:pickList id="access" value="#{listetableaudistrictController.dualList}" var="menu" effect="bounce"
+                                        itemValue="#{menu}" itemLabel="#{loginController.language eq 'en' ? menu.nomEn : menu.nomFr}" showSourceControls="false" showTargetControls="false" showCheckbox="false"
+                                        showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="listetableauConverter"  required="true" requiredMessage="#{langues.menu} #{langues.requis}">
+
+                                <f:facet name="sourceCaption">
+                                    <h:outputText value="#{langues.DISPONIBLES}"/>
+                                </f:facet>
+
+                                <f:facet name="targetCaption">
+                                    <h:outputText style=" width: 200px" value="#{langues.SELECTIONNEES}"/>
+                                </f:facet>       
+
+                            </p:pickList>
+
+                        </p:panelGrid>
+                    </h:panelGroup>
+
+                    <p:commandButton actionListener="#{listetableaudistrictController.transfertEtape()}" update=":EtapeadministrativeValidateForm,:EtapeadministrativeValidateForm:datalist1" value="transferer">
+
+                    </p:commandButton>
+
+                </h:form>
+
+                <h:form id="EtapeadministrativeValidateForm">
+
+                    <h:panelGroup>
+
+                        <p:dataTable id="datalist1"
+                                     value="#{listetableaudistrictController.listetableauDistrictTest}"
+                                     var="obj"
+                                     paginator="true"
+                                     rows="10"
+                                     style="width:600px"
+                                     rowIndexVar="index"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     draggableColumns="true"
+                                     resizableColumns="true"
+                                     scrollHeight="100"
+                                     editable="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                            <p:ajax event="rowSelect"    listener="#{listetableaudistrictController.activeButton()}" />
+                            <p:ajax event="rowUnselect"  listener="#{listetableaudistrictController.deactiveButton()}"/>
+
+
+                            <p:column style="width:100px">
+                                <f:facet name="header">
+                                    <h:outputText value="#{langues.listetableau}"/>
+                                </f:facet>
+                                <h:outputText value="#{obj.idlisttableau.nomFr}"/>
+                            </p:column>
+
+                            <p:column style="width:50px" headerText="#{langues.ListTablematieren1DistrictTitle_numeropage}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{obj.numpage}" /></f:facet>
+                                    <f:facet name="input"><p:inputText style="width:1100px" id="modelInput" value="#{obj.numpage}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+
+                            <p:column style="width:32px">
+                                <p:rowEditor />
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:panelGroup>
+
+                    <p:commandButton actionListener="#{listetableaudistrictController.save()}" value="#{langues.Save}" update=":EtapeadministrativeListForm:datalist,:growl" oncomplete="PF('EtapeadministrativeCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('EtapeadministrativeCreateDialog').hide()"/>
+
+                </h:form>
+
+            </h:panelGrid>
+
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

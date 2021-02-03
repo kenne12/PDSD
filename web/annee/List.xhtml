@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="AnneeListForm">
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('AnneeListForm:createButton').click();" icon="ui-icon-plus"/>
+            <p:menuitem value="#{langues.View}" onclick="document.getElementById('AnneeListForm:viewButton').click();" icon="ui-icon-search"/>
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('AnneeListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('AnneeListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <p:dataTable id="datalist"
+                     value="#{anneeController.annees}"
+                     var="item"
+                     rowKey="#{item.idannee}"
+                     paginator="true"
+                     rows="10"
+
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{anneeController.annee}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{anneeController.activeButton()}" />
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{anneeController.deactiveButton()}"/>
+            <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('AnneeListForm:viewButton').click();" listener="#{anneeController.activeButton()}"/>
+
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.ListAnneeTitle}"/>
+            </f:facet> 
+
+            <p:column style="width: 20px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Numero}"/>
+                </f:facet>
+                <h:outputText value="#{index+1}"/>
+            </p:column>
+
+            <p:column style="width: 300px" filterBy="#{item.nom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom}"/>
+                </f:facet>
+                <h:outputText value="#{item.nom}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.recette}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.recette}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText  value="#{langues.depense}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.depense}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.cibles}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.cibles}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Population}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.popfosa}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.mape}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.mape}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Planifier}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.plannifie}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.chronogramme}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.chronogramme}"/>
+            </p:column>
+
+            <p:column style="width: 50px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.projectionrecette}"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.projectionrecette}"/>
+            </p:column>
+
+        </p:dataTable>
+
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{anneeController.prepareCreate()}" update=":AnneeCreateForm" oncomplete="PF('AnneeCreateDialog').show()"/>
+            <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{anneeController.prepareEdit()}" update=":AnneeCreateForm"  oncomplete="PF('AnneeCreateDialog').show()" disabled="#{anneeController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{anneeController.deleteAnnee()}" update=":growl,datalist" disabled="#{anneeController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

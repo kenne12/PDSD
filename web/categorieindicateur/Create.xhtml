@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="CategorieindicateurCreateDlg" widgetVar="CategorieindicateurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateCategorieindicateurTitle}" closeOnEscape="true">
+
+            <h:form id="CategorieindicateurCreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 300px"  id="nom" value="#{categorieindicateurController.categorieindicateur.nomFr}" size="254" maxlength="254"/>
+                        
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 300px"  id="nom_en" value="#{categorieindicateurController.categorieindicateur.nomEn}" size="254" maxlength="254"/>
+                        
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{categorieindicateurController.create()}" value="#{langues.Save}" update="display,:CategorieindicateurListForm:datalist,:growl" oncomplete="PF('CategorieindicateurCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('CategorieindicateurCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

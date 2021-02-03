@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog  id="PerformanceCreateDlg" footer="#{langues.footer1}" widgetVar="PerformanceCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="#{langues.performance}">
+            <h:form id="PerformanceCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <div style=" border: solid 0.5px ; width: 1200px ; height: 550px; overflow: auto;">
+
+                        <center>
+
+                            <p:panelGrid columns="2">
+
+                                <p:outputLabel value="#{langues.Axe}"/>
+                                <p:outputLabel value="#{loginController.language eq 'en' ? performancedistrictController.indicateur.idinterventionpnds.idcategorieintervention.idsousaxe.idaxe.nomEn : performancedistrictController.indicateur.idinterventionpnds.idcategorieintervention.idsousaxe.idaxe.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.sousaxe}"/>
+                                <p:outputLabel value="#{loginController.language eq 'en' ? performancedistrictController.indicateur.idinterventionpnds.idcategorieintervention.idsousaxe.nomEn : performancedistrictController.indicateur.idinterventionpnds.idcategorieintervention.idsousaxe.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.Categorie_intervention}"/>
+                                <p:outputLabel value="#{loginController.language eq 'en' ? performancedistrictController.indicateur.idinterventionpnds.idcategorieintervention.nomEn : performancedistrictController.indicateur.idinterventionpnds.idcategorieintervention.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.interventionpnds}"/>
+                                <p:inputTextarea disabled="true" cols="120" rows="7" value="#{loginController.language eq 'en' ? performancedistrictController.indicateur.idinterventionpnds.nomEn : performancedistrictController.indicateur.idinterventionpnds.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.Indicateur}"/>
+                                <p:inputTextarea disabled="true" cols="120" rows="3" value="#{loginController.language eq 'en' ? performancedistrictController.indicateur.nomEn : performancedistrictController.indicateur.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.CreateIndicateurTitle_ciblenationale}"/>
+                                <p:outputLabel value="#{performancedistrictController.indicateur.ciblenationale}"/>
+
+
+                                <p:outputLabel value="#{langues.Annee}" id="annee"/>
+                                <p:selectOneMenu value="#{performancedistrictController.annee.idannee}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{performancedistrictController.annees}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idannee}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{langues.valdistrict}"/>
+                                <p:inputText required="true" requiredMessage="#{langues.valdistrict} : #{langues.requis}" value="#{performancedistrictController.indicateurDistrict.valeur}"/>
+
+                                <p:outputLabel value="#{langues.Observation}" for="obsevation"/>
+                                <p:inputTextarea id="obsevation" cols="100" rows="5" value="#{performancedistrictController.indicateurDistrict.observation}"/>
+                               
+                            </p:panelGrid>
+
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{performancedistrictController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:PerformanceListForm:datalist,:PerformanceListForm:growl" oncomplete="PF('PerformanceCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('PerformanceCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

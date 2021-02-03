@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog  id="NotationproblemeCreateDlg" widgetVar="NotationproblemeCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="#{langues.ACTIVITES_CORRECTRICES}">
+            <h:form id="NotationproblemeCreateForm">
+                <br/>
+
+                <h:panelGroup id="display">
+
+                    <div style=" border: solid 0.5px ; width: 1200px ; height: 550px; overflow: auto;">
+
+                        <center>
+
+                            <p:panelGrid columns="2">
+
+                                <p:outputLabel value="#{langues.Axe}"/>
+                                <p:outputLabel value="#{activitecorrectriceController.axe.code} - #{loginController.language eq 'en' ? activitecorrectriceController.axe.nomEn : activitecorrectriceController.axe.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.sousaxe}"/>
+                                <p:outputLabel value="#{activitecorrectriceController.sousaxe.code} - #{loginController.language eq 'en' ? activitecorrectriceController.sousaxe.nomEn : activitecorrectriceController.sousaxe.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.Indicateur}" for="indicateur"/>
+                                <p:selectOneMenu filter="true" disabled="#{activitecorrectriceController.showIndicateur}" id="indicateur" autoWidth="false" style="width: 600px" value="#{activitecorrectriceController.indicateur.idindicateur}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{activitecorrectriceController.indicateurs}" var="indicateur" itemLabel="#{loginController.language eq 'en' ? indicateur.nomEn : indicateur.nomFr}" itemValue="#{indicateur.idindicateur}"/>
+                                    <p:ajax update="probleme,intervention,cause,resultat_attendu,objectif_op,activite_defaut" listener="#{activitecorrectriceController.updateProbleme()}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{langues.probleme}" for="probleme"/>
+                                <p:selectOneMenu filter="true" required="true" requiredMessage="#{langues.probleme} : #{langues.requis}" disabled="#{activitecorrectriceController.showProbleme}" id="probleme" autoWidth="false" style="width: 600px" value="#{activitecorrectriceController.probleme.idprobleme}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{activitecorrectriceController.problemes}" var="pb" itemLabel="#{pb.nom} (#{pb.totalpoint})" itemValue="#{pb.idprobleme}"/>
+                                    <p:ajax update="intervention,cause" listener="#{activitecorrectriceController.update()}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{langues.resultat_attendu}" for="resultat_attendu"/>
+                                <p:selectOneMenu filter="true" required="true" requiredMessage="#{langues.resultat_attendu} : #{langues.requis}" id="resultat_attendu" autoWidth="false" style="width: 600px" value="#{activitecorrectriceController.resultatAttenduDistrict.idresultatAttenduDistrict}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{activitecorrectriceController.resultatAttenduDistricts}" var="p" itemLabel="#{p.resultat}" itemValue="#{p.idresultatAttenduDistrict}"/>
+                                    <p:ajax update="intervention,cause" listener="#{activitecorrectriceController.update()}"/>
+                                </p:selectOneMenu>
+
+
+                                <p:outputLabel value="#{langues.objectif_opérationnel}" for="objectif_op"/>
+                                <p:selectOneMenu filter="true" required="true" requiredMessage="#{langues.objectif_opérationnel} : #{langues.requis}" id="objectif_op" autoWidth="false" style="width: 600px" value="#{activitecorrectriceController.objectifOppDistrict.idobjectifOppDistrict}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{activitecorrectriceController.objectifOppDistricts}" var="o" itemLabel="#{o.objectif}" itemValue="#{o.idobjectifOppDistrict}"/>
+                                    <p:ajax/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{langues.interventionpnds}"/>
+                                <p:inputTextarea id="intervention" disabled="true" cols="120" rows="6" value="#{loginController.language eq 'en' ? activitecorrectriceController.probleme.idindicateurDistrict.idindicateur.idinterventionpnds.nomEn : activitecorrectriceController.probleme.idindicateurDistrict.idindicateur.idinterventionpnds.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.CreateProblemeTitle_cause}"/>
+                                <p:inputTextarea id="cause" disabled="true" cols="120" rows="4" value="#{activitecorrectriceController.probleme.cause}"/>
+
+                                <p:outputLabel rendered="#{activitecorrectriceController.showSelector}" value="#{langues.select_default_act}"/>
+                                <p:selectBooleanCheckbox rendered="#{activitecorrectriceController.showSelector}" value="#{activitecorrectriceController.showSelectActivite}">
+                                    <p:ajax update="activite_defaut,activite_defaut_label,display" listener="#{activitecorrectriceController.updateSelect()}"/>
+                                </p:selectBooleanCheckbox>
+
+                                <p:outputLabel rendered="#{activitecorrectriceController.showSelectActivite}" value="#{langues.activite_defaut}" id="activite_defaut_label" for="activite_defaut"/>
+                                <p:selectOneMenu rendered="#{activitecorrectriceController.showSelectActivite}" filter="true" id="activite_defaut" autoWidth="false" style="width: 600px" value="#{activitecorrectriceController.activiteDefault.idactiviteDefault}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{activitecorrectriceController.activiteDefaults}" var="a" itemLabel="#{  loginController.language eq 'en' ? a.nomEn : a.nomFr   }" itemValue="#{a.idactiviteDefault}"/>
+                                    <p:ajax update="montant,correction,typestructure,source,montant,coutglobal" listener="#{activitecorrectriceController.updateOther()}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="correction" value="#{langues.activite_correctrice}"/>
+                                <p:inputTextarea id="correction" required="true" requiredMessage="#{langues.activite_correctrice} : #{langues.requis}" cols="120" rows="4" value="#{activitecorrectriceController.activite.nom}"/>
+
+                                <p:outputLabel for="typestructure" value="#{langues.typestructure}"/>
+                                <p:selectOneMenu id="typestructure" disabled="#{activitecorrectriceController.showTypestructure}" required="true" requiredMessage="#{langues.typestructure} : #{langues.requis}" value="#{activitecorrectriceController.typestructure.idtypestructure}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{activitecorrectriceController.typestructures}" var="ts" itemLabel="#{loginController.language eq 'en' ? ts.nomEn : ts.nomFr}" itemValue="#{ts.idtypestructure}"/>
+                                    <p:ajax update="coutglobal" listener="#{activitecorrectriceController.updateCoutglobal()}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="source" value="#{langues.sourcefinancement}"/>
+                                <p:selectOneMenu id="source" required="true" requiredMessage="#{langues.sourcefinancement} : #{langues.requis}" value="#{activitecorrectriceController.sourcefinancement.idsourcefi}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{activitecorrectriceController.sourcefinancements}" var="sf" itemLabel="#{loginController.language eq 'en' ? sf.nomEn : sf.nomFr}" itemValue="#{sf.idsourcefi}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="montant" value="#{langues.montant}"/>
+                                <p:inputText id="montant" required="true" requiredMessage="#{langues.montant} : #{langues.requis}" value="#{activitecorrectriceController.activite.coutunitaire}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="coutglobal" listener="#{activitecorrectriceController.updateCoutglobal()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel for="responsable" value="#{langues.CreateActiviteLabel_responsable}"/>
+                                <p:inputText id="responsable" style="width: 200px" value="#{activitecorrectriceController.activite.responsable}"/>
+
+                                <p:outputLabel for="coutglobal" value="#{langues.CreateActiviteLabel_coutglobal}"/>
+                                <p:inputText id="coutglobal" value="#{activitecorrectriceController.activite.coutglobal}">
+                                    <f:convertNumber/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Costing"/>                                
+                                <p:commandButton value="Costing" update=":CoastingCreateForm,:CoastingCreateForm:datalist" actionListener="#{activitecorrectriceController.prepareCoasting()}" oncomplete="PF('CoastingCreateDialog').show()"/>
+
+                            </p:panelGrid>
+
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{activitecorrectriceController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:NotationproblemeListForm:datalist,:NotationproblemeListForm:growl" oncomplete="PF('NotationproblemeCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('NotationproblemeCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

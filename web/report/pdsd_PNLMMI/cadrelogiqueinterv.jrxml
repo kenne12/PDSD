@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cadrelogiqueinterv" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="792" leftMargin="20" rightMargin="30" topMargin="0" bottomMargin="0" uuid="425bfa30-53a2-46e5-a427-870a0270bcaa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.axe.idaxe,
+  public.axe.nom_fr AS axes,
+  public.axe.objectifstrategue_fr AS objectifaxe,
+  public.axe.code AS codeax,
+  public.sousaxe.idsousaxe,
+  public.sousaxe.nom_fr AS sousaxes,
+  public.sousaxe.code AS codesousaxes,
+  public.sousaxe.objectif_fr AS objectifsousaxe,
+  public.interventionpnds.idinterventionpnds,
+  public.interventionpnds.nom_fr AS interventionpndss,
+  public.indicateur.idindicateur,
+  public.indicateur.nom_fr AS indicateurs,
+  public.indicateur.objectif_fr AS objectifindicateurs,
+  public.indicateur.ciblenationale,
+  public.indicateur_district.valeur AS valeurindicateurs,
+  public.activite.responsable,
+  public.activite.nom AS nomactivites,
+  public.typestructure.idtypestructure,
+  public.typestructure.designation AS nom,
+  public.objectif_opp_district.idobjectif_opp_district,
+  public.objectif_opp_district.objectif AS objectifoperation,
+  public.resultat_attendu_district.resultat,
+  public.resultat_attendu_district.idresultat_attendu_district,
+  public.interventionpnds.code AS codeinter,
+  public.probleme.nom AS problemes,
+  public.probleme.cause,
+  public.activite.coutglobal
+FROM
+  public.axe
+  INNER JOIN public.sousaxe ON (public.axe.idaxe = public.sousaxe.idaxe)
+  INNER JOIN public.categorieintervention ON (public.sousaxe.idsousaxe = public.categorieintervention.idsousaxe)
+  INNER JOIN public.interventionpnds ON (public.interventionpnds.idcategorieintervention = public.categorieintervention.idcategorieintervention)
+  INNER JOIN public.indicateur ON (public.interventionpnds.idinterventionpnds = public.indicateur.idinterventionpnds)
+  INNER JOIN public.indicateur_district ON (public.indicateur.idindicateur = public.indicateur_district.idindicateur)
+  INNER JOIN public.objectif_opp_district ON (public.objectif_opp_district.iddistrict = public.indicateur_district.iddistrict)
+  INNER JOIN public.resultat_attendu_district ON (public.indicateur.idindicateur = public.resultat_attendu_district.idindicateur)
+  AND (public.resultat_attendu_district.iddistrict = public.indicateur_district.iddistrict)
+  INNER JOIN public.activite ON (public.activite.idresultatattendu = public.resultat_attendu_district.idresultat_attendu_district)
+  AND (public.objectif_opp_district.idobjectif_opp_district = public.activite.ididobjectif_opp)
+  INNER JOIN public.typestructure ON (public.activite.idtypestructure = public.typestructure.idtypestructure)
+  INNER JOIN public.probleme ON (public.activite.idprobleme = public.probleme.idprobleme)
+  INNER JOIN public.categorieindicateur ON (public.indicateur.idcategorie = public.categorieindicateur.idcategorie)
+WHERE
+  public.indicateur_district.iddistrict = $P{iddistrict} AND
+  public.categorieindicateur.idcategorie = 3
+ORDER BY
+  public.axe.code,
+  public.sousaxe.code,
+  public.axe.nom_fr,
+  public.sousaxe.nom_fr]]>
+	</queryString>
+	<field name="idaxe" class="java.lang.Integer"/>
+	<field name="axes" class="java.lang.String"/>
+	<field name="objectifaxe" class="java.lang.String"/>
+	<field name="codeax" class="java.lang.String"/>
+	<field name="idsousaxe" class="java.lang.Integer"/>
+	<field name="sousaxes" class="java.lang.String"/>
+	<field name="codesousaxes" class="java.lang.String"/>
+	<field name="objectifsousaxe" class="java.lang.String"/>
+	<field name="idinterventionpnds" class="java.lang.Integer"/>
+	<field name="interventionpndss" class="java.lang.String"/>
+	<field name="idindicateur" class="java.lang.Integer"/>
+	<field name="indicateurs" class="java.lang.String"/>
+	<field name="objectifindicateurs" class="java.lang.String"/>
+	<field name="ciblenationale" class="java.lang.Double"/>
+	<field name="valeurindicateurs" class="java.lang.Double"/>
+	<field name="responsable" class="java.lang.String"/>
+	<field name="nomactivites" class="java.lang.String"/>
+	<field name="idtypestructure" class="java.lang.Integer"/>
+	<field name="nom" class="java.lang.String"/>
+	<field name="idobjectif_opp_district" class="java.lang.Long"/>
+	<field name="objectifoperation" class="java.lang.String"/>
+	<field name="resultat" class="java.lang.String"/>
+	<field name="idresultat_attendu_district" class="java.lang.Long"/>
+	<field name="codeinter" class="java.lang.String"/>
+	<field name="problemes" class="java.lang.String"/>
+	<field name="cause" class="java.lang.String"/>
+	<field name="coutglobal" class="java.lang.Double"/>
+	<variable name="variable1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{coutglobal}]]></variableExpression>
+	</variable>
+	<group name="axe" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{idaxe}]]></groupExpression>
+		<groupHeader>
+			<band height="51">
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="134" height="21" uuid="57141f40-54be-4c25-9631-123d085ac0b7"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Axe Stratégique: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="21" width="168" height="30" uuid="d8dc3938-2762-435f-8b23-305bac9e0012"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Objectif Stratégique: ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="107" y="0" width="650" height="21" uuid="2373253a-4bc6-44c4-9ff0-1bb3f70841cf"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codeax}+ ": "+$F{axes}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="134" y="21" width="623" height="30" uuid="aad28bfb-8edb-4811-9463-102eced7f091"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{objectifaxe}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="sousaxe">
+		<groupExpression><![CDATA[$F{idsousaxe}]]></groupExpression>
+		<groupHeader>
+			<band height="64">
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="31" uuid="787fd0f6-57bd-4bc0-9f5c-55f9b287a702"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Sous -Axe: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="31" width="153" height="33" uuid="7edb60ca-191e-4b1a-a3b9-6d6a1e4255d6"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Objectif Spécifique:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="122" y="31" width="635" height="33" uuid="52e68d7b-9d05-40b7-8e9c-8814f692354d"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{objectifsousaxe}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="67" y="0" width="690" height="31" uuid="d866d3d0-cc85-49f0-ac6b-2fb5ede8874a"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codesousaxes}+ ": "+$F{sousaxes}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="interventionGP">
+		<groupExpression><![CDATA[$F{idinterventionpnds}]]></groupExpression>
+		<groupHeader>
+			<band height="68">
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="33" width="168" height="35" uuid="590c71eb-f8bb-4bf9-98ad-714e6f3002ad"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Objectif Operationel: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="104" height="33" uuid="59af9898-53f9-445f-8040-6ac183ac7cea"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Intervention: ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="84" y="0" width="673" height="33" uuid="54425921-e96b-4c1a-9a75-9ca110b71638"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codeinter}+ ":" +$F{interventionpndss}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="134" y="33" width="623" height="35" uuid="4e96610c-99db-46f6-95e0-eec874592352"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{objectifoperation}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="indicateurGP">
+		<groupExpression><![CDATA[$F{idindicateur}]]></groupExpression>
+		<groupHeader>
+			<band height="35">
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="168" height="35" uuid="c64c7b32-1883-425d-a12b-d048bb7837d4"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Indicateur Traceur:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="125" y="0" width="632" height="35" uuid="6ee1c1a6-875b-4e85-837b-effc0d4af8b8"/>
+					<box leftPadding="3" rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{indicateurs}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="fvdfdfgfg">
+		<groupExpression><![CDATA[$F{idobjectif_opp_district}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="9" y="0" width="709" height="31" forecolor="#FF0000" uuid="462e9d20-b1a1-4fa0-90d2-da76a6e2d772"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="20" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ANNEXE 4: CADRE LOGIQUE D'INTERVENTION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="232" y="0" width="251" height="37" forecolor="#000000" backcolor="#CCFFFF" uuid="f4691f59-6fbd-4796-b2b2-18794b39e129"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ACTIVITES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="483" y="0" width="81" height="37" forecolor="#000000" backcolor="#CCFFFF" uuid="b7fcef24-e249-43ec-b323-2c861cc532ff"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[RESPONSABLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="564" y="0" width="75" height="37" forecolor="#000000" backcolor="#CCFFFF" uuid="e701a0fc-45db-4e5a-af8d-e02938a85bc8"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CONCERNE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="232" height="37" forecolor="#000000" backcolor="#CCFFFF" uuid="d8ecc886-f1e8-45df-af81-60ae892d136d"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[RESULTATS ATTENDUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="639" y="0" width="118" height="37" forecolor="#000000" backcolor="#CCFFFF" uuid="ac39ab39-499a-4ecb-b5df-941a10cf499b"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[COÛT GOLBAL DE MISE EN OEUVRE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="232" height="35" isPrintWhenDetailOverflows="true" uuid="e1cb62c8-7f45-41cb-8a9e-c5995282fcff"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resultat}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="232" y="0" width="251" height="35" isPrintWhenDetailOverflows="true" uuid="e93119f0-42bd-4180-8cba-71280bc416fa"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomactivites}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="483" y="0" width="81" height="35" isPrintWhenDetailOverflows="true" uuid="8f24c05b-7c67-4e39-a41b-2c0243cf0a51"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="564" y="0" width="75" height="35" isPrintWhenDetailOverflows="true" uuid="d26e4af4-b51b-4c05-a70f-7948c8be4110"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="639" y="0" width="118" height="35" isPrintWhenDetailOverflows="true" uuid="d18a047b-4f19-4e8c-ac11-d2fd1ea3d04f"/>
+				<box rightPadding="4">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{coutglobal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="37" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement x="483" y="0" width="274" height="37" uuid="39a5d05d-91c1-457f-9a08-67707e3cd26f"/>
+				<box rightPadding="5">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="483" height="37" forecolor="#000000" backcolor="#FFFFFF" uuid="6b4c6730-296c-4589-b0ef-47c686d1c0c5"/>
+				<box leftPadding="3" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[MONTANT GLOBAL DE MISE EN OEUVRE DES ACTIVITES DE LA PNLMMI(En Fcfa)]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

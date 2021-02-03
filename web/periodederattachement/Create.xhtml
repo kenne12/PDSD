@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog  showEffect="scale" hideEffect="scale" id="PeriodederattachementCreateDlg" widgetVar="PeriodederattachementCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreatePeriodederattachementTitle}" closeOnEscape="true">
+
+            <h:form id="PeriodederattachementCreateForm">
+
+                <h:panelGroup id="display">
+                    
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{langues.nom}" for="nom" />
+                        <p:inputText style="width: 200px" id="nom" value="#{periodederattachementController.periodederattachement.nom}" size="254" maxlength="254"/>
+                        
+                    </p:panelGrid>
+                    
+                    <p:commandButton actionListener="#{periodederattachementController.save()}" value="#{langues.Save}" update="display,:PeriodederattachementListForm:datalist,:growl" oncomplete="PF('PeriodederattachementCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('PeriodederattachementCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

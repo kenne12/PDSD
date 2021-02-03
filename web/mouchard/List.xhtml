@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="Mouchard"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+
+                <h:form id="PrivilegeListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{mouchardController.mouchards}" var="item"
+                                 selectionMode="single"
+                                 paginator="true"
+                                 rowKey="#{item.idoperation}"
+                                 rows="20"
+                                 rowsPerPageTemplate="20,30,50"
+                                 style="width: 90%;margin-top:1% !important; text-align:left; margin-left:5%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 draggableColumns="true"
+                                 resizableColumns="true"
+                                 >
+
+                        <f:facet name="header"> 
+                            <h:outputText value="#{langues.operationuser}"/>
+                        </f:facet> 
+
+
+                        <p:column style="width: 15% !important;">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.utilisateur}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idutilisateur.nom} #{item.idutilisateur.prenom}"/>
+                        </p:column>
+
+                        <p:column style="width: 70%">
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <h:outputText value="#{item.action}"/>
+                        </p:column>
+
+                        <p:column style="width: 15% !important;" >
+                            <f:facet name="header">
+                                <h:outputText value="Date"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateaction}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+
+            </f:view>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

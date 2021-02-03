@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale"  footer="NB: * devant un champs signifie que le champs est obligatoire" id="FormationsanitaireCreateDlg" widgetVar="FormationsanitaireCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateStructureTitle}" closeOnEscape="true">
+
+            <h:form id="FormationsanitaireCreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Institution" for="institution" />
+                        <p:selectOneMenu id="institution" value="#{structureController.institution.idinstitution}" required="true" filter="true">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{structureController.institutions}" var="inst"                                           
+                                           itemValue="#{inst.idinstitution}"
+                                           itemLabel="#{loginController.language eq 'en' ? inst.nomEn : inst.nomFr}"/>
+                            <p:ajax/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.district}" for="district" />
+                        <p:selectOneMenu id="district" value="#{structureController.district.iddistrict}" required="true" filter="true">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{structureController.districts}" var="district"                                           
+                                           itemValue="#{district.iddistrict}"
+                                           itemLabel="#{loginController.language eq 'en' ? district.nomEn : district.nomFr}"/>                                           
+                            <p:ajax update="airesante" listener="#{structureController.filterAire()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.Airesante}" for="airesante" />
+                        <p:selectOneMenu id="airesante" value="#{structureController.airesante.idairesante}" required="true" filter="true">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{structureController.airesantes}" var="aire"                                           
+                                           itemValue="#{aire.idairesante}"
+                                           itemLabel="#{loginController.language eq 'en' ? aire.nomEn : aire.nomFr}"/>                                           
+                        </p:selectOneMenu>
+
+
+                        <p:outputLabel value="#{langues.typestructure}" for="typestructure" />
+                        <p:selectOneMenu id="typestructure" value="#{structureController.structure.idtypestructure}" required="true"  converter="typestructureConverter">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{structureController.typestructures}"  var="idtypefosaItem"                                          
+                                           itemValue="#{idtypefosaItem}"
+                                           itemLabel="#{loginController.language eq 'en' ? idtypefosaItem.nomEn : idtypefosaItem.nomFr}"/>                                           
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.statutstructure}" for="status"/>
+                        <p:selectOneMenu id="status" value="#{structureController.statutstructure.idstatutstructure}" required="true">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{structureController.statutstructures}" var="status"                                           
+                                           itemValue="#{status.idstatutstructure}"
+                                           itemLabel="#{loginController.language eq 'en' ? status.nomEn : status.nomFr}"/>                                           
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="code" for="codefosa" />
+                        <p:inputText style=" width: 200px" id="codefosa" value="#{structureController.structure.code}" size="254" maxlength="254"/>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom_fr" />
+                        <p:inputText style=" width: 200px" id="nom_fr" value="#{structureController.structure.nomFr}"  size="254" maxlength="254" required="true" requiredMessage="#{langues.nom_francais} : #{langues.requis}"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 200px" id="nom_en" value="#{structureController.structure.nomEn}"  size="254" maxlength="254" required="true" requiredMessage="#{langues.nom_anglais} : #{langues.requis}"/>
+
+                        <p:outputLabel value="#{langues.est_elle_leader}" for="leader" />
+                        <p:selectBooleanCheckbox id="leader" value="#{structureController.structure.leader}"/>
+
+                        <p:outputLabel value="#{langues.distance_leader}" for="distance" />
+                        <p:inputText style=" width: 200px" id="distance" value="#{structureController.structure.distance}"  size="254" maxlength="254"/>                                           
+
+                        <p:outputLabel value="#{langues.CreateAdresseTitle_contact}" for="tel" />
+                        <p:inputText style=" width: 200px" id="tel" value="#{structureController.adresse.contact}" />
+
+                        <p:outputLabel value="#{langues.CreateAdresseLabel_bp}" for="bp" />
+                        <p:inputText id="bp" style=" width: 200px" value="#{structureController.adresse.bp}" />
+
+                        <p:outputLabel value="#{langues.CreateAdresseLabel_email}" for="email" />
+                        <p:inputText style=" width: 200px" id="email" value="#{structureController.adresse.email}"  size="254" maxlength="254"/>
+
+                        <p:outputLabel value="#{langues.CreateAdresseLabel_siteWeb}" for="siteweb" />
+                        <p:inputText  style=" width: 200px" id="siteweb" value="#{structureController.adresse.siteWeb}"  size="254" maxlength="254"/>
+
+                    </p:panelGrid>
+
+                    <p:commandButton actionListener="#{structureController.save()}" value="#{langues.Save}" update="display,:FormationsanitaireListForm:datalist,:growl" oncomplete="PF('FormationsanitaireCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('FormationsanitaireCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

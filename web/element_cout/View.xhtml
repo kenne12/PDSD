@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="GroupeUtilisateurViewDlg" style="width: 800px; height: 200px"  widgetVar="GroupeUtilisateurViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Consulter Un Elément">
+            <h:form id="GroupeUtilisateurViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" style="width: 800px; height: 200px" rendered="#{elementcoutController.selectedElementCout != null}">
+                        <h:outputText value="Nom Francais"/>
+                        <h:outputText style="width: 200px; height: 40px" value="#{elementcoutController.selectedElementCout.nomFr}" />
+                        <h:outputText value="Nom Anglais"/>
+                        <h:outputText style="width: 200px; height: 40px" value="#{elementcoutController.selectedElementCout.nomEn}"/>
+                         <h:outputText value="Cout Par Défaut"/>
+                         <h:outputText style="width: 200px; height: 40px" value="#{elementcoutController.selectedElementCout.defaultCu}"/>
+                        <h:outputText value="Quantité Par Défaut"/>
+                        <h:outputText style="width: 200px; height: 40px" value="#{elementcoutController.selectedElementCout.defaultQte}"/>
+                        <h:outputText value="Jours Par Défaut"/>
+                        <h:outputText style="width: 200px; height: 40px" value="#{elementcoutController.selectedElementCout.defaultNbreJr}"/>
+                            
+                    </p:panelGrid>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Close}" onclick="PF('GroupeUtilisateurViewDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

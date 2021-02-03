@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="ParametrecoutCreateDlg" widgetVar="ParametrecoutCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateParamcoutinfrastructureTitle}">
+            <h:form id="ParametrecoutCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel for="typestructure" value="#{langues.typestructure}"/>
+                        <p:selectOneMenu id="typestructure" value="#{parametrecoutInfrastructureController.typestructure.idtypestructure}" required="true" requiredMessage="#{langues.typestructure} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{parametrecoutInfrastructureController.typestructures}" var="item" itemLabel="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}" itemValue="#{item.idtypestructure}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="typinfra" value="#{langues.typeinfrastructure}"/>
+                        <p:selectOneMenu id="typinfra" value="#{parametrecoutInfrastructureController.typeinfrastructure.idtypeinfrastructure}" required="true" requiredMessage="#{langues.typeinfrastructure} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{parametrecoutInfrastructureController.typeinfrastructures}" var="type" itemLabel="#{loginController.language eq 'en' ? type.nomEn : type.nomFr}" itemValue="#{type.idtypeinfrastructure}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="etat" value="#{langues.etatinfrastructure}"/>
+                        <p:selectOneMenu id="etat" value="#{parametrecoutInfrastructureController.etatinfrastructure.idetatinfrastructure}" required="true" requiredMessage="#{langues.etatinfrastructure} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{parametrecoutInfrastructureController.etatinfrastructures}" var="etat" itemLabel="#{loginController.language eq 'en' ? etat.nomEn : etat.nomFr}" itemValue="#{etat.idetatinfrastructure}"/>
+                        </p:selectOneMenu>
+
+
+                        <p:outputLabel for="cu" value="#{langues.CreateParamcoutinfrastructureLabel_coutunitaire}"/>
+                        <p:inputText id="cu" value="#{parametrecoutInfrastructureController.paramcoutinfrastructure.coutunitaire}">
+                            <f:convertNumber/>
+                        </p:inputText>
+
+                        <p:outputLabel for="do_fr" value="#{langues.CreateParametrecoutequipementLabel_defaultoperation} #{langues.francais}"/>
+                        <p:inputTextarea cols="100" rows="7" id="do_fr" value="#{parametrecoutInfrastructureController.paramcoutinfrastructure.defaultoperationFr}"/>
+
+                        <p:outputLabel for="do_en" value="#{langues.CreateParametrecoutequipementLabel_defaultoperation} #{langues.anglais}"/>
+                        <p:inputTextarea cols="100" rows="7" id="do_en" value="#{parametrecoutInfrastructureController.paramcoutinfrastructure.defaultoperationEn}"/>
+
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{parametrecoutInfrastructureController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:ParametrecoutListForm:datalist,:ParametrecoutListForm:growl" oncomplete="PF('ParametrecoutCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('ParametrecoutCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

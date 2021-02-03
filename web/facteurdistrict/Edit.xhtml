@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog showEffect="blind" hideEffect="blind" id="EtapeadministrativeEditDlg" widgetVar="EtapeadministrativeEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.EditFacteurdistrictTitle}" closeOnEscape="true">
+
+            <h:form id="EtapeadministrativeEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column">
+
+                        <h:outputLabel value="#{langues.GroupeFacteur}" for="etapeRealisatio" />
+                        <p:selectOneMenu id="etapeRealisatio" value="#{facteurdistrictController.facteurdistrict.idfacteur.idgroupefacteur}" converter="groupefacteurConverter" disabled="true">
+                            <f:selectItems value="#{facteurdistrictController.groupefacteurs}" var="obje" itemLabel="#{loginController.language eq 'en' ? obje.nomEn : obje.nomFr}" itemValue="#{obje}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="#{langues.TypeActeur}" for="etapeRealisati" />
+                        <p:selectOneMenu id="etapeRealisati" value="#{facteurdistrictController.facteurdistrict.idfacteur.idtypefacteur}" converter="typefacteurConverter" disabled="true">
+                            <f:selectItems value="#{facteurdistrictController.typefacteurs}" var="objet" itemLabel="#{loginController.language eq 'en' ? objet.nomEn : objet.nomFr}" itemValue="#{objet}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="#{langues.facteur}" for="etapeRealisation" />
+                        <p:selectOneMenu id="etapeRealisation" value="#{facteurdistrictController.facteurdistrict.idfacteur}" converter="facteurConverter" disabled="true">
+                            <f:selectItems value="#{facteurdistrictController.facteurs}" var="obj" itemLabel="#{loginController.language eq 'en' ? obj.nomEn : obj.nomFr}" itemValue="#{obj}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="#{langues.Observation}"/>
+                        <p:inputTextarea style=" width: 600px" value="#{facteurdistrictController.facteurdistrict.observation}" required="true" />
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{facteurdistrictController.edit()}" value="#{langues.Save}"  update="display,:EtapeadministrativeListForm:datalist,:growl" oncomplete="PF('EtapeadministrativeEditDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('EtapeadministrativeEditDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

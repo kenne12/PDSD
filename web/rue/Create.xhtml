@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="RueCreateDlg" widgetVar="RueCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateRueTitle}" closeOnEscape="true">
+
+            <h:form id="RueCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{langues.region} " for="reg" />
+                        <p:selectOneMenu  style=" width: 250px" id="reg" value="#{rueController.region}" required="true" requiredMessage="#{langues.region} : #{langues.requiredMessage}" converter="regionConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{rueController.regions}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel="#{loginController.language eq 'en' ? idregionItem.nomEn : idregionItem.nomFr}"/>                                           
+                            <p:ajax listener="#{rueController.filterDepartementByRegion()}" update="dep"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.departement}" for="dep" />
+                        <p:selectOneMenu  style=" width: 250px" id="dep" value="#{rueController.departement}" required="true" requiredMessage="#{langues.departement} : #{langues.requis}" converter="departementConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{rueController.departements}"
+                                           var="idregioItem"
+                                           itemValue="#{idregioItem}"
+                                           itemLabel="#{idregioItem.nom}"/>                                           
+                            <p:ajax listener="#{rueController.filterArondissementByDepartement()}" update="arron"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.Arrondissement}" for="arron" />
+                        <p:selectOneMenu  style=" width: 250px" id="arron" value="#{rueController.arrondissement}" required="true" requiredMessage="#{langues.Arrondissement} : #{langues.requis}" converter="arrondissementConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{rueController.arrondissements}"
+                                           var="idregiItem"
+                                           itemValue="#{idregiItem}"
+                                           itemLabel="#{idregiItem.nom}"/>                                         
+                            <p:ajax listener="#{rueController.filterQuartierByArondissement()}" update="idquartier"/>
+                        </p:selectOneMenu>
+                        
+                        
+                        <p:outputLabel value="#{langues.quartier}" for="idquartier" />
+                        <p:selectOneMenu  style=" width: 250px" id="idquartier" value="#{rueController.rue.idquartier}" required="true" requiredMessage="#{langues.quartier} : #{langues.requis}" converter="quartierConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{rueController.quartiers}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel="#{idregionItem.nom}"/>                                           
+                        </p:selectOneMenu>
+
+
+                        <p:outputLabel value="#{langues.nom}" for="nom" />
+                        <p:inputText style=" width: 200px"  id="nom" value="#{rueController.rue.nom}" size="254" maxlength="254" required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rueController.save()}" value="#{langues.Save}" update="display,:RueListForm:datalist,:growl" oncomplete="PF('RueCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('RueCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

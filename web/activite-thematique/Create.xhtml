@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="PrivilegeCreateDlg" style="width: 1750px; height: 500px" widgetVar="PrivilegeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Ajouter une Activité ">
+            <h:form id="PrivilegeCreateForm">
+                <h:panelGroup id="display" style="width: 950px; height: 380px">
+                    <p:panelGrid columns="2" style="width: 950px; height: 380px">
+
+                        <p:outputLabel value="Thématique" for="groupe" />
+                        <p:selectOneMenu  style="width: 250px; " id="groupe" value="#{thematiqueActiviteController.thematique.idthematique}" required="true" requiredMessage="Thematique Obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{thematiqueActiviteController.thematiques}" var="item" itemLabel="#{item.nomFr}" itemValue="#{item.idthematique}"/>                      
+                            <p:ajax update="access" listener="#{thematiqueActiviteController.filterGroupeActivite()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Activité" for="access"/> 
+                        <p:pickList style="width: 500px; " id="access" value="#{thematiqueActiviteController.activitedualiste}" var="activite" effect="bounce"
+                                    itemValue="#{activite}" itemLabel="#{activite.nom}" showSourceControls="true" showTargetControls="true" showCheckbox="false"
+                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"  converter="activiteConverter"  required="true" requiredMessage="#{langues.tache} : #{langues.requis}">
+
+                            <f:facet name="sourceCaption">#{langues.disponibles}</f:facet>
+                            
+                            <f:facet name="targetCaption">#{langues.selectionnes}</f:facet>                            
+                        </p:pickList>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{thematiqueActiviteController.savethematique()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:PrivilegeListForm:datalist,:PrivilegeListForm:msgErreur" oncomplete="handleSubmit(args,'PrivilegeCreateDialog');"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{msg.Cancel}" onclick="PF('PrivilegeCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

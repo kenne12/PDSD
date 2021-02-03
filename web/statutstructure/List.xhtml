@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="StatutstructureListForm">
+
+        <p:panel header="#{langues.ListStatutstructureTitle}">
+
+            <p:contextMenu id="StatutstructureDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('StatutstructureListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('StatutstructureListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('StatutstructureListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('StatutstructureListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                 
+            </p:contextMenu>
+
+
+            <p:dataTable id="datalist"
+                         value="#{statutstructureController.statutstructures}"
+                         var="item"
+                         rowKey="#{item.idstatutstructure}"
+                         paginator="true"
+                         style="width: 60%;margin-left: 20%"
+                         rows="10"
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         draggableColumns="true"
+                         resizableColumns="true"
+                         scrollHeight="100"
+                         selection="#{statutstructureController.statutstructure}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{statutstructureController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{statutstructureController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('StatutstructureListForm:viewButton').click();" listener="#{statutstructureController.activeButton()}"/>
+
+                <p:column style="width: 20px">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Numero}"/>
+                    </f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+
+                <p:column style="width: 100px"  filterBy="#{item.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_francais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 100px"  filterBy="#{item.nomEn}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomEn}"/>
+                </p:column>
+
+                <p:column style="width: 100px" filterBy="#{item.designation}">
+                    <f:facet name="header">
+                        <h:outputText value="Désignation"/>
+                    </f:facet>
+                    <h:outputText value="#{item.designation}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{statutstructureController.prepareCreate()}" update=":StatutstructureCreateForm" oncomplete="PF('StatutstructureCreateDialog').show()"/>
+            <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{statutstructureController.prepareEdit()}" update=":StatutstructureCreateForm"  oncomplete="PF('StatutstructureCreateDialog').show()" disabled="#{statutstructureController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{statutstructureController.deleteStatutstructure()}" update=":growl,datalist" disabled="#{statutstructureController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

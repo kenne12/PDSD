@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="FacteurCreateDlg" widgetVar="FacteurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateFacteurTitle}" closeOnEscape="true">
+
+            <h:form id="FacteurCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+
+                        <p:outputLabel value="#{langues.GroupeFacteur}" for="region" />
+                        <p:selectOneMenu id="region" value="#{facteurController.facteur.idgroupefacteur}" required="true" requiredMessage="#{langues.GroupeFacteur} : #{langues.requis}" converter="groupefacteurConverter">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{facteurController.groupefacteurs}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel="#{loginController.language eq 'en' ? idregionItem.nomEn : idregionItem.nomFr}"/>                                          
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.TypeFacteur}" for="idregion" />
+                        <p:selectOneMenu id="idregion" value="#{facteurController.facteur.idtypefacteur}" required="true" requiredMessage="#{langues.GroupeFacteur} : #{langues.requis}" converter="typefacteurConverter">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{facteurController.typefacteurs}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel="#{loginController.language eq 'en' ? idregionItem.nomEn : idregionItem.nomFr}"/>                                         
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom_fr" />
+                        <p:inputText style=" width: 350px"  id="nom_fr" value="#{facteurController.facteur.nomFr}"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 350px"  id="nom_en" value="#{facteurController.facteur.nomEn}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{facteurController.saveFacteur()}" value="#{langues.Save}" update="display,:FacteurListForm:datalist,:growl" oncomplete="PF('FacteurCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('FacteurCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

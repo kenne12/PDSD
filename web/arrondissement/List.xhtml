@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <h:form id="ArrondissementListForm">
+
+        <p:panel header="#{langues.ListArrondissementTitle}">
+            <p:contextMenu id="ArrondissementDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('ArrondissementListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('ArrondissementListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('ArrondissementListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('ArrondissementListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                 
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{arrondissementController.arrondissements}"
+                         var="item"
+                         rowKey="#{item.idarrondi}"
+                         paginator="true"
+                         style="width: 60%;margin-left: 20%"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         rowIndexVar="index"
+                         selection="#{arrondissementController.selected}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:ArrondissementDataTableContextMenu" listener="#{arrondissementController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:ArrondissementDataTableContextMenu" listener="#{arrondissementController.deactiveButton()}" />
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ArrondissementListForm:viewButton').click();" listener="#{arrondissementController.activeButton()}" />
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Numero}"/>
+                    </f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.iddepart.iddepart}" filterBy="#{item.iddepart.iddepart}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.departement}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.iddepart.nom}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.nom}" filterBy="#{item.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.ListArrondissementTitle_nom}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
+
+
+                <p:column filterBy="#{item.coordonneegps}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.CreateArrondissementLabel_coordonneegps}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.coordonneegps}"/>
+                </p:column>
+
+            </p:dataTable>
+            <center>
+                <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{arrondissementController.prepareCreate()}" update=":ArrondissementCreateForm" oncomplete="PF('ArrondissementCreateDialog').show()"/>
+                <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{langues.View}" update=":ArrondissementViewForm" oncomplete="PF('ArrondissementViewDialog').show()" disabled="#{arrondissementController.detail}"/>
+                <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" update=":ArrondissementEditForm" oncomplete="PF('ArrondissementEditDialog').show()" disabled="#{arrondissementController.detail}"/>
+                <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{arrondissementController.delete()}" update=":growl,datalist" disabled="#{arrondissementController.detail}">
+                    <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+
+            </center>
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

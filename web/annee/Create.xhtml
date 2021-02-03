@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="AnneeCreateDlg" widgetVar="AnneeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateAnneeTitle}" closeOnEscape="true">
+
+            <h:form id="AnneeCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+
+                        <p:outputLabel value="#{langues.nom}" for="nom" />
+                        <p:inputText style=" width: 200px"  id="nom" value="#{anneeController.annee.nom}" title="#{langues.CreateRegionTitle_nom}" size="254" maxlength="254" required="true" requiredMessage="#{langues.nom}: #{langues.requis}"/>
+
+                        <p:outputLabel value="#{langues.annee_depense}" for="depense"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.depense}" id="depense"/>
+
+                        <p:outputLabel value="#{langues.annee_recette}" for="recette"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.recette}" id="recette"/>
+
+                        <p:outputLabel value="#{langues.annee_cible}" for="cible"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.cibles}" id="cible"/>
+
+                        <p:outputLabel value="#{langues.annee_mape}" for="mape"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.mape}" id="mape"/>
+
+                        <p:outputLabel value="#{langues.annee_couverturesanitaire}" for="popfosa"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.popfosa}" id="popfosa"/>
+                        
+                        <p:outputLabel value="#{langues.annee_planif}" for="popfos"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.plannifie}" id="popfos"/>
+                        
+                        <p:outputLabel value="#{langues.annee_chronogramme}" for="popfoa"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.chronogramme}" id="popfoa"/>
+                        
+                        <p:outputLabel value="#{langues.projectionrecette}" for="projection"/>
+                        <p:selectBooleanCheckbox value="#{anneeController.annee.projectionrecette}" id="projection"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{anneeController.saveAnnee()}" value="#{langues.Save}" update="display,:AnneeListForm:datalist,:growl" oncomplete="PF('AnneeCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('AnneeCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

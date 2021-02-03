@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="UniteCreateDlg" widgetVar="UniteCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateUniteTitle}" closeOnEscape="true">
+
+            <h:form id="UniteCreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column">
+                        
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText id="code" style=" width: 100px" value="#{uniteController.unite.code}" size="254" maxlength="254"/>
+                        
+                        <p:outputLabel value="#{langues.nom}" for="nom" />
+                        <p:inputText id="nom" style=" width: 200px" value="#{uniteController.unite.nom}" size="254" maxlength="254"/>
+                                               
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{uniteController.save()}" value="#{langues.Save}" update="display,:UniteListForm:datalist,:growl" oncomplete="PF('UniteCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('UniteCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

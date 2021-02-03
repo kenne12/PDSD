@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="CompteUtilisateurEditDlg" widgetVar="CompteUtilisateurEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.EditCompteutilisateurTitle}">
+            <h:form id="CompteUtilisateurEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{compteUtilisateurController.selectedCompteutilisateur !=null}">
+
+
+                        <p:outputLabel value="#{langues.utilisateur}" for="utilisateur" />
+                        <p:selectOneMenu disabled="true" id="utilisateur" value="#{compteUtilisateurController.utilisateur}" converter="utilisateurConverter" required="true" requiredMessage="#{langues.utilisateur} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{compteUtilisateurController.utilisateurs}" var="item" itemLabel="#{item.nom} - #{item.prenom}" itemValue="#{item}"/>                     
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.login}" for="login" />
+                        <p:inputText id="login" value="#{compteUtilisateurController.selectedCompteutilisateur.login}"  />
+
+                        <p:outputLabel value="#{langues.password}" for="password" />
+                        <p:inputText id="password" value="#{compteUtilisateurController.selectedCompteutilisateur.password}" />
+
+
+                        <p:outputLabel value="#{langues.etat}" for="etat" />
+                        <p:selectBooleanCheckbox id="etat" value="#{compteUtilisateurController.selectedCompteutilisateur.etat}"/>                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{compteUtilisateurController.editCompte()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:CompteUtilisateurListForm:datalist,:CompteUtilisateurListForm:msgErreur" oncomplete="PF('CompteUtilisateurEditDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('CompteUtilisateurEditDialog').hide()"/>                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

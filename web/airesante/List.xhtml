@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.Airesante}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+                <h:form id="AiresanteListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" 
+                                 value="#{airesanteController.airesantes}" 
+                                 var="item"
+                                 selectionMode="single" 
+                                 selection="#{airesanteController.airesante}"
+                                 paginator="true"
+                                 rowKey="#{item.idairesante}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+                        <p:ajax event="rowSelect"   update=":AiresanteListForm:createButton :AiresanteListForm:editButton :AiresanteListForm:deleteButton" listener="#{airesanteController.activeButton()}"/>
+                        <p:ajax event="rowUnselect" update=":AiresanteListForm:createButton :AiresanteListForm:editButton :AiresanteListForm:deleteButton" listener="#{airesanteController.deactiveButton()}" />
+
+                        <f:facet name="header"> 
+                            <h:outputText value="#{langues.ListAiresanteTitle}"/>
+                        </f:facet> 
+
+
+                        <p:column style="width: 10%">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.district}"/>
+                            </f:facet>
+                            <h:outputText value="#{loginController.language eq 'en' ? item.iddistrict.nomEn : item.iddistrict.nomFr}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_francais}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nomFr}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_anglais}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nomEn}"/>
+                        </p:column>
+
+
+                    </p:dataTable>
+                    <center>
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{airesanteController.prepareCreate()}" update=":AiresanteCreateForm" oncomplete="PF('AiresanteCreateDialog').show()"/>                    
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{airesanteController.prepareEdit()}" update=":AiresanteCreateForm" oncomplete="PF('AiresanteCreateDialog').show()" disabled="#{airesanteController.detail}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}"  update=":AiresanteDeleteForm" oncomplete="PF('AiresanteDeleteDialog').show()" disabled="#{airesanteController.detail}"/> 
+                    </center>
+
+                </h:form>
+
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="Delete.xhtml"/>
+
+            </f:view>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

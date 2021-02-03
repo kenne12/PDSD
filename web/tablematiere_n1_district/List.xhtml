@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.tablematieren1_district}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+
+                <h:form id="Tablematieren1ListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{tablematiere_n1_districtController.tablematieren1Districts}" var="item"
+                                 editMode="cell"
+                                 editable="true"
+                                 paginator="true"
+
+                                 rows="25"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top:1% !important; text-align:left; margin-left:20%; margin-right: 20%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+                        <f:facet name="header"> 
+                            <h:outputText class="hardBreak" value="#{langues.tablematieren1_district}"/>
+                        </f:facet> 
+
+                        <p:column style="width: 70%;height: 30px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.niveau_1}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idtablematiereN1.niveau1En : item.idtablematiereN1.niveau1Fr}"/>
+                        </p:column>
+
+                        <p:column style="width:30%" headerText="#{langues.numero_page}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.numeropage}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText  value="#{item.numeropage}">
+                                        <p:ajax  listener="#{tablematiere_n1_districtController.prepare()}"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        .
+                    </p:dataTable>
+
+                    <center>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{tablematiere_n1_districtController.create()}" update="datalist,growl,editButton" disabled="#{tablematiere_n1_districtController.detail}"/>
+                    </center>
+
+                </h:form>
+
+            </f:view>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

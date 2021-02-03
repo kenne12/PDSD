@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.resultat_attendu}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+
+            <f:view locale="#{loginController.language}">
+
+
+
+                <h:form id="Tablematieren1ListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{resultatAttenduDistrictController.resultatAttenduDistricts}" var="item"
+                                 editMode="cell"
+                                 editable="true"
+                                 paginator="true"
+                                 selectionMode="single"
+                                 rowKey="#{item.idresultatAttenduDistrict}"
+                                 selection="#{resultatAttenduDistrictController.resultatAttenduDistrict}"
+                                 rows="25"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top:1% !important; text-align:left; margin-left:0%; margin-right: 0%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+                        <p:ajax event="rowSelect" update=":Tablematieren1ListForm:editButton,:Tablematieren1ListForm:deleteButton" listener="#{resultatAttenduDistrictController.activeButton()}" />
+
+                        <f:facet name="header"> 
+                            <h:outputText value="#{langues.resultat_attendu_district}"/>
+                        </f:facet> 
+
+                        <p:column style="width: 25%;height: 40px;word-break: break-all">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.interventionpnds}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.idindicateur.idinterventionpnds.code} #{loginController.language eq 'en' ? item.idindicateur.idinterventionpnds.nomEn : item.idindicateur.idinterventionpnds.nomFr}"/>
+                        </p:column>
+                        
+                        <p:column style="width: 25%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.objectif_opérationnel}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{resultatAttenduDistrictController.findObjectif(item).objectif}"/>
+                        </p:column>
+                        
+                        <p:column style="width: 25%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.Indicateur}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idindicateur.nomEn : item.idindicateur.nomFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 25%;height: 40px">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.resultat_attendu}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.resultat}"/>
+                        </p:column>
+                        .
+                    </p:dataTable>
+
+                    <center>
+                        <p:commandButton  id="importButton"   icon="ui-icon-create" value="#{langues.importer}" actionListener="#{resultatAttenduDistrictController.importer()}" update="datalist,growl,importButton" disabled="#{resultatAttenduDistrictController.imported}"/>
+                        <p:commandButton id="addButton"   icon="ui-icon-plus" value="#{langues.Create}" actionListener="#{resultatAttenduDistrictController.prepareCreate()}" update="datalist,growl,editButton,:NotationproblemeCreateForm" oncomplete="PF('NotationproblemeCreateDialog').show()"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{resultatAttenduDistrictController.prepareEdit()}" update="datalist,growl,editButton,:NotationproblemeEditForm" oncomplete="PF('NotationproblemeEditDialog').show()" disabled="#{resultatAttenduDistrictController.detail}"/>                        
+                        <p:commandButton id="deleteButton"   icon="ui-icon-trash" value="#{langues.Delete}" actionListener="#{resultatAttenduDistrictController.delete()}" update="datalist,growl,editButton" disabled="#{resultatAttenduDistrictController.detail}">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                    <ui:include src="/confirmation.xhtml"/>
+
+                </h:form>
+
+                <ui:include src="Edit.xhtml"/>
+                <ui:include src="Create.xhtml"/>
+
+
+            </f:view>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

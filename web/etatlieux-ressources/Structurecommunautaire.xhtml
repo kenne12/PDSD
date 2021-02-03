@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+
+        <h:form id="StructurecommunautaireListForm">
+
+            <br/>
+
+            <center>
+                <h2>#{langues.structurecommunautaire}</h2>
+            </center>
+
+            <p:messages id="msgErreur" closable="true"/>
+            <p:growl id="growl" showDetail="true"/>
+
+            <p:dataTable id="datalist" value="#{structurecommunautaireController.structurecommunautaires}" var="item"
+                         paginator="true"
+                         selectionMode="single"
+                         selection="#{structurecommunautaireController.structurecommunautaire}"
+                         rowKey="#{item.idstructurecommunautaire}"
+                         rows="80"
+                         rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                         style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                         rowIndexVar="index"
+                         emptyMessage="#{msg.Vide}"
+                         widgetVar="fonctionTable"
+                         draggableColumns="true"
+                         resizableColumns="true">
+
+                <p:ajax event="rowSelect"   update=":StructurecommunautaireListForm:editButton :StructurecommunautaireListForm:deleteButton" listener="#{structurecommunautaireController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update=":StructurecommunautaireListForm:editButton :StructurecommunautaireListForm:deleteButton" listener="#{structurecommunautaireController.deactiveButton()}" />
+
+
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.typestructure}"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ? item.idtypestructurecommunautaire.nomEn : item.idtypestructurecommunautaire.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 40%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_francais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 40%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{item.nomEn}"/>
+                </p:column>
+
+
+                <p:column style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.etatfonctionnement}"/>
+                    </f:facet>
+                    <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idetatfonctstructcom.nomEn : item.idetatfonctstructcom.nomFr}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+
+            <p:separator style="width: 90%;margin-left: 5% "/>
+
+            <center>
+                <p:panelGrid columns="3">
+                    <p:outputLabel for="commentaire" value="#{langues.commentairetab}"/>
+                    <p:inputTextarea  id="commentaire" style="color: red" value="#{structurecommunautaireController.commentairetab.commentaire}" rows="5" cols="150">
+                        <p:ajax event="keyup"/>
+                    </p:inputTextarea>
+                    <p:commandButton actionListener="#{structurecommunautaireController.updateCommentaire()}" update="commentaire,growl" value="valider le commentaire">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.validationcommentaire} ?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </p:panelGrid>
+            </center>
+
+            <p:separator style="width: 90%;margin-left: 5% "/>
+
+            <center>
+                <p:commandButton id="createButton" icon="ui-icon-plus" update=":StructurecommunautaireCreateForm,editButton,deleteButton,datalist"   value="Ajouer une ligne" actionListener="#{structurecommunautaireController.prepareCreate()}"  oncomplete="PF('StructurecommunautaireCreateDialog').show()"/>                    
+                <p:commandButton id="editButton"   icon="ui-icon-pencil" update=":StructurecommunautaireCreateForm" value="#{langues.Edit}" actionListener="#{structurecommunautaireController.prepareEdit()}" oncomplete="PF('StructurecommunautaireCreateDialog').show()" disabled="#{structurecommunautaireController.detail}"/>
+                <p:commandButton id="deleteButton" icon="ui-icon-trash" update="datalist" actionListener="#{structurecommunautaireController.delete()}" value="#{langues.Delete}" disabled="#{structurecommunautaireController.detail}"> 
+                    <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+            </center>
+
+            <ui:include src="/confirmation.xhtml"/>
+        </h:form>
+
+    </ui:composition>
+
+</html>

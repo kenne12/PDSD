@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="SousrubriquenotationproblemeCreateDlg" widgetVar="SousrubriquenotationproblemeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateSousrubriquenotationproblemeTitle}" closeOnEscape="true">
+
+            <h:form id="SousrubriquenotationproblemeCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{langues.rubriquenotationprobleme}" for="idregion" />
+                        <p:selectOneMenu id="idregion" value="#{sousrubriquenotationproblemeController.sousrubriquenotationprobleme.idrubriquenotationprobleme}" required="true" requiredMessage="#{langues.rubriquenotationprobleme} : #{langues.requis}" converter="rubriquenotationproblemeConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{sousrubriquenotationproblemeController.rubriquenotationproblemes}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel="#{loginController.language eq 'en' ? idregionItem.nomEn : idregionItem.nomFr}"/>                                           
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 400px"  id="nom" value="#{sousrubriquenotationproblemeController.sousrubriquenotationprobleme.nomFr}" required="true" requiredMessage="#{langues.nom_francais} : #{langues.requis}"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 400px"  id="nom_en" value="#{sousrubriquenotationproblemeController.sousrubriquenotationprobleme.nomEn}" required="true" requiredMessage="#{langues.nom_anglais} : #{langues.requis}"/>
+
+
+                        <p:outputLabel value="#{langues.score_max}" for="score" />
+                        <p:inputText style=" width: 70px"  id="score" value="#{sousrubriquenotationproblemeController.sousrubriquenotationprobleme.scoremax}" title="#{langues.CreateRegionTitle_nom}"  required="true" requiredMessage="le champs score max est obligatoire"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sousrubriquenotationproblemeController.saveSousrubriquenotationprobleme()}" value="#{langues.Save}" update="display,:SousrubriquenotationproblemeListForm:datalist,:growl" oncomplete="PF('SousrubriquenotationproblemeCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('SousrubriquenotationproblemeCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

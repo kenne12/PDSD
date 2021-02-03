@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="partiehautesituationsocioculturelle" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="4133f059-4c77-4f17-b644-17d94c89e8f6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.partiehaute.idpartiehaute,
+  public.partiehaute.introduction_fr,
+  public.partiehaute.presentationgenerale_fr,
+  public.partiehaute.situationgeographique_fr,
+  public.partiehaute.situationeconomique_fr,
+  public.partiehaute.situationsocioculturelle_fr,public.partiehaute.carte
+FROM
+  public.partiehaute
+  INNER JOIN public.district ON (public.partiehaute.iddistrict = public.district.iddistrict)
+WHERE
+  public.district.iddistrict = $P{iddistrict}]]>
+	</queryString>
+	<field name="idpartiehaute" class="java.lang.Integer"/>
+	<field name="introduction_fr" class="java.lang.String"/>
+	<field name="presentationgenerale_fr" class="java.lang.String"/>
+	<field name="situationgeographique_fr" class="java.lang.String"/>
+	<field name="situationeconomique_fr" class="java.lang.String"/>
+	<field name="situationsocioculturelle_fr" class="java.lang.String"/>
+	<field name="carte" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="0" width="740" height="22" uuid="f0764bcd-8f6a-4289-81ad-2fb163ef191b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[I.2.4 SECURITY SITUATION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="16" y="0" width="740" height="43" uuid="b677a08b-2b57-4680-a2c9-751af381e0ba"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{situationsocioculturelle_fr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

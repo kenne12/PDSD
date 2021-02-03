@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etatperformances" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="3" bottomMargin="3" whenResourceMissingType="Empty" uuid="e4929f6c-519f-4649-b3be-16a7c389a8c3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.axe.idaxe,
+  public.axe.code AS codeaxes,
+  public.axe.nom_fr AS axes,
+  public.sousaxe.idsousaxe,
+  public.sousaxe.code AS codessousaxes,
+  public.sousaxe.nom_fr AS sousaxes,
+  public.categorieintervention.idcategorieintervention,
+  public.categorieintervention.code AS codestrat,
+  public.categorieintervention.nom_fr AS categorieinter,
+  public.interventionpnds.idinterventionpnds,
+  public.interventionpnds.nom_fr AS interpnds,
+  public.indicateur.idindicateur,
+  public.indicateur.nom_fr AS indicateurs,
+  public.indicateur.ciblenationale,
+  public.observation.idobservation,
+  public.observation.valeur_fr AS valeur,
+  public.indicateur_district.valeur AS valeursdist,
+  public.probleme.nom as probleme,public.indicateur_district.observation as observ,
+  public.probleme.cause as causes,parametre.idparametre
+FROM
+  public.indicateur_district
+  INNER JOIN public.observation ON (public.indicateur_district.idobservation = public.observation.idobservation)
+  INNER JOIN public.indicateur ON (public.indicateur_district.idindicateur = public.indicateur.idindicateur)
+  INNER JOIN public.interventionpnds ON (public.indicateur.idinterventionpnds = public.interventionpnds.idinterventionpnds)
+  INNER JOIN public.categorieintervention ON (public.interventionpnds.idcategorieintervention = public.categorieintervention.idcategorieintervention)
+  INNER JOIN public.sousaxe ON (public.categorieintervention.idsousaxe = public.sousaxe.idsousaxe)
+  INNER JOIN public.axe ON (public.sousaxe.idaxe = public.axe.idaxe)
+  INNER JOIN public.probleme ON (public.indicateur_district.idindicateur_district = public.probleme.idindicateur_district),parametre
+WHERE
+  public.indicateur_district.iddistrict = $P{iddistrict}
+ORDER BY
+  public.axe.code,
+  public.axe.nom_fr,
+  public.sousaxe.nom_fr,
+  public.categorieintervention.nom_fr]]>
+	</queryString>
+	<field name="idaxe" class="java.lang.Integer"/>
+	<field name="codeaxes" class="java.lang.String"/>
+	<field name="axes" class="java.lang.String"/>
+	<field name="idsousaxe" class="java.lang.Integer"/>
+	<field name="codessousaxes" class="java.lang.String"/>
+	<field name="sousaxes" class="java.lang.String"/>
+	<field name="idcategorieintervention" class="java.lang.Integer"/>
+	<field name="codestrat" class="java.lang.String"/>
+	<field name="categorieinter" class="java.lang.String"/>
+	<field name="idinterventionpnds" class="java.lang.Integer"/>
+	<field name="interpnds" class="java.lang.String"/>
+	<field name="idindicateur" class="java.lang.Integer"/>
+	<field name="indicateurs" class="java.lang.String"/>
+	<field name="ciblenationale" class="java.lang.Double"/>
+	<field name="idobservation" class="java.lang.Integer"/>
+	<field name="valeur" class="java.lang.String"/>
+	<field name="valeursdist" class="java.lang.Double"/>
+	<field name="probleme" class="java.lang.String"/>
+	<field name="observ" class="java.lang.String"/>
+	<field name="causes" class="java.lang.String"/>
+	<field name="idparametre" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="34" width="578" height="20" forecolor="#3333FF" uuid="9ef7f417-9de2-454e-9d57-53859cf16646"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tableau 24: Etat des performances du District de Santé, Principaux Problèmes et leurs causes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="0" width="681" height="34" uuid="f2b752f9-fdcc-44c9-9fef-4c5699b97984"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[II.2 DIAGNOSTIC PROPREMENT DIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="18" width="772" height="21" uuid="768ffa80-6622-4904-806a-0c434fa985cb"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[II.2.1  EVALUATION DES PERFORMANCES DU DS, IDENTIFICATION ET ANALYSE CAUSALE DES PROBLEMES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="135" splitType="Stretch">
+			<crosstab>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="802" height="135" uuid="ec9134c0-cc8f-4fc2-8122-5c7c346f90cb"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="538" y="0" width="103" height="72" backcolor="#CCFFFF" uuid="97dc78b0-d53e-45ef-8f80-113aad5647cf"/>
+							<box leftPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[PROBLEMES	]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="502" y="0" width="36" height="72" backcolor="#CCFFFF" uuid="93a94967-9dbc-4dc4-80a9-e667b20c968c"/>
+							<box leftPadding="3" bottomPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle" rotation="Left">
+								<font fontName="Times New Roman" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[OBSERVATIONS]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="469" y="0" width="33" height="72" backcolor="#CCFFFF" uuid="31a50c91-2dee-42a5-8e20-3783ac7f3f11"/>
+							<box leftPadding="3" bottomPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle" rotation="Left">
+								<font fontName="Times New Roman" size="9" isBold="true"/>
+							</textElement>
+							<text><![CDATA[VALEUR DU DISTRICT]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="439" y="0" width="30" height="72" backcolor="#CCFFFF" uuid="0dab362f-db5f-4dae-b39c-30061e42c20a"/>
+							<box leftPadding="3" bottomPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle" rotation="Left">
+								<font fontName="Times New Roman" size="9" isBold="true"/>
+							</textElement>
+							<text><![CDATA[CIBLE NATIONALE]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="337" y="0" width="102" height="72" backcolor="#CCFFFF" uuid="bcfa855a-1639-4f34-96e4-025e12390839"/>
+							<box leftPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[INDICATEUR TRACEUR]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="240" y="0" width="97" height="72" backcolor="#CCFFFF" uuid="584b70c6-0635-483a-bf80-1abd3df667cb"/>
+							<box leftPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[INTERVENTION DU PNDS]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="138" y="0" width="102" height="72" backcolor="#CCFFFF" uuid="f0dc87e3-4b5a-49af-be0a-cedcde258431"/>
+							<box leftPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="11" isBold="true"/>
+							</textElement>
+							<text><![CDATA[STRATEGIE D'INTERVENTION]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="39" y="0" width="99" height="72" backcolor="#CCFFFF" uuid="aeb6d7c7-263a-450e-8e63-7fd6be9818c5"/>
+							<box leftPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[SOUS-AXE]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="39" height="72" backcolor="#CCFFFF" uuid="32f20912-2d8b-4253-a454-fb1f96bce0d5"/>
+							<box leftPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[AXE]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="641" y="0" width="100" height="72" backcolor="#CCFFFF" uuid="b16f27fe-48b7-4903-989c-163a874996c1"/>
+							<box leftPadding="3">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true"/>
+							</textElement>
+							<text><![CDATA[CAUSES VULNERABLES]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="axes" width="39">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{codeaxes} + ": " + $F{axes}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="39" height="86" isPrintWhenDetailOverflows="true" uuid="fcf501ab-3e4b-404c-9803-b1e464119a4e"/>
+								<box leftPadding="3"/>
+								<textElement verticalAlignment="Top" rotation="Left">
+									<font fontName="Times New Roman" size="10" isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{axes}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="sousaxes" width="99">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{codessousaxes} + " : " + $F{sousaxes}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="99" height="86" isPrintWhenDetailOverflows="true" uuid="a2942f87-ea32-4709-9e91-fa098e084efc"/>
+								<box leftPadding="3"/>
+								<textElement verticalAlignment="Middle" rotation="None">
+									<font fontName="Times New Roman" size="12" isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{sousaxes}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group1" width="102">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{codestrat} + ": " +$F{categorieinter}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="102" height="86" isPrintWhenDetailOverflows="true" uuid="df4af836-dfa9-41af-b3aa-d28399853378"/>
+								<box leftPadding="3">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group1}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group2" width="97">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{interpnds}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="97" height="86" isPrintWhenDetailOverflows="true" uuid="e7ed8d21-b529-477b-8ec1-edd91344c7bd"/>
+								<box leftPadding="3">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group2}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group3" width="102">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{indicateurs}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="102" height="86" isPrintWhenDetailOverflows="true" uuid="279b0778-b615-46ce-8241-61dab7598bc4"/>
+								<box leftPadding="3">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group3}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group4" width="30">
+					<bucket class="java.lang.Double">
+						<bucketExpression><![CDATA[$F{ciblenationale}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true" pattern="#,##0">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="86" isPrintWhenDetailOverflows="true" uuid="b2d85e05-25da-4e9c-8aca-764c3e9e051e"/>
+								<box leftPadding="3">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group4}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group5" width="33">
+					<bucket class="java.lang.Double">
+						<bucketExpression><![CDATA[$F{valeursdist}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true" pattern="#,##0">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="33" height="86" isPrintWhenDetailOverflows="true" uuid="6996001c-de6a-48d8-985c-78b63a75ae8f"/>
+								<box leftPadding="3">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group5}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group6" width="36">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{valeur}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="36" height="86" isPrintWhenDetailOverflows="true" uuid="594102fe-3903-48b7-b38d-680ab034adb1"/>
+								<box leftPadding="3">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group6}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group7" width="103">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{valeur}=="Forte"? "Observations : "+$F{observ}:
+$F{probleme}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="103" height="86" isPrintWhenDetailOverflows="true" uuid="423d33ef-1c88-47cb-ac18-4f3308e72a9e"/>
+								<box leftPadding="3">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group7}==null?"":
+$V{group7}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group8" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{causes}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="86" uuid="16258eed-d8e9-491a-ae6b-172f6539cd1d"/>
+								<box leftPadding="2">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Times New Roman"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{group8}==null?"":
+$V{group8}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="group9" width="0">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{observ}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents/>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="idaxe" height="72">
+					<bucket class="java.lang.Integer">
+						<bucketExpression><![CDATA[$F{idparametre}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="idaxeMeasure" class="java.lang.Integer">
+					<measureExpression><![CDATA[$F{idaxe}]]></measureExpression>
+				</measure>
+				<crosstabCell width="7" height="86">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="axes">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="bcc20878-2136-485f-9563-bf973360b653"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="idaxe">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="725c8808-c2aa-42e4-afb7-192a975e65b0"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="axes" columnTotalGroup="idaxe">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="f853706a-466e-4243-bcc4-f573ed6e885c"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="sousaxes">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="0e5b4782-9f1d-42cf-a5e6-1a616c13ac42"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="sousaxes" columnTotalGroup="idaxe">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="48551000-d83d-4664-99fe-4a328588dc8f"/>
+							<textFieldExpression><![CDATA[$V{idaxeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group1">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group1" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group2">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group2" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group3">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group3" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group4">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group4" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group5">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group5" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group6">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group6" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group7">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group7" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group8">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group8" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group9">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="group9" columnTotalGroup="idaxe">
+					<cellContents/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

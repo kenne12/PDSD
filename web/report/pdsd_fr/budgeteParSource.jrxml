@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="besoininvestissementequip" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="c3a0c601-6778-49e7-bb7e-8092e72ec14e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  parametre.idparametre,
+  public.annee.idannee,
+  public.annee.nom AS annees,
+  public.axe.idaxe,
+  public.axe.code AS codeaxes,
+  public.axe.nom_fr AS axes,
+  public.sousaxe.idsousaxe,
+  public.sousaxe.code AS codesouxaxes,
+  public.sousaxe.nom_fr AS souxaxes,
+  public.sourcefinancement.idsourcefi,
+  public.sourcefinancement.nom_fr AS sourcesfinaninvest,
+ sum( public.activite_structure.cout) as montant
+FROM
+  public.axe
+  INNER JOIN public.sousaxe ON (public.axe.idaxe = public.sousaxe.idaxe)
+  INNER JOIN public.categorieintervention ON (public.sousaxe.idsousaxe = public.categorieintervention.idsousaxe)
+  INNER JOIN public.interventionpnds ON (public.interventionpnds.idcategorieintervention = public.categorieintervention.idcategorieintervention)
+  INNER JOIN public.indicateur ON (public.interventionpnds.idinterventionpnds = public.indicateur.idinterventionpnds)
+  INNER JOIN public.indicateur_district ON (public.indicateur.idindicateur = public.indicateur_district.idindicateur)
+  INNER JOIN public.probleme ON (public.probleme.idindicateur_district = public.indicateur_district.idindicateur_district)
+  INNER JOIN public.activite ON (public.probleme.idprobleme = public.activite.idprobleme)
+  INNER JOIN public.sourcefinancement ON (public.activite.idsourcefi = public.sourcefinancement.idsourcefi)
+  INNER JOIN public.activite_structure ON (public.activite.idactivite = public.activite_structure.idactivite)
+  INNER JOIN public.annee ON (public.activite_structure.idannee = public.annee.idannee)
+  INNER JOIN public.chronogramme ON (public.activite.idactivite = public.chronogramme.idactivite)
+  AND (public.annee.idannee = public.chronogramme.idannee),
+  parametre
+WHERE
+  public.indicateur_district.iddistrict = $P{iddistrict} AND
+  public.annee.chronogramme = true
+GROUP BY
+  parametre.idparametre,
+  public.activite.coutglobal,
+  public.annee.idannee,
+  public.annee.nom,
+  public.axe.idaxe,
+  public.axe.code,
+  public.axe.nom_fr,
+  public.sousaxe.idsousaxe,
+  public.sousaxe.code,
+  public.sousaxe.nom_fr,
+  public.sourcefinancement.idsourcefi,
+  public.sourcefinancement.nom_fr
+ORDER BY
+  public.axe.code]]>
+	</queryString>
+	<field name="idparametre" class="java.lang.Integer"/>
+	<field name="idannee" class="java.lang.Integer"/>
+	<field name="annees" class="java.lang.String"/>
+	<field name="idaxe" class="java.lang.Integer"/>
+	<field name="codeaxes" class="java.lang.String"/>
+	<field name="axes" class="java.lang.String"/>
+	<field name="idsousaxe" class="java.lang.Integer"/>
+	<field name="codesouxaxes" class="java.lang.String"/>
+	<field name="souxaxes" class="java.lang.String"/>
+	<field name="idsourcefi" class="java.lang.Integer"/>
+	<field name="sourcesfinaninvest" class="java.lang.String"/>
+	<field name="montant" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="21" width="578" height="20" forecolor="#0000FF" uuid="1254b181-dd7b-465f-934b-c968012e5aa6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tableau 28-B:  Synthèse du budget par sources de financement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="681" height="21" uuid="b2d0389d-25f9-4448-9923-b6e0da091e45"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[IV.2  BUDGET PAR SOURCES DE FINANCEMENT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="52" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="48" uuid="fe19f857-e6ac-4803-b638-47d9dfedb257"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Transparent" x="0" y="0" width="92" height="11" backcolor="#CCFFFF" uuid="e7917db1-af3a-4668-926f-305aa8bba91f"/>
+							<box>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement>
+								<font fontName="Times New Roman" size="9" isBold="true"/>
+							</textElement>
+							<text><![CDATA[ANNEES]]></text>
+						</staticText>
+						<line>
+							<reportElement style="Crosstab Data Text" mode="Transparent" x="0" y="0" width="92" height="45" backcolor="#CCFFFF" uuid="f1a0d215-8164-4bfa-8042-284446283447"/>
+						</line>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Transparent" x="0" y="34" width="92" height="11" backcolor="#CCFFFF" uuid="b77d50b6-d5e1-48c6-8e99-8fc48cec15cb"/>
+							<box>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement>
+								<font fontName="Times New Roman" size="9" isBold="true"/>
+							</textElement>
+							<text><![CDATA[SOURCES]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Transparent" x="0" y="0" width="92" height="45" backcolor="#CCFFFF" uuid="7c1f1bb0-32f4-424a-aeed-4d40d2fcd88e"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<text><![CDATA[]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="sourcesfinaninvest" width="92" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{sourcesfinaninvest}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="92" height="37" uuid="2636fee5-e503-4bf5-94a5-d30cf3389135"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{sourcesfinaninvest}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="92" height="40" backcolor="#CCFFFF" uuid="a7909039-a28d-4130-bd2a-4a599e989a34"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="16" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="annees" height="45" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{annees}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="118" height="45" backcolor="#CCFFFF" uuid="af725203-9b91-4b7c-888a-05e93fda8146"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{annees}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="98" height="45" backcolor="#CCFFFF" uuid="03c052a5-4459-4473-910d-bc34733fba57"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Times New Roman" size="16" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total ]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="montantMeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{montant}]]></measureExpression>
+				</measure>
+				<crosstabCell width="118" height="37">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="118" height="37" uuid="6cded8fb-484b-4912-a07e-db0f1ab4a8f8"/>
+							<box rightPadding="3"/>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isItalic="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="118" height="40" rowTotalGroup="sourcesfinaninvest">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0">
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="118" height="40" backcolor="#CCFFFF" uuid="1eb0a09e-1c41-4fc4-ad97-57b241d85e98"/>
+							<box rightPadding="3"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="98" height="37" columnTotalGroup="annees">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0">
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="98" height="37" backcolor="#CCFFFF" uuid="0ae6c44e-5ca0-4690-b9eb-f2d1168cbb51"/>
+							<box rightPadding="3"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="98" height="40" rowTotalGroup="sourcesfinaninvest" columnTotalGroup="annees">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0">
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="98" height="40" backcolor="#CCFFFF" uuid="0ecb1eeb-03ab-4f62-a0c8-f846427ef930"/>
+							<box rightPadding="3"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

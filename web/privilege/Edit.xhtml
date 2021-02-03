@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="PrivilegeEditDlg" widgetVar="PrivilegeEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.EditPrivilegeTitle}">
+            <h:form id="PrivilegeEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{privilegeController.selectedPrivilege !=null}">
+
+                        <p:outputLabel value="#{langues.groupeutilisateur}" for="groupe" />
+                        <p:selectOneMenu id="groupe" value="#{privilegeController.selectedPrivilege.idgroupeutilisateur}" required="true" requiredMessage="#{langues.groupeutilisateur} : #{langues.requis}" filter="true" converter="groupeutilisateurConverter">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{privilegeController.groupeutilisateurs}" var="item" itemLabel="#{item.nom}" itemValue="#{item}"/>                     
+                            <p:ajax listener="#{privilegeController.filterGroupeMenu()}" update="access"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.tache}" for="groupe" />
+                        <p:selectOneMenu id="access" value="#{privilegeController.selectedPrivilege.idmenu}" converter="menuConverter" required="true" requiredMessage="#{langues.tache} : #{langues.requis}" filter="true">                            
+                            <f:selectItems value="#{privilegeController.menuSource}" var="item" itemLabel="#{loginController.language eq 'en' ? item.libelleEn : item.libelleFr}" itemValue="#{item}"/>                     
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{privilegeController.editPrivilege()}" style="float: right;" icon="ui-icon-check" value="#{msg.Valider}" update="display,:PrivilegeListForm:datalist,:PrivilegeListForm:msgErreur" oncomplete="handleSubmit(args, 'PrivilegeEditDialog');"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{msg.Cancel}" onclick="PF('PrivilegeEditDialog').hide()"/>                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog  id="ChronogrammeCreateDlg" footer="#{langues.footer1}" widgetVar="ChronogrammeCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="#{langues.chronogramme}">
+            <h:form id="ChronogrammeCreateForm">
+                <br/>
+
+                <h:panelGroup id="display">
+
+
+                    <div style=" border: solid 0.5px ; width: 1000px ; height: 550px; overflow: auto;">
+
+                        <center>
+
+                            <p:panelGrid columns="2">
+
+                                <p:outputLabel value="#{langues.Axe}"/>
+                                <p:outputLabel value="#{chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.idsousaxe.idaxe.code} - #{loginController.language eq 'en' ?  chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.idsousaxe.idaxe.nomEn : chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.idsousaxe.idaxe.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.sousaxe}"/>
+                                <p:outputLabel value="#{chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.idsousaxe.code} - #{loginController.language eq 'en' ?  chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.idsousaxe.nomEn : chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.idsousaxe.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.Categorie_intervention}"/>
+                                <p:outputLabel value="#{chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.code} - #{loginController.language eq 'en' ?  chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.nomEn : chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.idcategorieintervention.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.interventionpnds}"/>
+                                <p:inputTextarea disabled="true" cols="120" rows="6" value="#{chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.code} -    #{loginController.language eq 'en' ?  chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.nomEn : chronogrammeController.activite.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.nomFr}"/>
+
+                                <p:outputLabel value="#{langues.Active}"/>
+                                <p:inputTextarea disabled="true" cols="120" rows="4" value="#{chronogrammeController.activite.nom}"/>
+
+                            </p:panelGrid>
+
+                            <p:dataTable id="datalist" value="#{chronogrammeController.chronogrammes}" var="item"
+                                         paginator="true"
+                                         rows="10"
+                                         editMode="cell"
+                                         editable="true"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="margin-top:1% !important; text-align:left; margin-left:10%; margin-right: 10%; font-weight: bold; font-style: oblique;"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{msg.Vide}"
+                                         widgetVar="fonctionTable"
+                                         draggableColumns="true"
+                                         resizableColumns="true">
+
+                                <p:column style="width:40%">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{langues.Annee}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.idannee.nom}"/>
+                                </p:column>
+
+                                <p:column style="width:35%" headerText="#{langues.valeur}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <p:selectBooleanCheckbox value="#{item.etat}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectBooleanCheckbox  value="#{item.etat}">
+                                                <p:ajax update="datalist,:ChronogrammeListForm:datalist,:ChronogrammeCreateForm" listener="#{chronogrammeController.createChronogramme(item)}"/>
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{chronogrammeController.create()}" disabled="true" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:ChronogrammeListForm:datalist,:ChronogrammeListForm:growl" oncomplete="PF('ChronogrammeCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Close}" onclick="PF('ChronogrammeCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

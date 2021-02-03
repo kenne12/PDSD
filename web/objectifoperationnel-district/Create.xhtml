@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog  id="NotationproblemeCreateDlg"  widgetVar="NotationproblemeCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="AJOUTER LES OBJECTIFS OPERATIONNELS PAR DISTRICT">
+            <h:form id="NotationproblemeCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <div style=" border: solid 0.5px ; width: 1200px ; height: 550px; overflow: auto;">
+
+                        <br/>
+
+                        <center>
+
+                            <p:panelGrid columns="2">
+
+                                <p:outputLabel value="#{langues.interventionpnds}"/>
+                                <p:selectOneMenu autoWidth="false" style="width: 700px" value="#{objectifoperationnelController.interventionpnds.idinterventionpnds}">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{objectifoperationnelController.interventionpndses}" var="item" itemLabel="#{item.code} #{loginController.language eq 'en' ? item.nomEn : item.nomFr}" itemValue="#{item.idinterventionpnds}"/>
+                                    <p:ajax update="objectif" listener="#{objectifoperationnelController.updateObjectif()}"/>                                   
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="objectif" value="#{langues.objectif_opérationnel}"/>
+                                <p:inputTextarea id="objectif" required="true" requiredMessage="#{langues.objectif_opérationnel} : #{langues.requis}" cols="150" rows="15" value="#{objectifoperationnelController.objectifOppDistrict.objectif}"/>
+
+                            </p:panelGrid>
+
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{objectifoperationnelController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:Tablematieren1ListForm:datalist,:Tablematieren1ListForm:growl" oncomplete="PF('NotationproblemeCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('NotationproblemeCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

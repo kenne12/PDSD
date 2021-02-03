@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="partiehautesituationsocioculturelle" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4133f059-4c77-4f17-b644-17d94c89e8f6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.situation_socio_culturel.education,
+  public.situation_socio_culturel.idsituationsociocult,
+  public.district.iddistrict,
+  public.situation_socio_culturel.statut,
+  public.situation_socio_culturel.facteurculturel,
+  public.situation_socio_culturel.facteursociocult
+FROM
+  public.district
+  INNER JOIN public.situation_socio_culturel ON (public.district.iddistrict = public.situation_socio_culturel.iddistrict)
+WHERE
+  public.district.iddistrict  = $P{iddistrict}]]>
+	</queryString>
+	<field name="education" class="java.lang.String"/>
+	<field name="idsituationsociocult" class="java.lang.Integer"/>
+	<field name="iddistrict" class="java.lang.Integer"/>
+	<field name="statut" class="java.lang.String"/>
+	<field name="facteurculturel" class="java.lang.String"/>
+	<field name="facteursociocult" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="0" width="740" height="22" uuid="f0764bcd-8f6a-4289-81ad-2fb163ef191b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[I.2.5 SITUATION SOCIO-CULTURELLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="23" width="760" height="22" uuid="7db06086-ccd6-4218-a0d8-563dd011a027"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[* Education et Genre(Education Primaire, Education Secondaire, Formation Professionelle et Alphabetisation)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="16" y="0" width="740" height="43" uuid="b677a08b-2b57-4680-a2c9-751af381e0ba"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{education}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

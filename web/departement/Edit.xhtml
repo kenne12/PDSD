@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog showEffect="slide" hideEffect="slide" id="DepartementEditDlg" widgetVar="DepartementEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.EditDepartementTitle}" closeOnEscape="true">
+
+            <h:form id="DepartementEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{departementController.selected != null}">
+
+                        <p:outputLabel value="#{langues.region}" for="idregion" />
+                        <p:selectOneMenu id="idregion" value="#{departementController.selected.idregion}" required="true" requiredMessage="#{langues.region}: #{langues.requis}" converter="regionConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{departementController.regions}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel="#{loginController.language eq 'en' ?  idregionItem.nomEn : idregionItem.nomFr}"/>                                          
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.nom}" for="nom" />
+                        <p:inputText style=" width: 200px" id="nom" value="#{departementController.selected.nom}" title="#{langues.EditDepartementTitle_nom}" size="254" maxlength="254"/>
+
+                        <p:outputLabel value="#{langues.CreateDepartementTitle_coordonnegps}" for="coordonnegps" />
+                        <p:inputText id="coordonnegps" style=" width: 200px" value="#{departementController.selected.coordonnegps}" title="#{langues.EditDepartementTitle_coordonnegps}" size="254" maxlength="254"/>
+
+                    </p:panelGrid>
+
+                    <p:commandButton actionListener="#{departementController.edit()}" value="#{langues.Save}" update="display,:DepartementListForm:datalist,:growl" oncomplete="PF('DepartementEditDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('DepartementEditDialog').hide()"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

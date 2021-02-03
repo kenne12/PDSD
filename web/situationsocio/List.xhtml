@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="PartiehauteListform">
+
+        <p:panel header="#{langues.situation_socio_culturel}">
+
+            <p:tabView>
+
+                <p:tab title="#{langues.education_genre}">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <p:inputTextarea style=" width: 1200px" rows="27"  id="intro" value="#{situationSocioCulturelleController.situationSocioCulturel.education}" />
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab title="#{langues.statut_role}">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <p:inputTextarea style=" width: 1200px"  rows="27" id="pres" value="#{situationSocioCulturelleController.situationSocioCulturel.statut}"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab title="#{langues.facteur_socio_culturelle}">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <p:inputTextarea style=" width: 1200px" rows="27" id="sitsociec" value="#{situationSocioCulturelleController.situationSocioCulturel.facteursociocult}"/>
+                    </h:panelGrid>
+                </p:tab>
+
+            </p:tabView>
+
+        </p:panel>
+        <center>
+            <p:commandButton actionListener="#{situationSocioCulturelleController.saveSituationSocioCulturel()}" value="#{langues.Save}" update=":PartiehauteListform" > 
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

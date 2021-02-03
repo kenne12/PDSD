@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="PerformanceListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>#{langues.SUIVI_DES_INDICATEURS}</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('PerformanceListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <br/>
+
+        <p:panel style="background-color: beige" id="axe" header="#{performancedistrictController.axe.code} - #{loginController.language eq 'en' ? performancedistrictController.axe.nomEn : performancedistrictController.axe.nomFr}">
+
+            <p:panel style="background-color: blanchedalmond" id="sousaxe" header="#{performancedistrictController.sousaxe.code} - #{loginController.language eq 'en' ? performancedistrictController.sousaxe.nomEn : performancedistrictController.sousaxe.nomFr}">
+
+                <p:panel id="categorie"  header="#{performancedistrictController.categorieintervention.code} - #{loginController.language eq 'en' ? performancedistrictController.categorieintervention.nomEn : performancedistrictController.categorieintervention.nomFr}">
+
+                    <p:dataTable id="datalist"
+                                 value="#{performancedistrictController.indicateurs}"
+                                 var="item"
+                                 rowKey="#{item.idindicateur}"
+                                 paginator="true"
+                                 rows="10"
+                                 style="width: 90%;margin-left: 5%;word-wrap: break-word"
+                                 rowIndexVar="index"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 draggableColumns="true"
+                                 resizableColumns="true"
+                                 scrollHeight="100"
+                                 selection="#{performancedistrictController.indicateur}"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                        <p:ajax event="rowSelect" listener="#{performancedistrictController.activeButton()}" />
+                        <p:ajax event="rowDblselect" onsuccess="document.getElementById('PerformanceListForm:viewButton').click();" listener="#{performancedistrictController.activeButton()}"/>
+
+
+                        <p:column  style=" width: 25%;word-wrap: break-word"  filterBy="#{loginController.language eq 'en' ? item.idinterventionpnds.nomEn : item.idinterventionpnds.nomFr}">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.interventionpnds}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.idinterventionpnds.nomEn : item.idinterventionpnds.nomFr}"/>
+                        </p:column>
+
+                        <p:column  style=" width: 25%;height: 40px;" filterBy="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.Indicateur}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}"/>
+                        </p:column>
+
+                        <p:column  style=" width: 10%" filterBy="#{item.ciblenationale}">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.CreateIndicateurTitle_ciblenationale}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.ciblenationale}"/>
+                        </p:column>
+
+                        <p:column  style=" width: 10%">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.valdistrict}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{performancedistrictController.findResult(item).valeur}"/>
+                        </p:column>
+
+                        <p:column  style=" width: 10%">
+                            <f:facet name="header">
+                                <h:outputText value="Appreciation"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{loginController.language eq 'en' ? performancedistrictController.findResult(item).idobservation.valeurEn : performancedistrictController.findResult(item).idobservation.valeurFr}"/>
+                        </p:column>
+                        
+                        <p:column  style=" width: 15%">
+                            <f:facet name="header">
+                                <h:outputText value="Observation"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{performancedistrictController.findResult(item).observation}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <center>
+                        <p:commandButton id="editButton" update=":PerformanceCreateForm,growl" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{performancedistrictController.prepareCreate()}" oncomplete="PF('PerformanceCreateDialog').show()"/>
+                    </center>
+
+                    <h:panelGrid style="width: 60%;margin-left: 20%" columns="2">
+                        <p:commandButton value="#{langues.strategie_precedente}" update="categorie,datalist" actionListener="#{performancedistrictController.precCategorie()}"/>
+                        <p:commandButton value="#{langues.strategie_suivante}" update="categorie,datalist" style="margin-left: 40%" actionListener="#{performancedistrictController.nextCategorie()}"/>
+                    </h:panelGrid>
+
+                </p:panel>
+
+                <h:panelGrid style="width: 70%;margin-left: 15%" columns="2">
+                    <p:commandButton value="#{langues.sous_axe_precedent}" update="sousaxe,categorie,datalist" actionListener="#{performancedistrictController.precSousAxe()}"/>
+                    <p:commandButton value="#{langues.sous_axe_suivant}" update="sousaxe,categorie,datalist" style="margin-left: 50%" actionListener="#{performancedistrictController.nextSousaxe()}"/>
+                </h:panelGrid>
+
+            </p:panel>
+
+            <h:panelGrid style="width: 80%;margin-left: 10%" columns="2">
+                <p:commandButton value="#{langues.axe_precedent}" update="axe,sousaxe,categorie,datalist" actionListener="#{performancedistrictController.precAxe()}"/>
+                <p:commandButton style="margin-left: 60%" value="#{langues.axe_suivant}" update="axe,sousaxe,categorie,datalist" actionListener="#{performancedistrictController.nextAxe()}"/>
+            </h:panelGrid>
+
+        </p:panel>
+
+    </h:form>
+</ui:composition>

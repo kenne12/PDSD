@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="InfrastructureListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>#{langues.cadrage_budgetaire}</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('InfrastructureListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <center>
+            <p:panelGrid   columns="6" columnClasses="column">
+
+                <p:outputLabel value="#{langues.structure}"/>
+                <p:selectOneMenu autoWidth="false" style="width: 300px" value="#{cadragebudgetaireController.structure.idstructure}" required="true" filter="true">
+                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                    <f:selectItems value="#{cadragebudgetaireController.structures}" var="str" itemLabel="#{loginController.language eq 'en' ? str.nomEn : str.nomFr}" itemValue="#{str.idstructure}"/>
+                    <p:ajax listener="#{cadragebudgetaireController.update()}" update="datalist,total,label"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="#{langues.Annee}"/>
+                <p:selectOneMenu value="#{cadragebudgetaireController.annee.idannee}" required="true" filter="true">
+                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                    <f:selectItems value="#{cadragebudgetaireController.annees}" var="annee" itemLabel="#{annee.nom}" itemValue="#{annee.idannee}"/>
+                    <p:ajax listener="#{cadragebudgetaireController.update()}" update="datalist,total,label"/>
+                </p:selectOneMenu>                
+
+                <p:outputLabel id="label" value="#{langues.PROJECTION_DES_RECETTES} - #{cadragebudgetaireController.annee.nom}"/>
+                <p:outputLabel id="total" value="#{cadragebudgetaireController.totalRecette}">
+                    <f:convertNumber/>
+                </p:outputLabel>
+
+            </p:panelGrid>
+        </center>
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{cadragebudgetaireController.activiteStructures}"
+                     var="item"
+                     rowKey="#{item.idactiviteStructure}"
+                     paginator="true"
+                     rows="100"
+                     style="width: 100%; "
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:column style="width: 50%" filterBy="#{item.idactivite.nom}">
+                <f:facet name="header">
+                    <h:outputText class="hardBreak" value="#{langues.Active}"/>
+                </f:facet>
+                <h:outputText class="hardBreak" value="#{item.idactivite.nom}"/>
+            </p:column>
+
+            <p:column filterBy="#{loginController.language eq 'en' ? item.idsourcefi.nomEn : item.idsourcefi.nomFr}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.sourcefinancement}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idsourcefi.nomEn : item.idsourcefi.nomFr}"/>
+            </p:column>
+
+            <p:column filterBy="#{item.idactivite.coutunitaire}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.cout_previonnel}"/>
+                </f:facet>
+                <h:outputText value="#{item.idactivite.coutunitaire}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+            <p:column filterBy="#{item.cout}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.cout_effectif}"/>
+                </f:facet>
+                <h:outputText value="#{item.cout}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="#{langues.programme_} ?"/>
+                </f:facet>
+                <p:selectBooleanCheckbox disabled="true" value="#{item.programe}"/>
+            </p:column>
+
+            <p:columnGroup type="footer">
+                <p:row>
+                    <p:column colspan="3" footerText="Total :" style="text-align:right"/>                    
+                    <p:column colspan="2" footerText="#{cadragebudgetaireController.findTotal()}" style="text-align:left"/>                    
+                </p:row>
+            </p:columnGroup>
+
+        </p:dataTable>
+
+        <center>
+            <p:commandButton id="editButton" update=":InfrastructureCreateForm,growl,:InfrastructureCreateForm:datalist" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{cadragebudgetaireController.uptadeTable()}" oncomplete="PF('InfrastructureCreateDialog').show()"/>
+        </center>
+
+    </h:form>
+</ui:composition>

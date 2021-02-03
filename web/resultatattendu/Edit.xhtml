@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog  id="ResultatattenduEditDlg"  widgetVar="ResultatattenduEditDialog" modal="true" resizable="true" appendTo="@(body)" header="#{langues.editresultatat}">
+            <h:form id="ResultatattenduEditForm">
+
+                <h:panelGroup id="display">
+
+                    <div style=" border: solid 0.5px ; width: 1200px ; height: 550px; overflow: auto;">
+                        <br/>
+
+                        <center>
+
+                            <p:panelGrid columns="2">
+                                
+                                <p:outputLabel value="#{langues.interventionpnds}"/>
+                                <p:inputTextarea cols="120" rows="6" disabled="true" value="#{loginController.language eq 'en' ? resultatAttenduController.resultatattendu.idindicateur.idinterventionpnds.nomEn : resultatAttenduController.resultatattendu.idindicateur.idinterventionpnds.nomFr}"/>
+                                
+                                <p:outputLabel value="#{langues.Indicateur}" for="indicateur"/>
+                                <p:inputTextarea cols="120" rows="6" disabled="true" id="indicateur" value="#{loginController.language eq 'en' ? resultatAttenduController.resultatattendu.idindicateur.nomEn : resultatAttenduController.resultatattendu.idindicateur.nomFr}"/>
+                              
+                                <p:outputLabel value="#{langues.objectif_opérationnel}"/>
+                                <p:inputTextarea cols="120" rows="6" disabled="true" value="#{loginController.language eq 'en' ? resultatAttenduController.resultatattendu.idindicateur.idinterventionpnds.objectifOpEn : resultatAttenduController.resultatattendu.idindicateur.idinterventionpnds.nomEn}"/>
+
+                                <p:outputLabel value="#{langues.resultatfr}" for="resultatfr"/>
+                                <p:inputTextarea id="resultatfr" cols="100" rows="5" value="#{resultatAttenduController.resultatattendu.resultatFr}"/>
+                               
+                                <p:outputLabel value="#{langues.resultaten}" for="resultaten"/>
+                                <p:inputTextarea id="resultaten" cols="100" rows="5" value="#{resultatAttenduController.resultatattendu.resultatEn}"/>
+                                
+                            </p:panelGrid>
+
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{resultatAttenduController.edit()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:Tablematieren1ListForm:datalist,:Tablematieren1ListForm:growl" oncomplete="PF('ResultatattenduEditDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('ResultatattenduEditDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

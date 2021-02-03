@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog  showEffect="slide" hideEffect="slide" id="DistrictEditDlg" widgetVar="DistrictEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.EditDistrictTitle}" closeOnEscape="true">
+
+            <h:form id="DistrictEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{districtController.selected != null}">
+
+                        <p:outputLabel value="#{langues.region}" for="idregion" />
+                        <p:selectOneMenu id="idregion" value="#{districtController.selected.idregion}" required="true" requiredMessage="#{langues.region} : #{langues.requis}" converter="regionConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{districtController.regions}"
+                                           var="idregionItem"
+                                           itemValue="#{idregionItem}"
+                                           itemLabel="#{loginController.language eq 'en' ? idregionItem.nomEn : idregionItem.nomFr}"/>                                           
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.CreateDistrictLabel_codedistrict}" for="codedistrict" />
+                        <p:inputText style=" width: 200px"  id="codedistrict" value="#{districtController.selected.codedistrict}" title="#{langues.EditDistrictTitle_codedistrict}" size="254" maxlength="254"/>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom_fr"/>
+                        <p:inputText style=" width: 200px"  id="nom_fr" value="#{districtController.selected.nomFr}" size="254" maxlength="254"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en"/>
+                        <p:inputText style=" width: 200px"  id="nom_en" value="#{districtController.selected.nomEn}" size="254" maxlength="254"/>
+
+                        <p:outputLabel value="#{langues.CreateDistrictLabel_coordonnegps}" for="coordonnegps" />
+                        <p:inputText style=" width: 200px" id="coordonnegps" value="#{districtController.selected.coordonnegps}" title="#{langues.EditDistrictTitle_coordonnegps}" size="254" maxlength="254"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{districtController.edit()}" value="#{langues.Save}" update="display,:DistrictListForm:datalist,:growl" oncomplete="PF('DistrictEditDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('DistrictEditDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

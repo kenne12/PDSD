@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="RecetteListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>#{langues.PROJECTION_DES_RECETTES}</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('RecetteListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <center>
+            <p:panelGrid   columns="4" columnClasses="column">
+
+                <p:outputLabel value="#{langues.structure}" for="structure"/>
+                <p:selectOneMenu id="structure" value="#{projectionrecetteController.structure.idstructure}" required="true" requiredMessage="#{langues.structure} : #{langues.requis}" filter="true">
+                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                    <f:selectItems value="#{projectionrecetteController.structures}" var="structure" itemLabel="#{loginController.language eq 'en' ? structure.nomEn : structure.nomFr}" itemValue="#{structure.idstructure}"/>
+                    <p:ajax update="datalist" listener="#{projectionrecetteController.initStructure()}" />
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+        </center>
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{projectionrecetteController.sourcefinancements}"
+                     var="item"
+                     rowKey="#{item.idsourcefi}"
+                     paginator="true"
+                     rows="80"
+                     rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                     style="width: 90%;margin-left: 5% "
+                     rowIndexVar="index"   
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{projectionrecetteController.sourcefinancement}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{projectionrecetteController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('RecetteListForm:viewButton').click();" listener="#{projectionrecetteController.activeButton()}"/>
+
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column rowspan="2" colspan="2" headerText="#{langues.sourcefinancement}"/>
+                    <p:column colspan="#{projectionrecetteController.annees.size()}" headerText="#{langues.Annee}"/>
+                </p:row>
+                <p:row>
+                    <ui:repeat value="#{projectionrecetteController.annees}" var="annee">
+                        <p:column headerText="#{annee.nom}"/>
+                    </ui:repeat>
+                </p:row>
+            </p:columnGroup>
+
+            <p:column colspan="2">
+                <h:outputText value="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}" />
+            </p:column>
+
+            <p:columns value="#{projectionrecetteController.annees}" var="var">
+                <h:outputText value="#{projectionrecetteController.findRecette(item,var).valeur}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:columns>
+
+        </p:dataTable>
+
+
+        <p:separator style="width: 90%;margin-left: 5% "/>
+
+        <center>
+            <p:panelGrid columns="2">
+                <p:outputLabel for="commentaire" value="#{langues.commentairetab}"/>
+                <p:inputTextarea  id="commentaire" disabled="true" style="color: red" value="#{projectionrecetteController.commentairetab.commentaire}" rows="8" cols="150">
+                    <p:ajax event="keyup"/>
+                </p:inputTextarea>
+            </p:panelGrid>
+        </center>
+
+        <p:separator style="width: 90%;margin-left: 5% "/>
+
+        <center>
+            <p:commandButton id="editButton" update=":RecetteCreateForm,growl,:RecetteCreateForm:commentaire" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{projectionrecetteController.loadTable()}" oncomplete="PF('RecetteCreateDialog').show()"/>
+        </center>
+
+    </h:form>
+</ui:composition>

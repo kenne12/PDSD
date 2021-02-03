@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="size" hideEffect="size" id="FormationsanitaireViewDlg" widgetVar="FormationsanitaireViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.ViewStructureCreateLink}" closeOnEscape="true">
+
+            <h:form id="FormationsanitaireViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{formationsanitaireController.selected != null}">
+
+                        <h:outputText value="#{langues.Numero}"/>
+                        <h:outputText value="#{formationsanitaireController.selected.idfos}"/>
+
+                        <h:outputText value="#{langues.Code}"/>
+                        <h:outputText value="#{formationsanitaireController.selected.codefosa}"/>
+
+                        <h:outputText value="#{langues.nom}"/>
+                        <h:outputText value="#{formationsanitaireController.selected.nom}"/>
+
+                        <h:outputText value="#{langues.CreateRegionLabel_coordonnegps}"/>
+                        <h:outputText value="#{formationsanitaireController.selected.coordonnegps}"/>
+
+                        <h:outputText value="#{langues.typestructure}"/>
+                        <h:outputText value="#{formationsanitaireController.selected.idtypefosa.nom}"/>
+
+                        <h:outputText value="#{langues.district}"/>
+                        <h:outputText value="#{formationsanitaireController.selected.iddistrict.nom}"/>
+
+
+                    </p:panelGrid>
+                    <p:commandButton value="#{langues.Close}" onclick="PF('FormationsanitaireViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

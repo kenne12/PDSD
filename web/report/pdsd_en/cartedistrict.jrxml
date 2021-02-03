@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cartedistrict" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3af3993-d193-4c82-bafe-431e3dc226dc">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+  public.partiehaute.idpartiehaute,
+  public.partiehaute.carte,
+  public.partiehaute.introduction
+FROM
+  public.partiehaute
+WHERE
+  public.partiehaute.iddistrict = 648]]>
+	</queryString>
+	<field name="idpartiehaute" class="java.lang.Integer"/>
+	<field name="carte" class="java.lang.String"/>
+	<field name="introduction" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="740" height="22" uuid="b67113bd-9e5e-4c49-b0e7-736476052426"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[I.1- CARTOGRAPHIE SANITAIRE DU DISTRICT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="202" splitType="Stretch">
+			<image scaleImage="RealSize" vAlign="Middle">
+				<reportElement x="18" y="0" width="1046" height="202" uuid="ddc23d26-7cd6-43ad-aa3f-9ec6beda2d6f"/>
+				<imageExpression><![CDATA["images/"+$F{carte}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

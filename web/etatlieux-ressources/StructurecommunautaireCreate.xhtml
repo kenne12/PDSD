@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="StructurecommunautaireCreateDlg" widgetVar="StructurecommunautaireCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateStructurecommunautaireTitle}">
+            <h:form id="StructurecommunautaireCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel for="type" value="#{langues.typestructure}"/>
+                        <p:selectOneMenu id="type" value="#{structurecommunautaireController.typestructurecommunautaire.idtypestructurecommunautaire}" required="true" requiredMessage="#{langues.typestructure} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{structurecommunautaireController.typestructurecommunautaires}" var="item" itemLabel="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}" itemValue="#{item.idtypestructurecommunautaire}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="etat" value="#{langues.etatfonctionnement}"/>
+                        <p:selectOneMenu id="etat" value="#{structurecommunautaireController.etatfonctstructcom.idetatfonctstructcom}" required="true" requiredMessage="#{langues.etatfonctionnement} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{structurecommunautaireController.etatfonctstructcoms}" var="etat" itemLabel="#{loginController.language eq 'en' ? etat.nomEn : etat.nomFr}" itemValue="#{etat.idetatfonctstructcom}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom_fr" />                        
+                        <p:inputTextarea id="nom_fr" rows="5" cols="50" required="true" requiredMessage="#{langues.nom_francais} : #{langues.requis}" value="#{structurecommunautaireController.structurecommunautaire.nomFr}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+                        
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />                        
+                        <p:inputTextarea id="nom_en" rows="5" cols="50" required="true" requiredMessage="#{langues.nom_anglais} : #{langues.requis}" value="#{structurecommunautaireController.structurecommunautaire.nomEn}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                        <p:outputLabel for="effectif" value="#{langues.CreateStructurecommunautaireLabel_effectif}"/>
+                        <p:inputText id="effectif" value="#{structurecommunautaireController.structurecommunautaire.effectif}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{structurecommunautaireController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:StructurecommunautaireListForm:datalist,:StructurecommunautaireListForm:growl,:StructurecommunautaireListForm:commentaire" oncomplete="PF('StructurecommunautaireCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('StructurecommunautaireCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

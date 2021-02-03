@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="ProfilpersonnelListForm">
+
+        <p:panel header="#{langues.ListProfilpersonnelTitle}">
+
+            <p:contextMenu id="ProfilpersonnelDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('ProfilpersonnelListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('ProfilpersonnelListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('ProfilpersonnelListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('ProfilpersonnelListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                 
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{profilpersonnelController.profilpersonnels}"
+                         var="item"
+                         rowKey="#{item.idprofilpersonnel}"
+                         paginator="true"
+                         style="width: 80%;margin-left: 10%"
+                         rows="10"
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         draggableColumns="true"
+                         resizableColumns="true"
+                         scrollHeight="100"
+                         selection="#{profilpersonnelController.profilpersonnel}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{profilpersonnelController.activeButton()}" />
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{profilpersonnelController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ProfilpersonnelListForm:viewButton').click();" listener="#{profilpersonnelController.activeButton()}"/>
+                
+                <p:column style="width: 25%" filterBy="#{item.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_francais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 25%" filterBy="#{item.nomEn}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomEn}"/>
+                </p:column>
+
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.visible_au_niveau_region}"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox disabled="true" value="#{item.region}"/>
+                </p:column>
+
+                <p:column style="width: 15%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.visible_au_niveau_district}"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox disabled="true" value="#{item.district}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton"  icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{profilpersonnelController.prepareCreate()}" update=":ProfilpersonnelCreateForm" oncomplete="PF('ProfilpersonnelCreateDialog').show()"/>
+            <p:commandButton id="editButton"    icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{profilpersonnelController.prepareEdit()}" update=":ProfilpersonnelCreateForm"  oncomplete="PF('ProfilpersonnelCreateDialog').show()" disabled="#{profilpersonnelController.detail}"/>
+            <p:commandButton id="deleteButton"  icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{profilpersonnelController.deleteProfilpersonnel()}" update=":growl,datalist" disabled="#{profilpersonnelController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="RhListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <center>
+            <h1>DIAGNOSTIC : FACTEURS-OPPORTUNITES-MENACES</h1>
+        </center>
+
+        <center>
+            <h2>I - PRINCIPAUX FACTEURS</h2>
+        </center>
+
+
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('RhListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{facteurController.facteurs}"
+                     var="item"
+                     rowKey="#{item.idfacteur}"
+                     paginator="true"
+                     rows="10"
+                     style="width: 70%;margin-left: 15%"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     selection="#{facteurController.facteur}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{facteurController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('RhListForm:viewButton').click();" listener="#{facteurController.activeButton()}"/>
+
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column style="width:200px " rowspan="2" colspan="5" headerText="Facteur" />
+                    <p:column colspan="#{facteurController.typefacteurs.size()}" headerText="Type Facteur" />
+                </p:row>
+
+
+
+                <p:row>
+                    <ui:repeat value="#{facteurController.typefacteurs}" var="typefacteur">
+                        <p:column headerText="#{typefacteur.nom}" />
+                    </ui:repeat>
+                </p:row>
+            </p:columnGroup>
+
+            <p:column colspan="5" >
+                <h:outputText value="#{item.nom}" />
+            </p:column>
+
+
+            <p:columns value="#{facteurController.typefacteurs}" var="prf">
+                <h:outputText value="#{facteurController.findFacteur(item,prf)}"/>
+            </p:columns>
+
+        </p:dataTable>
+
+
+        <center>
+            <p:commandButton id="editButton" update=":RhCreateForm,growl" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{facteurController.uptadeTable()}" oncomplete="PF('RhCreateDialog').show()"/>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+
+    </h:form>
+</ui:composition>

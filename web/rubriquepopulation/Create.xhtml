@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="RubriquepopulationCreateDlg" widgetVar="RubriquepopulationCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateRubriquepopulationTitle}" closeOnEscape="true">
+
+            <h:form id="RubriquepopulationCreateForm">
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText style=" width: 100px"  id="code" value="#{rubriquepopulationController.rubriquepopulation.code}"   required="true" requiredMessage="#{langues.Code} : #{langues.requis}"/>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 200px"  id="nom" value="#{rubriquepopulationController.rubriquepopulation.nomFr}"  required="true" requiredMessage="#{langues.nom_francais} : #{langues.nom_francais}"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 200px"  id="nom_en" value="#{rubriquepopulationController.rubriquepopulation.nomEn}"  required="true" requiredMessage="#{langues.nom_anglais} : #{langues.nom_francais}"/>
+
+                        <p:outputLabel value="Pourcentage" for="nm" />
+                        <p:inputText style=" width: 50px"  id="nm" value="#{rubriquepopulationController.rubriquepopulation.pourcentage}" title="#{langues.CreateRegionTitle_nom}"  required="true" requiredMessage="pourcentage : #{langues.requis}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rubriquepopulationController.saveRubriquepopulation()}" value="#{langues.Save}" update="display,:RubriquepopulationListForm:datalist,:growl" oncomplete="PF('RubriquepopulationCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('RubriquepopulationCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:define name="title">
+        <h:outputText value="Etat des lieux - ressources"/>
+    </ui:define>
+
+    <ui:define name="body">
+        <f:view locale="#{loginController.language}">
+
+
+            <h:form id="RhListForm">
+
+                <p:growl id="growl" showDetail="true"/>
+
+                <center>
+                    <h1>ETAT DES LIEUX</h1>
+                </center>
+
+                <br/>
+
+                <center>
+                    <h2>I - RESSOURCES HUMAINES</h2>
+                </center>
+
+
+
+                <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+                    <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('RhListForm:editButton').click();" icon="ui-icon-pencil"/>            
+                    <p:separator/>                 
+                </p:contextMenu>
+
+                <center>
+                    <p:panelGrid   columns="2" columnClasses="column">
+                        <p:outputLabel value="#{langues.Annee}"/>
+                        <p:selectOneMenu value="#{rhsController.annee.idannee}" required="true" filter="true" requiredMessage="#{langues.Annee} : #{langues.requis}">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{rhsController.annees}" var="annee" itemLabel="#{annee.nom}" itemValue="#{annee.idannee}"/>
+                            <p:ajax update="datalist"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </center>
+
+                <br/>
+
+                <p:dataTable id="datalist"
+                             value="#{rhsController.structures}"
+                             var="item"
+                             rowKey="#{item.idstructure}"
+                             paginator="true"
+                             rows="10"
+                             style="width: 90%;margin-left: 5% "
+                             rowIndexVar="index"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             draggableColumns="true"
+                             resizableColumns="true"
+                             scrollHeight="100"
+                             selection="#{rhsController.structure}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                    <p:ajax event="rowSelect" listener="#{rhsController.activeButton()}" />
+                    <p:ajax event="rowDblselect" onsuccess="document.getElementById('RhListForm:viewButton').click();" listener="#{rhsController.activeButton()}"/>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" colspan="5" headerText="#{langues.nom}" />
+                            <p:column colspan="#{rhsController.profilpersonnels.size()}" headerText="#{langues.profilpersonnel}" />
+                        </p:row>
+                        <p:row>
+                            <ui:repeat value="#{rhsController.profilpersonnels}" var="profil">
+                                <p:column headerText="#{loginController.language eq 'en' ? profil.nomEn : profil.nomFr}" />
+                            </ui:repeat>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column colspan="5" >
+                        <h:outputText value="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}" />
+                    </p:column>
+
+
+                    <p:columns value="#{rhsController.profilpersonnels}" var="prf">
+                        <h:outputText value="#{rhsController.findRhs(item,prf)}"/>
+                    </p:columns>
+
+                </p:dataTable>
+
+
+                <center>
+                    <p:commandButton id="editButton" update=":RhCreateForm,growl" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{rhsController.uptadeTable()}" oncomplete="PF('RhCreateDialog').show()"/>
+                </center>
+                <ui:include src="/confirmation.xhtml"/>
+
+            </h:form>
+
+
+            <p:dialog id="RhCreateDlg" footer="#{langues.footer1}" widgetVar="RhCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="SYNTHESE DES RESSOURCES HUMAINES">
+                <h:form id="RhCreateForm">
+
+                    <h:panelGroup id="display">
+
+                        <div style=" border: solid 0.5px ; width: 1000px ; height: 500px; overflow: auto;">
+
+                            <p:dataTable id="datalist" value="#{rhsController.rhses}" var="item"
+                                         paginator="true"
+                                         rows="10"
+                                         editMode="cell"
+                                         editable="true"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="margin-top:1% !important; text-align:left; margin-left:15%; margin-right: 15%; font-weight: bold; font-style: oblique;"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{msg.Vide}"
+                                         widgetVar="fonctionTable"
+                                         draggableColumns="true"
+                                         resizableColumns="true">
+
+                                <p:column style="width:70%">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{langues.profilpersonnel}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{loginController.language eq 'en' ? item.idprofilpersonnel.nomEn : item.idprofilpersonnel.nomFr}"/>
+                                </p:column>
+
+                                <p:column headerText="Nombre">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{item.valeur}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText  value="#{item.valeur}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </div>
+
+                        <p:commandButton actionListener="#{rhsController.save()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:RhListForm:datalist,:RhListForm:growl" oncomplete="PF('RhCreateDialog').hide()"/>
+                        <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('RhCreateDialog').hide()"/>
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+
+            <h:form id="ActeurcomListForm">
+
+                <br/>
+
+                <center>
+                    <h2>II - SYNTHESE DES ACTEURS COMMUNAUTAIRES</h2>
+                </center>
+
+                <p:messages id="msgErreur" closable="true"/>
+                <p:growl id="growl" showDetail="true"/>
+
+                <p:dataTable id="datalist" value="#{acteurcommunautaireController.acteurs}" var="item"
+                             paginator="true"
+                             selectionMode="single"
+                             selection="#{acteurcommunautaireController.acteur}"
+                             rowKey="#{item.idacteur}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             emptyMessage="#{msg.Vide}"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <p:ajax event="rowSelect"   update=":ActeurcomListForm:createButton :ActeurcomListForm:editButton :ActeurcomListForm:deleteButton" listener="#{acteurcommunautaireController.activeButton()}"/>
+                    <p:ajax event="rowUnselect" update=":ActeurcomListForm:createButton :ActeurcomListForm:editButton :ActeurcomListForm:deleteButton" listener="#{acteurcommunautaireController.deactiveButton()}" />
+
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.TypeActeur}"/>
+                        </f:facet>
+                        <h:outputText value="#{loginController.language eq 'en' ? item.idtypeacteur.nomEn : item.idtypeacteur.nomFr}"/>
+                    </p:column>
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.GroupeActeur}"/>
+                        </f:facet>
+                        <h:outputText value="#{loginController.language eq 'en' ? item.idgroupeacteur.nomEn : item.idgroupeacteur.nomFr}"/>
+                    </p:column>
+
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.nom}"/>
+                        </f:facet>
+                        <h:outputText value="#{loginController.language eq 'en' ? item.nomEn : item.nomFr}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+
+                <center>
+                    <p:commandButton id="createButton" icon="ui-icon-plus" update=":ActeurcomCreateForm,editButton,deleteButton,datalist"   value="Ajouer une ligne" actionListener="#{acteurcommunautaireController.prepareCreate()}"  oncomplete="PF('ActeurcomCreateDialog').show()"/>                    
+                    <p:commandButton id="editButton"   icon="ui-icon-pencil" update=":ActeurcomCreateForm" value="#{langues.Edit}" actionListener="#{acteurcommunautaireController.prepareEdit()}" oncomplete="PF('ActeurcomCreateDialog').show()" disabled="#{acteurcommunautaireController.detail}"/>
+                    <p:commandButton id="deleteButton" icon="ui-icon-trash" update="datalist" actionListener="#{acteurcommunautaireController.delete()}" value="#{langues.Delete}" disabled="#{acteurcommunautaireController.detail}"> 
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </center>
+
+            </h:form>
+
+
+
+            <p:dialog id="ActeurcomCreateDlg" widgetVar="ActeurcomCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="CREER / MODIFIER UN ACTEUR">
+                <h:form id="ActeurcomCreateForm">
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2">
+
+                            <p:outputLabel for="type" value="Type acteur"/>
+                            <p:selectOneMenu id="type" value="#{acteurcommunautaireController.typeacteur.idtypeacteur}" required="true" requiredMessage="Type : obligatoire">
+                                <f:selectItem itemLabel="#{langues.choisir}"/>
+                                <f:selectItems value="#{acteurcommunautaireController.typeacteurs}" var="item" itemLabel="#{item.nomFr}" itemValue="#{item.idtypeacteur}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="groupe" value="Groupe acteur"/>
+                            <p:selectOneMenu id="groupe" value="#{acteurcommunautaireController.groupeacteur.idgroupeacteur}" required="true" requiredMessage="Groupe acteur : obligatoire">
+                                <f:selectItem itemLabel="#{langues.choisir}"/>
+                                <f:selectItems value="#{acteurcommunautaireController.groupeacteurs}" var="grpe" itemLabel="#{grpe.nomFr}" itemValue="#{grpe.idgroupeacteur}"/>
+                            </p:selectOneMenu>
+
+
+                            <p:outputLabel value="Nom" for="nom" />                        
+                            <p:inputTextarea id="nom" rows="5" cols="50" required="true" requiredMessage="Nom : obligatoire" value="#{acteurcommunautaireController.acteur.nomFr}" queryDelay="750" minQueryLength="4">
+                                <p:ajax/>
+                            </p:inputTextarea>
+
+                        </p:panelGrid>
+                        <p:commandButton actionListener="#{acteurcommunautaireController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:ActeurcomListForm:datalist,:ActeurcomListForm:growl" oncomplete="PF('ActeurcomCreateDialog').hide()"/>
+                        <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('ActeurcomCreateDialog').hide()"/>
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+
+            <h:form id="InfrastructureListForm">
+
+                <p:growl id="growl" showDetail="true"/>
+
+                <br/>
+
+                <center>
+                    <h2>III - INFRASTRUCTURES</h2>
+                </center>
+
+
+
+                <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+                    <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('InfrastructureListForm:editButton').click();" icon="ui-icon-pencil"/>            
+                    <p:separator/>                 
+                </p:contextMenu>
+
+                <center>
+                    <p:panelGrid   columns="2" columnClasses="column">
+                        <p:outputLabel value="Type structure"/>
+                        <p:selectOneMenu value="#{etatlieuxinfrastructureController.typestructure.idtypestructure}" required="true" filter="true">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{etatlieuxinfrastructureController.typestructures}" var="types" itemLabel="#{types.nomFr}" itemValue="#{types.idtypestructure}"/>
+                            <p:ajax listener="#{etatlieuxinfrastructureController.update()}" update="datalist"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </center>
+
+                <br/>
+
+                <p:dataTable id="datalist"
+                             value="#{etatlieuxinfrastructureController.structures}"
+                             var="item"
+                             rowKey="#{item.idstructure}"
+                             paginator="true"
+                             rows="10"
+                             style="width: 90%;margin-left: 5% "
+                             rowIndexVar="index"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             draggableColumns="true"
+                             resizableColumns="true"
+                             scrollHeight="100"
+                             selection="#{etatlieuxinfrastructureController.structure}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                    <p:ajax event="rowSelect" listener="#{etatlieuxinfrastructureController.activeButton()}" />
+                    <p:ajax event="rowDblselect" onsuccess="document.getElementById('InfrastructureListForm:viewButton').click();" listener="#{etatlieuxinfrastructureController.activeButton()}"/>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" colspan="5" headerText="Nom" />
+                            <p:column colspan="#{etatlieuxinfrastructureController.typeinfraTypestrucs.size()}" headerText="Type d'infrastructureS" />
+                        </p:row>
+                        <p:row>
+                            <ui:repeat value="#{etatlieuxinfrastructureController.typeinfraTypestrucs}" var="type">
+                                <p:column headerText="#{type.idtypeinfrastructure.nomFr}" />
+                            </ui:repeat>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column colspan="5" >
+                        <h:outputText value="#{item.nom}" />
+                    </p:column>
+
+                    <p:columns value="#{etatlieuxinfrastructureController.typeinfraTypestrucs}" var="tsti">
+                        <h:outputText value="#{etatlieuxinfrastructureController.findInfrastructure(item, tsti).getIdetatinfrastructure().getNom()}"/>
+                    </p:columns>
+
+                </p:dataTable>
+
+
+                <center>
+                    <p:commandButton id="editButton" update=":InfrastructureCreateForm,growl" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{etatlieuxinfrastructureController.uptadeTable()}" oncomplete="PF('InfrastructureCreateDialog').show()"/>
+                </center>
+
+            </h:form>
+
+
+
+            <p:dialog id="InfrastructureCreateDlg" footer="Cliquez sur chaque cellule de la valeur pour les renseigner" widgetVar="InfrastructureCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="AJOUTER / MODIFIER LES INFRASTRUCTURES">
+                <h:form id="InfrastructureCreateForm">
+
+                    <h:panelGroup id="display">
+
+                        <div style=" border: solid 0.5px ; width: 1200px ; height: 500px; overflow: auto;">
+
+                            <p:dataTable id="datalist" value="#{etatlieuxinfrastructureController.infrastructures}" var="item"
+                                         paginator="true"
+                                         rows="10"
+                                         editMode="cell"
+                                         editable="true"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="margin-top:1% !important; text-align:left; margin-left:15%; margin-right: 15%; font-weight: bold; font-style: oblique;"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{msg.Vide}"
+                                         widgetVar="fonctionTable"
+                                         draggableColumns="true"
+                                         resizableColumns="true">
+
+                                <p:column style="width:40%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Type equipement"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.idtypeinfraTypestruc.idtypeinfrastructure.nomFr}"/>
+                                </p:column>
+
+                                <p:column style="width:20%" headerText="Nom">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText style="width: 250px" value="#{item.nom}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText style="width: 100px" value="#{item.nom}">
+                                                <p:ajax event="keyup" />
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+
+                                <p:column style="width:20%" headerText="Cout unitaire">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText style="width: 250px" value="#{item.coutunitaire}" /></f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText style="width: 100px" value="#{item.coutunitaire}">
+                                                <p:ajax event="keyup"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width:20%" headerText="Etat infrastructure">
+                                    <p:cellEditor>
+                                        <f:facet name="output"> <h:outputText  value="#{item.idetatinfrastructure.nomFr}" /> </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu style="width: 150px" value="#{item.idetatinfrastructure}" converter="etatinfrastructureConverter">
+                                                <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                                                <f:selectItems value="#{etatlieuxinfrastructureController.etatinfrastructures}" var="etat" itemLabel="#{etat.nomFr}" itemValue="#{etat}"/>
+                                                <p:ajax update="datalist"/>
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </div>
+
+                        <p:commandButton actionListener="#{etatlieuxinfrastructureController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:InfrastructureListForm:datalist,:InfrastructureListForm:growl" oncomplete="PF('InfrastructureCreateDialog').hide()"/>
+                        <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('InfrastructureCreateDialog').hide()"/>
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+        </f:view>
+    </ui:define>
+
+
+
+</ui:composition>

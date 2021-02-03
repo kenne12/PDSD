@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="PartiehauteListform" enctype="multipart/form-data">
+
+        <p:panel header="#{langues.partiehaute}">
+
+            <p:tabView>
+                
+                <p:tab title="#{langues.introduction}">
+                    <p:inputTextarea style=" width: 1200px" rows="27"  id="intro" value="#{partiehauteController.partiehaute.introductionFr}" />
+                </p:tab>
+
+                <p:tab title="#{langues.presentation}">
+                    <p:inputTextarea style=" width: 1200px;"  rows="27" id="prese" value="#{partiehauteController.partiehaute.presentationgeneraleFr}"/>
+                </p:tab>
+
+                <p:tab title="#{langues.situation_geo}">
+                    <p:inputTextarea style=" width: 1200px" rows="27"  id="situationgeo" value="#{partiehauteController.partiehaute.situationgeographiqueFr}"/>
+                </p:tab>
+
+                <p:tab title="#{langues.situation_eco}">
+                    <p:inputTextarea style=" width: 1200px" rows="27"  id="siteco" value="#{partiehauteController.partiehaute.situationeconomiqueFr}"/>
+                </p:tab>
+
+                <p:tab title="#{langues.situation_socio}">
+                    <p:inputTextarea style=" width: 1200px" rows="27" id="sitsocieco" value="#{partiehauteController.partiehaute.situationsocioculturelleFr}"/>
+                </p:tab>
+
+                <p:tab title="#{langues.chargement_carte}">
+                    <h:panelGrid  columns="1" style="font-weight: bold; font-style: oblique; width: 100%"> 
+                        
+                        <p:fileUpload id="photo" fileUploadListener="#{partiehauteController.handleFileUpload}"  
+                                      label="#{langues.insert_carte}"
+                                      uploadLabel="#{langues.telecharger}"
+                                      cancelLabel="#{langues.Cancel}"
+                                      mode="advanced"   
+                                      update="affi_photo"  
+                                      sizeLimit="1000000000"   
+                                      allowTypes="/(\.|\/)(gif|jpg|jpeg|png)$/"
+                                      auto="false"
+                                      style="text-align:left; font-weight: bold; font-style: oblique;"
+                                      />
+                    </h:panelGrid>                      
+
+                    <p:graphicImage id="affi_photo" value="/report/pdsd/images/#{partiehauteController.carte}" 
+                                    height="270" width="400"
+                                    style="border-radius: 10px 10px 10px 10px; border: 5px;font-weight: bold; font-style: oblique;"/>
+                                    
+                </p:tab>
+
+            </p:tabView>
+        </p:panel>
+
+        <center>
+
+            <p:commandButton actionListener="#{partiehauteController.savePartiehaute()}" value="#{langues.Save}" update=":PartiehauteListform,:growl" > 
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

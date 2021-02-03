@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="Tablematieren1CreateDlg" widgetVar="Tablematieren1CreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.tablematiern1}">
+            <h:form id="Tablematieren1CreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="#{langues.niveau_1} : #{langues.francais}" for="nom_fr" />                        
+                        <p:inputTextarea id="nom_fr" rows="5" cols="100" required="true" requiredMessage="#{langues.niveau_1} #{langues.francais} : # #{langues.requis}" value="#{tablematiere_n1_Controller.tablematiereN1.niveau1Fr}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                        <p:outputLabel value="#{langues.niveau_1} : #{langues.anglais}" for="nom_en" />                        
+                        <p:inputTextarea id="nom_en" rows="5" cols="100" required="true" requiredMessage="#{langues.niveau_1} #{langues.anglais} : # #{langues.requis}" value="#{tablematiere_n1_Controller.tablematiereN1.niveau1En}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                        <p:outputLabel value="#{langues.default_num_page}" for="numpage"/>
+                        <p:inputText id="numpage" value="#{tablematiere_n1_Controller.tablematiereN1.defaultnumpage}"/>
+
+                        <p:outputLabel value="Visibilité au niveau district"/>
+                        <p:selectBooleanCheckbox value="#{tablematiere_n1_Controller.tablematiereN1.district}"/>
+
+                        <p:outputLabel value="Visibilité au niveau région"/>
+                        <p:selectBooleanCheckbox value="#{tablematiere_n1_Controller.tablematiereN1.region}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tablematiere_n1_Controller.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:Tablematieren1ListForm:datalist,:Tablematieren1ListForm:msgErreur" oncomplete="PF('Tablematieren1CreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('Tablematieren1CreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

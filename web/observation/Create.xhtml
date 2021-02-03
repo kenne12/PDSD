@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="ObservationCreateDlg" widgetVar="ObservationCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Ajout d'un Observation" closeOnEscape="true">
+
+            <h:form id="ObservationCreateForm">
+
+                <h:panelGroup id="display" >
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Observation" for="nom" />
+                        <p:inputTextarea style=" width: 500px"  id="nom" value="#{observationController.observation.valeurFr}"  required="true" requiredMessage="le champs observation est obligatoire"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{observationController.saveObservation()}" value="#{langues.Save}" update="display,:ObservationListForm:datalist,:growl" oncomplete="PF('ObservationCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('ObservationCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

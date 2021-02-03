@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PrivilegeViewDlg" widgetVar="PrivilegeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="CONSULTER UN PRIVILEGE">
+            <h:form id="PrivilegeViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{privilegeController.selectedPrivilege != null}">
+                        <h:outputText value="#{langues.groupeutilisateur}"/>
+                        <h:outputText value="#{privilegeController.selectedPrivilege.idgroupeutilisateur.nom}" />
+                        
+                        <h:outputText value="#{langues.tache}"/>
+                        <h:outputText value="#{loginController.language eq 'en' ? privilegeController.selectedPrivilege.idmenu.libelleEn : privilegeController.selectedPrivilege.idmenu.libelleFr}"/>
+                        
+                        <h:outputText value="#{langues.date_attribution}"/>
+                        <h:outputText value="#{privilegeController.selectedPrivilege.dateattribution}"/>
+                        
+                        <h:outputText value="#{langues.etat}"/>
+                        <p:selectBooleanCheckbox value="#{privilegeController.selectedPrivilege.etat}" disabled="true"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Close}" onclick="PF('PrivilegeViewDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

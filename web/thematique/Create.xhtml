@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="GroupeUtilisateurCreateDlg" widgetVar="GroupeUtilisateurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Ajouter Une Thématique">
+            <h:form id="GroupeUtilisateurCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Nom Fr" for="nom" />
+                        <p:inputText id="nom" value="#{thematiqueController.thematique.nomFr}" style="float: right; height:30px ; color: red; width:240px" required="true" requiredMessage="Obligatoire " />
+                         <p:outputLabel value="Nom En" for="nom1" />
+                        <p:inputText id="nom1" value="#{thematiqueController.thematique.nomEn}" style="float: right; color: red; height:30px ; width:240px" required="true" requiredMessage="Obligatoire " />
+                   
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{thematiqueController.create()}" style="float: right;" icon="ui-icon-check" value="Valider" update="display,:GroupeUtilisateurListForm:datalist,:GroupeUtilisateurListForm:msgErreur" oncomplete="PF('GroupeUtilisateurCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="Retour" onclick="PF('GroupeUtilisateurCreateDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

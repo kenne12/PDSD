@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog  id="DepenseCreateDlg" footer="#{langues.footer1}" widgetVar="DepenseCreateDialog" modal="true" resizable="true" appendTo="@(body)" header="#{langues.CreateDepenseTitle}">
+            <h:form id="DepenseCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <div style=" border: solid 0.5px ; width: 1200px ; height: 500px; overflow: auto;">
+
+
+                        <center>
+                            <p:panelGrid   columns="2" columnClasses="column">
+
+                                <p:outputLabel value="#{langues.Annee}"/>
+                                <p:selectOneMenu value="#{depenseController.annee.idannee}" required="true" requiredMessage="#{langues.Annee} : #{langues.requis}" filter="true">
+                                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                                    <f:selectItems value="#{depenseController.annees}" var="annee" itemLabel="#{annee.nom}" itemValue="#{annee.idannee}"/>
+                                    <p:ajax update="datalist" listener="#{depenseController.uptadeTable()}"/>
+                                </p:selectOneMenu>
+
+                            </p:panelGrid>
+                        </center>
+
+                        <p:dataTable id="datalist" value="#{depenseController.depenses}" var="item"
+                                     paginator="true"
+                                     rows="10"
+                                     editMode="cell"
+                                     editable="true"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top:1% !important; text-align:left; margin-left:10%; margin-right: 10%; font-weight: bold; font-style: oblique;"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{msg.Vide}"
+                                     widgetVar="fonctionTable"
+                                     draggableColumns="true"
+                                     resizableColumns="true">
+
+                            <f:facet name="header"> 
+                                <h:outputText value="#{loginController.language eq 'en' ? depenseController.structure.nomEn : depenseController.structure.nomFr} - #{depenseController.annee.nom}"/>
+                            </f:facet> 
+
+                            <p:column style="width:65%">
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <h:outputText value="#{loginController.language eq 'en' ? item.idnaturedepense.nomEn : item.idnaturedepense.nomFr}"/>
+                            </p:column>
+
+                            <p:column style="width:35%" headerText="#{langues.montant}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.valeur}">
+                                            <f:convertNumber/>
+                                        </h:outputText></f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText  value="#{item.valeur}">
+                                            <f:convertNumber/>
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <br/>
+
+                        <center>
+                            <p:panelGrid columns="2">
+                                <p:outputLabel for="commentaire" value="#{langues.commentairetab}"/>
+
+                                <p:inputTextarea id="commentaire" value="#{depenseController.commentairetab.commentaire}" rows="8" cols="90">
+                                    <p:ajax event="keyup"/>
+                                </p:inputTextarea>
+                                
+                            </p:panelGrid>
+                        </center>
+
+                    </div>
+
+                    <p:commandButton actionListener="#{depenseController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:DepenseListForm:datalist,:DepenseListForm:growl,:DepenseListForm:commentaire" oncomplete="PF('DepenseCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('DepenseCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

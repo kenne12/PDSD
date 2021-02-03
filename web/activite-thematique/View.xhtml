@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PrivilegeViewDlg" style="width: 800px; height: 400px" widgetVar="PrivilegeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="CONSULTER Une Activité par thematique">
+            <h:form id="PrivilegeViewForm">
+                <h:panelGroup id="display" style="width: 800px; height: 400px">
+                    <p:panelGrid style="width: 800px; height: 200px"  columns="2" rendered="#{thematiqueActiviteController.selectedActivitethem != null}">
+                        <h:outputText value="Thématique"/>
+                        <h:outputText style="width: 200px; height: 40px" value="#{thematiqueActiviteController.selectedActivitethem.idthematique.nomFr}" />
+                        
+                        <h:outputText value="Activité"/>
+                        <h:outputText style="width: 200px; height: 40px" value="#{loginController.language eq 'en' ? thematiqueActiviteController.selectedActivitethem.idactivite.nom : thematiqueActiviteController.selectedActivitethem.idactivite.nom}"/>
+                        
+                        
+                        <h:outputText value="#{langues.etat}"/>
+                        <p:selectBooleanCheckbox  style="width: 200px; height: 40px" value="#{thematiqueActiviteController.selectedActivitethem.etat}" disabled="true"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Close}" onclick="PF('PrivilegeViewDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

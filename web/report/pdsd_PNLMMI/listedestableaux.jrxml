@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listedestableaux" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f01414ca-e563-411b-b12d-7a2511804269">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddistrict" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  public.listetableau.idlisttableau,
+  public.listetableau.nom_fr,
+  public.listetableau_district.numpage
+FROM
+  public.listetableau
+  INNER JOIN public.listetableau_district ON (public.listetableau.idlisttableau = public.listetableau_district.idlisttableau)
+  INNER JOIN public.district ON (public.listetableau_district.iddistrict = public.district.iddistrict)
+WHERE
+  public.district.iddistrict = $P{iddistrict} order by  public.listetableau_district.numpage]]>
+	</queryString>
+	<field name="idlisttableau" class="java.lang.Integer"/>
+	<field name="nom_fr" class="java.lang.String"/>
+	<field name="numpage" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="266" height="20" forecolor="#3333FF" uuid="087ae185-a563-4e03-b99c-85aafe783bdc"/>
+				<textElement>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[TABLEAUX]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="2" width="653" height="24" uuid="f86a6bb8-0619-4862-a45b-d7b035af0ee9"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_fr} + ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="702" y="2" width="100" height="24" forecolor="#3333FF" uuid="5f7e3102-bb43-48e1-abb6-aa32f03a59ee"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numpage}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="11" y="27" width="691" height="1" uuid="ef943822-5134-440f-9014-15d4ab6c009b"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

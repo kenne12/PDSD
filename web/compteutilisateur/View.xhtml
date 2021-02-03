@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CompteUtilisateurViewDlg" widgetVar="CompteUtilisateurViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.compteutilisateur}">
+            <h:form id="CompteUtilisateurViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{compteUtilisateurController.selectedCompteutilisateur != null}">
+                        <h:outputText value="#{langues.utilisateur}"/>
+                        <h:outputText value="#{compteUtilisateurController.selectedCompteutilisateur.idutilisateur.nom} #{compteUtilisateurController.selectedCompteutilisateur.idutilisateur.prenom}" />
+                        <h:outputText value="#{langues.login}"/>
+                        <h:outputText value="#{compteUtilisateurController.selectedCompteutilisateur.login}" />
+                        <h:outputText value="#{langues.date_creation}"/>
+                        <h:outputText value="#{compteUtilisateurController.selectedCompteutilisateur.datecreation}"/>
+                        <h:outputText value="#{langues.etat}"/>
+                        <p:selectBooleanCheckbox value="#{compteUtilisateurController.selectedCompteutilisateur.etat}" disabled="true" />                      
+                    </p:panelGrid>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('CompteUtilisateurViewDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

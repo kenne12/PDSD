@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+
+        <p:dialog id="Menace1CreateDlg" widgetVar="Menace1CreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.listemenace}">
+
+            <h:form id="Menace1ListForm">
+
+                <div style=" border: solid 0.5px ; width: 1000px ; height: 500px">
+
+                    <br/>
+
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{ffomEquipementController.menaces}" var="item"
+                                 paginator="true"
+                                 selectionMode="single"
+                                 selection="#{ffomEquipementController.menace}"
+                                 rowKey="#{item.idmenace}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+
+                        <p:ajax event="rowSelect"   update=":Menace1ListForm,:Menace1ListForm:editButton :Menace1ListForm:deleteButton" listener="#{ffomEquipementController.activeButton()}"/>
+                        <p:ajax event="rowUnselect" update=":Menace1ListForm,:Menace1ListForm:editButton :Menace1ListForm:deleteButton" listener="#{ffomEquipementController.deactiveButton()}" />
+
+
+                        <p:column  style="width: 25%">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.Acteur}"/>
+                            </f:facet>
+                            <h:outputText value="#{loginController.language eq 'en' ? item.idacteur.nomEn : item.idacteur.nomFr}"/>
+                        </p:column>
+
+                        <p:column  style="width: 25%">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.facteur}"/>
+                            </f:facet>
+                            <h:outputText value="#{loginController.language eq 'en' ? item.idfacteur.nomEn : item.idfacteur.nomFr}"/>
+                        </p:column>
+
+                        <p:column style="width: 50%">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nom}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <center>
+                        <p:commandButton id="createButton" icon="ui-icon-plus" update=":MenaceCreateForm,:MenaceCreateDlg,:MenaceCreateForm:type,:MenaceCreateForm:acteur,:MenaceCreateForm:facteur" value="#{langues.Create}" actionListener="#{ffomEquipementController.prepareCreateMenace()}"  oncomplete="PF('MenaceCreateDialog').show()"/>                    
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" update=":MenaceCreateForm,:MenaceCreateDlg,:MenaceCreateForm:type,:MenaceCreateForm:acteur,:MenaceCreateForm:facteur" value="#{langues.Edit}" actionListener="#{ffomEquipementController.prepareEditMenace()}" oncomplete="PF('MenaceCreateDialog').show()" disabled="#{ffomEquipementController.detail}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash" update="datalist,:ForceListForm,:ForceListForm:msgErreur" actionListener="#{ffomEquipementController.deleteMenace()}" value="#{langues.Delete}" disabled="#{ffomEquipementController.detail}"> 
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                    <ui:include src="/confirmation.xhtml"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

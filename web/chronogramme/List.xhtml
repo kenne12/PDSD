@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="ChronogrammeListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+
+        <center>
+            <h2>#{langues.chronogramme}</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('ChronogrammeListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <br/>
+
+        <p:panel style="background-color: blanchedalmond" id="axe" header="#{chronogrammeController.axe.code} - #{loginController.language eq 'en' ?  chronogrammeController.axe.nomEn : chronogrammeController.axe.nomFr}">
+
+            <p:panel id="sousaxe" header="#{chronogrammeController.sousaxe.code} - #{loginController.language eq 'en' ?  chronogrammeController.sousaxe.nomEn : chronogrammeController.sousaxe.nomFr}">
+
+                <p:dataTable id="datalist"
+                             value="#{chronogrammeController.activites}"
+                             var="item"
+                             rowKey="#{item.idactivite}"
+                             paginator="true"
+                             rows="100"
+                             style="width: 100%;"
+                             rowIndexVar="index"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             draggableColumns="true"
+                             resizableColumns="true"
+                             scrollHeight="100"
+                             selection="#{chronogrammeController.activite}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                    <p:ajax event="rowSelect" update=":ChronogrammeListForm:deleteButton" listener="#{chronogrammeController.activeButton()}" />
+                    <p:ajax event="rowDblselect" onsuccess="document.getElementById('ChronogrammeListForm:viewButton').click();" listener="#{chronogrammeController.activeButton()}"/>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" colspan="3"  headerText="#{langues.interventionpnds}"/>
+                            <p:column rowspan="2" colspan="3"  headerText="#{langues.Active}"/>
+                            <p:column colspan="#{chronogrammeController.annees.size()}" headerText="#{langues.Annee}" />
+                        </p:row>
+                        <p:row>
+                            <ui:repeat value="#{chronogrammeController.annees}" var="annee">
+                                <p:column class="hardBreak" headerText="#{annee.nom}" />
+                            </ui:repeat>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column style="height: 50px" colspan="3">
+                        <h:outputText class="hardBreak" value="#{ item.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.code} - #{loginController.language eq 'en' ?  item.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.nomEn : item.idprobleme.idindicateurDistrict.idindicateur.idinterventionpnds.nomFr}"/>
+                    </p:column>
+
+                    <p:column colspan="3">
+                        <h:outputText class="hardBreak"  value="#{item.nom}" />
+                    </p:column>
+
+
+                    <p:columns value="#{chronogrammeController.annees}" var="var" style="text-align: center" >
+                        <p:selectBooleanCheckbox disabled="true" value="#{chronogrammeController.findResult(item, var).etat}"/>
+                    </p:columns>
+
+                </p:dataTable>
+
+                <center>
+                    <p:commandButton id="editButton" update=":ChronogrammeCreateForm,growl,:ChronogrammeCreateForm:datalist" actionListener="#{chronogrammeController.uptadeTable()}" icon="ui-icon-pencil" value="#{langues.Edit}"  oncomplete="PF('ChronogrammeCreateDialog').show()"/>
+                    <p:commandButton id="deleteButton" icon="ui-icon-trash" update="datalist,growl" actionListener="#{chronogrammeController.delete()}" value="#{langues.Delete}" disabled="#{chronogrammeController.detail}"> 
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </center>
+
+                <h:panelGrid style="width: 70%;margin-left: 15%" columns="2">
+                    <p:commandButton value="#{langues.sous_axe_precedent}" update="axe,sousaxe,datalist" actionListener="#{chronogrammeController.precSousAxe()}" oncomplete="javascript:location.reload();"/>
+                    <p:commandButton value="#{langues.sous_axe_suivant}" update="axe,sousaxe,datalist" style="margin-left: 50%" actionListener="#{chronogrammeController.nextSousaxe()}" oncomplete="javascript:location.reload();"/>
+                </h:panelGrid>
+
+            </p:panel>
+
+            <h:panelGrid style="width: 80%;margin-left: 10%" columns="2">
+                <p:commandButton value="#{langues.axe_precedent}" update="axe,sousaxe,datalist" actionListener="#{chronogrammeController.precAxe()}" oncomplete="javascript:location.reload();"/>
+                <p:commandButton style="margin-left: 60%" value="#{langues.axe_suivant}" update="axe,sousaxe,datalist" actionListener="#{chronogrammeController.nextAxe()}" oncomplete="javascript:location.reload();"/>
+            </h:panelGrid>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+
+    </h:form>
+</ui:composition>

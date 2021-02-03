@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liste_indicateur" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ef9dcaf5-8335-4d88-a306-fa11a75079f4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     indicateur."idindicateur" AS indicateur_idindicateur,
+     indicateur."idniveaucollecte" AS indicateur_idniveaucollecte,
+     indicateur."numerateur" AS indicateur_numerateur,
+     indicateur."denominateur" AS indicateur_denominateur,
+     indicateur."anneebaseline" AS indicateur_anneebaseline,
+     indicateur."coef" AS indicateur_coef,
+     axe."idaxe" AS axe_idaxe,
+     indicateur."ciblenationale" AS indicateur_ciblenationale,
+     indicateur."nom_en" AS indicateur_nom_en,
+     categorieindicateur."nom_en" AS categorieindicateur_nom_en,
+     interventionpnds."nom_en" AS interventionpnds_nom_en,
+     periodicite."nom_en" AS periodicite_nom_en,
+     sousaxe."nom_en" AS sousaxe_nom_en,
+     categorieintervention."nom_en" AS categorieintervention_nom_en,
+     axe."nom_en" AS axe_nom_en
+FROM
+     "public"."categorieindicateur" categorieindicateur INNER JOIN "public"."indicateur" indicateur ON categorieindicateur."idcategorie" = indicateur."idcategorie"
+     INNER JOIN "public"."interventionpnds" interventionpnds ON indicateur."idinterventionpnds" = interventionpnds."idinterventionpnds"
+     INNER JOIN "public"."periodicite" periodicite ON indicateur."idperiodicite" = periodicite."idperiodicite"
+     INNER JOIN "public"."categorieintervention" categorieintervention ON interventionpnds."idcategorieintervention" = categorieintervention."idcategorieintervention"
+     INNER JOIN "public"."sousaxe" sousaxe ON categorieintervention."idsousaxe" = sousaxe."idsousaxe"
+     INNER JOIN "public"."axe" axe ON sousaxe."idaxe" = axe."idaxe"
+ORDER BY
+     axe.nom_en ASC,
+     indicateur.nom_en ASC]]>
+	</queryString>
+	<field name="indicateur_idindicateur" class="java.lang.Integer"/>
+	<field name="indicateur_idniveaucollecte" class="java.lang.Integer"/>
+	<field name="indicateur_numerateur" class="java.lang.String"/>
+	<field name="indicateur_denominateur" class="java.lang.String"/>
+	<field name="indicateur_anneebaseline" class="java.lang.Integer"/>
+	<field name="indicateur_coef" class="java.lang.Double"/>
+	<field name="axe_idaxe" class="java.lang.Integer"/>
+	<field name="indicateur_ciblenationale" class="java.lang.Double"/>
+	<field name="indicateur_nom_en" class="java.lang.String"/>
+	<field name="categorieindicateur_nom_en" class="java.lang.String"/>
+	<field name="interventionpnds_nom_en" class="java.lang.String"/>
+	<field name="periodicite_nom_en" class="java.lang.String"/>
+	<field name="sousaxe_nom_en" class="java.lang.String"/>
+	<field name="categorieintervention_nom_en" class="java.lang.String"/>
+	<field name="axe_nom_en" class="java.lang.String"/>
+	<group name="axe_group">
+		<groupExpression><![CDATA[$F{axe_idaxe}]]></groupExpression>
+		<groupHeader>
+			<band height="33">
+				<textField>
+					<reportElement mode="Opaque" x="39" y="0" width="730" height="33" backcolor="#CCFFFF" uuid="24d394d8-1cfd-421a-aca8-889cbcac61ab"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{axe_nom_en}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="39" height="33" backcolor="#CCFFFF" uuid="f0e9eb80-3845-4769-b65b-11fbf54682f4"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[AXIS]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="13" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="296" height="38" forecolor="#000000" backcolor="#CCCCCC" uuid="e63c46fe-51d0-482c-9c14-8ab9d3a2b3bd"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="296" y="0" width="254" height="38" backcolor="#CCCCCC" uuid="8b454257-5f5b-43b9-8014-8d4eca6d1b19"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Intervention]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="550" y="0" width="73" height="38" backcolor="#CCCCCC" uuid="2a8e8e7d-c0fc-44b0-a93c-62a126467a59"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodicity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="623" y="0" width="76" height="38" backcolor="#CCCCCC" uuid="7f1aea5e-d3c7-4e9f-90af-a9c5cf9609dc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[National Target]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="699" y="0" width="70" height="38" backcolor="#CCCCCC" uuid="ea97ac3a-c70e-43d6-a78b-e32d1544bdf4"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Category]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="58" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="296" height="58" uuid="b7ec5d65-3dea-49c0-a787-4ac0b5c82617"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{indicateur_nom_en}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="296" y="0" width="254" height="58" uuid="1dd05fca-feab-4c1a-bd9c-ada4d2d32d4f"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{interventionpnds_nom_en}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="550" y="0" width="73" height="58" uuid="27bdce3f-019b-45e4-8b09-6ab2de8b2c91"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{periodicite_nom_en}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="623" y="0" width="76" height="58" uuid="00928f3d-a393-495d-94bf-abfc4d79fb1b"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{indicateur_ciblenationale}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="699" y="0" width="70" height="58" uuid="7c592eea-0485-43ef-8514-ee0b5f10ce0e"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{categorieindicateur_nom_en}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

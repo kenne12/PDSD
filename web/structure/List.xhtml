@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <h:form id="FormationsanitaireListForm">
+
+        <p:panel header="#{langues.ListStructureTitle}">
+            <p:contextMenu id="FormationsanitaireDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('FormationsanitaireListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('FormationsanitaireListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('FormationsanitaireListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('FormationsanitaireListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{structureController.structures}"
+                         var="item"
+                         rowKey="#{item.idstructure}"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         rowIndexVar="index"
+                         selection="#{structureController.structure}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:FormationsanitaireDataTableContextMenu" listener="#{structureController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:FormationsanitaireDataTableContextMenu" listener="#{structureController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('FormationsanitaireListForm:viewButton').click();" listener="#{structureController.activeButton()}" />
+
+                <p:column style="width: 4%" >
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Numero}"/>
+                    </f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+
+                <p:column  style="width: 10%" filterBy="#{loginController.language eq 'en' ? item.idairesante.iddistrict.nomEn : item.idairesante.iddistrict.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.district}"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ? item.idairesante.iddistrict.nomEn : item.idairesante.iddistrict.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 12%" filterBy="#{loginController.language eq 'en' ? item.idairesante.nomEn : item.idairesante.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.Airesante}"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ? item.idairesante.nomEn : item.idairesante.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 13.5%" filterBy="#{item.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_francais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomFr}"/>
+                </p:column>
+
+                <p:column style="width: 13.5%" filterBy="#{item.nomEn}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomEn}"/>
+                </p:column>
+
+                <p:column style="width: 10%"  filterBy="#{loginController.language eq 'en' ? item.idtypestructure.nomEn : item.idtypestructure.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.typestructure}"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ? item.idtypestructure.nomEn : item.idtypestructure.nomFr}"/>
+                </p:column> 
+
+                <p:column style="width: 10%"  filterBy="#{loginController.language eq 'en' ? item.idstatutstructure.nomEn : item.idstatutstructure.nomFr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.statutstructure}"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ? item.idstatutstructure.nomEn : item.idstatutstructure.nomFr}"/>
+                </p:column> 
+
+
+                <p:column style="width: 7%">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.CreateAdresseTitle_contact}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idadresse.contact}"/>
+                </p:column>
+
+                <p:column style="width: 7%;text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="leader"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox disabled="true" value="#{item.leader}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{structureController.prepareCreate()}" update=":FormationsanitaireCreateForm" oncomplete="PF('FormationsanitaireCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{langues.View}" oncomplete="PF('FormationsanitaireViewDialog').show()" disabled="#{structureController.detail}"/>
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{structureController.prepareEdit()}" update=":FormationsanitaireCreateForm" oncomplete="PF('FormationsanitaireCreateDialog').show()" disabled="#{structureController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{structureController.delete()}" update=":growl,datalist" disabled="#{structureController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

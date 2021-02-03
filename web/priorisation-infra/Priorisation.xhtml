@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <h:form id="InfrastructureListForm">
+
+        <p:growl id="growl" showDetail="true"/>
+
+        <br/>
+
+        <center>
+            <h2>PRIORISATION DES BESOINS EN INFRASTRUCTURE</h2>
+        </center>
+
+        <p:contextMenu id="ExercieDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('InfrastructureListForm:editButton').click();" icon="ui-icon-pencil"/>            
+            <p:separator/>                 
+        </p:contextMenu>
+
+        <center>
+            <p:panelGrid columns="2" columnClasses="column">
+                <p:outputLabel value="#{langues.Airesante}"/>
+                <p:selectOneMenu value="#{priorisationInfrastructureController.airesante.idairesante}" required="true" filter="true">
+                    <f:selectItem itemLabel="#{langues.choisir}"/>
+                    <f:selectItems value="#{priorisationInfrastructureController.airesantes}" var="aires" itemLabel="#{loginController.language eq 'en' ? aires.nomEn : aires.nomFr}" itemValue="#{aires.idairesante}"/>
+                    <p:ajax listener="#{priorisationInfrastructureController.update()}" update="datalist"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </center>
+
+        <br/>
+
+        <p:dataTable id="datalist"
+                     value="#{priorisationInfrastructureController.infrastructures}"
+                     var="item"
+                     editable="true"
+                     editMode="cell"
+                     paginator="true"
+                     rows="100"
+                     style="width: 70%;margin-left: 15%"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50,60,70,80"
+                     draggableColumns="true"
+                     resizableColumns="true"
+                     scrollHeight="100"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect" listener="#{priorisationInfrastructureController.activeButton()}" />
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('InfrastructureListForm:viewButton').click();" listener="#{priorisationInfrastructureController.activeButton()}"/>
+
+            <p:column  style="width:10%" headerText="Ordre de priorité">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{item.numero}" /></f:facet>
+                    <f:facet name="input">
+                        <p:inputText  value="#{item.numero}">
+                            <p:ajax event="keyup" />
+                        </p:inputText>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column style="width:80%">
+                <f:facet name="header">
+                    <h:outputText value="Opération"/>
+                </f:facet>
+                <h:outputText value="#{priorisationInfrastructureController.findByInfrastructure(item)}"/>
+            </p:column>
+
+            <p:column style="width:10%">
+                <f:facet name="header">
+                    <h:outputText value="Montant"/>
+                </f:facet>
+                <h:outputText value="#{priorisationInfrastructureController.findByInfrastructure1(item)}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+        </p:dataTable>
+
+        <p:separator style="width: 70%;margin-left: 15%"/>
+
+        <center>
+            <p:commandButton id="editButton" update="growl,datalist" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{priorisationInfrastructureController.uptadeTable()}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="Voulez-vous modifier ?" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <f:view locale="#{loginController.language}">
+            <script type="text/javascript">
+                function checkMatching(value) {
+                    value = document.getElementById("confirmpassword").value;
+                    alert(value);
+                }
+            </script>
+            <h:form id="menuForm" style="font-size: 12px;">
+               <!-- <p:poll interval="15" listener="#{loginController.setPrivilegeUser()}"/>-->
+                <p:poll interval="20" listener="#{loginController.watcher()}" />
+                <p:menubar style="border:none; color: black" styleClass="navbar">
+                    <p:menuitem  value="#{langues.Home}" outcome="/index.xhtml" icon="ui-icon-home"/> 
+
+                    <p:submenu style=" color:  black;" label="#{langues.Securite}" >                    
+                        <p:menuitem id="groupeuser" style="color: black" value="#{langues.groupeutilisateur}" outcome="/groupeutilisateur/List.xhtml"/>
+                        <p:menuitem id="user" style="color: black" value="#{langues.utilisateur}" outcome="/utilisateur/List.xhtml" />                    
+                        <p:menuitem id="compte" style="color: black" value="#{langues.compteutilisateur}" outcome="/compteutilisateur/List.xhtml" />                    
+                        <p:menuitem id="privilege" style="color: black" value="#{langues.privilege}" outcome="/privilege/List.xhtml" />
+                        <p:menuitem style="color: black" value="#{langues.utilisateurdistrict}" outcome="/privilegedistrict/List.xhtml" />
+                        <p:menuitem style="color: black" value="#{langues.activecompte}" outcome="/activercompte/activercompte.xhtml" />
+                        <p:menuitem style="color: black" value="#{langues.desactivecompte}" outcome="/desactivercompte/desactivercompte.xhtml" />
+                        <p:menuitem id="mouchard" style="color: black" value="#{langues.mouchard}" outcome="/mouchard/List.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="#{langues.Maintenance}">   
+
+                        <p:submenu style="color : black;" label="#{langues.Pyramide_Administrative}">
+                            <p:menuitem  value="#{langues.region}" outcome="/region/index" />
+                            <p:menuitem  value=" #{langues.departement}" outcome="/departement/index" />                           
+                            <p:menuitem  value=" #{langues.Arrondissement}" outcome="/arrondissement/index" />
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.Pyramide_Sanitaire}">
+                            <p:menuitem  value="Institution" outcome="/institution/index"/>
+                            <p:menuitem  value="#{langues.district}" outcome="/district/index" /> 
+                            <p:menuitem  value="#{langues.Airesante}" outcome="/airesante/List" />
+                            <p:menuitem  value="#{langues.categoriestructurecom}" outcome="/categoriestructurecom/List"/>  
+                            <p:menuitem  value="#{langues.typestructure}" outcome="/typestructure/index" />
+                            <p:menuitem  value="#{langues.statutstructure}" outcome="/statutstructure/index" />  
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.Cadre_Logique}">
+                            <p:menuitem  value="#{langues.axe_strategique}" outcome="/axe/List" />
+                            <p:menuitem  value="#{langues.sousaxe}" outcome="/sousaxe/List" />
+                            <p:menuitem  value="#{langues.strategie}" outcome="/categorieintervention/List" />                        
+                            <p:menuitem  value="#{langues.interventionpnds}" outcome="/interventionpnds/index" />
+                            <p:menuitem  value="#{langues.objectifop}" outcome="/objectifoperationel/index"/>
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.Indicateur}">
+                            <p:menuitem  value="#{langues.Categorie_indicateur}" outcome="/categorieindicateur/index" />
+                            <p:menuitem  value="#{langues.niveaucollecte}" outcome="/niveaucollecte/List" />
+                            <p:menuitem  value="#{langues.periodicite}" outcome="/periodicite/index"/>
+                            <p:menuitem  value="#{langues.unite}" outcome="/unite/index" /> 
+                            <p:menuitem  value="#{langues.Indicateur}" outcome="/indicateur/index" />
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.profilepidemeologique}">
+                            <p:menuitem  value="#{langues.morbidite}" outcome="/morbidite/index" />
+                            <p:menuitem  value="#{langues.hospitalisation}" outcome="/hospitalisation/index" />
+                            <p:menuitem  value="#{langues.mortalite}" outcome="/mortalite/index" />                     
+                            <p:menuitem  value="#{langues.mape}" outcome="/mape/index" />
+                            <p:menuitem  value="#{langues.rubriquehospitalisation}" outcome="/rubriquehospitalisation/index" />
+                            <p:menuitem  value="#{langues.rubriquemorbidite}" outcome="/rubriquemorbidite/index" /> 
+                            <p:menuitem  value="#{langues.rubriquemortalite}" outcome="/rubriquemortalite/index" />
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.ressource}">
+
+                            <p:submenu  label="RHS">
+                                <p:menuitem  value="#{langues.profilpersonnel}" outcome="/profilpersonnel/index" />
+                                <p:menuitem  value="#{langues.typestructurecommunautaire}" outcome="/typestructurecommunautaire/index" />
+                                <p:menuitem  value="#{langues.etatfonctstructcom}" outcome="/etatfonctstructurecommunautaire/List" />
+                            </p:submenu>
+
+                            <p:submenu  label="#{langues.infrastructureequipement}">
+
+                                <p:submenu  label="#{langues.infrastructure}">
+                                    <p:menuitem  value="#{langues.etatinfrastructure}" outcome="/etatinfrastructure/List"/>
+                                    <p:menuitem  value="#{langues.typeinfrastructure}" outcome="/typeinfrastructure/index" />
+                                    <p:menuitem  value="#{langues.association}" outcome="/typeinfrastructuretypestructure/List" />
+                                    <p:menuitem style="width: 150px" value="#{langues.coutinfrastructure}" outcome="/parametrecout-infrastructure/index" />
+                                </p:submenu>
+
+                                <p:submenu  label="#{langues.equipementtraceur}">
+                                    <p:menuitem  value="#{langues.etatequipement}" outcome="/etatequipement/List" />
+                                    <p:menuitem  value="#{langues.typeequipementtraceur}" outcome="/typeequipementtraceur/index" />
+                                    <p:menuitem  value="#{langues.association}" outcome="/typestructuretypeequipement/List" />
+                                    <p:menuitem style="width: 150px" value="#{langues.coutinfrastructure}" outcome="/parametrecout-equipement/index" />
+                                </p:submenu>
+
+                            </p:submenu>
+
+                            <p:submenu  label="#{langues.ressourcefi}">
+                                <p:menuitem  value="#{langues.naturedepense}" outcome="/naturedepense/index" />
+                                <p:menuitem  value="#{langues.sourcefinancement}" outcome="/sourcefinancement/index"/>
+                                <p:menuitem  value="#{langues.typerecette}" outcome="/typerecette/index" />
+                            </p:submenu>
+
+                            <p:submenu  label="#{langues.medicament}">                              
+                                <p:menuitem  value="#{langues.medicamenttraceur} " outcome="/medicamenttraceur/index" />
+                                <p:menuitem  value="#{langues.sourceapprovisionnement}" outcome="/sourceapprovisionnement/index" />
+                            </p:submenu>
+
+                            <p:menuitem  value="#{langues.GOUVERNANCE}" outcome="/rubriquegouvernance/index" />
+                            <p:menuitem  value="#{langues.INFORMATION_SANITAIRE_RECHERCHE}" outcome="/rubriqueinfosanitaire/index" />
+
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.facteur}s">                           
+                            <p:menuitem  value="#{langues.GroupeFacteur}" outcome="/groupefacteur/List"/>
+                            <p:menuitem  value="#{langues.TypeFacteur}" outcome="/typefacteur/index" />
+                            <p:menuitem  value="#{langues.facteur}" outcome="/facteur/index" />
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.Acteur}">
+                            <p:menuitem  value="#{langues.TypeActeur}" outcome="/typeacteur/List"/>
+                            <p:menuitem  value="#{langues.GroupeActeur}" outcome="/groupeacteur/List"/>
+                            <p:menuitem  value="#{langues.Acteur}" outcome="/acteur/index"/>
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.anneepopulation}">
+                            <p:menuitem  value="#{langues.Annee}" outcome="/annee/index"/>
+                            <p:menuitem  value="#{langues.rubriquepopullation}" outcome="/rubriquepopulation/index" />
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.problemeactivite}">
+                            <p:menuitem  value="#{langues.rubriquenotationprobleme}" outcome="/rubriquenotationprobleme/index" />
+                            <p:menuitem  value="#{langues.sousrubriquenotationprobleme}" outcome="/sousrubriquenotationprobleme/index" />
+                            <p:menuitem  value="#{langues.typeactivite}" outcome="/typeactivite/index" />
+                        </p:submenu>
+
+
+                        <p:submenu  label="#{langues.tablematiere}">
+
+                            <p:submenu  label="#{langues.definition}">
+                                <p:menuitem   value="#{langues.tablematiern1}" outcome="/tablematiere_n1/List"/>
+                                <p:menuitem   value="#{langues.tablematiern2}" outcome="/tablematiere_n2/List"/>
+                                <p:menuitem   value="#{langues.tablematiern3}" outcome="/tablematiere_n3/List"/>
+                            </p:submenu>
+
+                            <p:submenu  label="#{langues.numerotation}">
+                                <p:menuitem   value="#{langues.tablematieren1_district}" outcome="/tablematiere_n1_district/List"/>
+                                <p:menuitem   value="#{langues.tablematieren2_district}" outcome="/tablematiere_n2_district/List"/>
+                                <p:menuitem   value="#{langues.tablematieren3_district}" outcome="/tablematiere_n3_district/List"/>
+                            </p:submenu>
+
+                        </p:submenu>
+
+                        <p:submenu  label="#{langues.listetableau}">
+                            <p:menuitem  value="#{langues.definition}" outcome="/listetableau/index" />
+                            <p:menuitem  value="#{langues.numerotation}" outcome="/listetableaudistrict/index" />
+                        </p:submenu>
+
+                        <p:menuitem   value="#{langues.activitee}" outcome="/activite-default/index"/>
+                        <p:menuitem   value="#{langues.resultatattendu}" outcome="/resultatattendu/List"/>
+                        <p:menuitem   value="#{langues.thematique}" outcome="/thematique/List"/>
+                        <p:menuitem   value="#{langues.element_cout}" outcome="/element_cout/List"/>
+
+                    </p:submenu>
+
+                    <p:submenu  label="#{langues.Etat_des_Lieux}">
+
+                        <p:menuitem  value="#{langues.partiehaute}" outcome="/partiehaute/index" />
+                        <p:menuitem  value="#{langues.situation_socio_culturel}" outcome="/situationsocio/index" />
+                        <p:menuitem  value="#{langues.DONNEES_DEMOGRAPHIQUES}" outcome="/etatlieux-population/index" />
+                        <p:menuitem  value="#{langues.miseajourstructure}" outcome="/structure/index"/>
+                        <p:menuitem style="width: 200px" value="#{langues.couverturesanitaire}" outcome="/populationfosa/index" />
+
+                        <p:submenu  label="#{langues.acteurfacteur}">
+                            <p:menuitem  value="#{langues.acteurdistrict1}" outcome="/acteurdistrict/index"/>     
+                            <p:menuitem style="width: 200px" value="#{langues.facteurdistrict1}" outcome="/facteurdistrict/index"/>     
+                        </p:submenu>
+
+
+                        <p:submenu  label="#{langues.profilepidemeologique}">
+                            <p:menuitem  value="#{langues.morbidite}" outcome="/etatlieux-profilepidemiologique/index" />
+                            <p:menuitem  value="#{langues.hospitalisation}" outcome="/etatlieux-profilepidemiologique/index2" />
+                            <p:menuitem  value="#{langues.mape}" outcome="/etatlieux-profilepidemiologique/index3" /> 
+                            <p:menuitem  value="#{langues.mortalite}" outcome="/etatlieux-profilepidemiologique/index1" />
+                        </p:submenu>
+
+
+                        <p:submenu  label="#{langues.ressource}">
+
+                            <p:submenu label="#{langues.RESSOURCES_HUMAINES}">
+                                <p:menuitem  value="#{langues.RESSOURCES_HUMAINES}" outcome="/etatlieux-ressources/index" />                               
+                                <p:menuitem style="width: 150px" value="#{langues.structurecommunautaire}" outcome="/etatlieux-ressources/index7" />
+                            </p:submenu>
+
+
+                            <p:menuitem  value="#{langues.infrastructure}" outcome="/etatlieux-ressources/List" />
+                            <p:menuitem  value="#{langues.equipementtraceur}" outcome="/etatlieux-ressources/index2" />
+
+                            <p:submenu label="#{langues.ressourcefi}">
+                                <p:menuitem  value="#{langues.recette}" outcome="/etatlieux-ressources/index6" />                                
+                                <p:menuitem  value="#{langues.depense} " outcome="/etatlieux-ressources/index5" />
+                            </p:submenu>
+
+                            <p:menuitem  value="#{langues.medicamenttraceur}" outcome="/etatlieux-ressources/index3" />
+
+                        </p:submenu>
+
+                        <p:menuitem style=";width: 200px" value="#{langues.informationsanitairedistrict}" outcome="/etatlieuxinfosanitaire/index" />
+                        <p:menuitem  value="#{langues.gouvernancedistrict}" outcome="/etatlieuxgouvernance/index" />
+
+                    </p:submenu>
+
+                    <p:submenu label="#{langues.Performance_et_Diagnostic}">
+
+                        <p:submenu label="#{langues.evaluationdistrict}">
+
+                            <p:submenu label="#{langues.ffom}">
+                                <p:menuitem  value="#{langues.RESSOURCES_HUMAINES}" outcome="/ffom-rh/index" />                           
+                                <p:menuitem  value="#{langues.equipementinfra}" outcome="/ffom-equipement/index"/>
+
+                                <p:menuitem   value="#{langues.ressourcefi}" outcome="/ffom-finance/index"/>
+                                <p:menuitem   value="#{langues.medicamenttraceur}" outcome="/ffom-medicament/index"/>
+
+                                <p:menuitem   value="#{langues.INFORMATION_SANITAIRE_RECHERCHE}" outcome="/ffom-is/index"/>
+                                <p:menuitem   value="#{langues.GOUVERNANCE}" outcome="/ffom-gouvernance/index"/>
+                            </p:submenu>
+
+                            <p:menuitem  value="#{langues.SUIVI_DES_INDICATEURS}" outcome="/performance-district/index" />
+                            <p:menuitem  value="#{langues.projectionrecette}" outcome="/etatlieux-ressources/index8" />
+
+                        </p:submenu>
+
+                        <p:submenu style=" color:  black;" label="#{langues.probleme}">
+                            <p:menuitem  value="#{langues.identification}" outcome="/probleme/index"/>
+                            <p:menuitem  value="#{langues.priorisation}" outcome="/notationprobleme/index"/>
+                        </p:submenu>
+
+                        <p:submenu style=" color:  black;" label="#{langues.OBJECTIFS_CIBLES}">
+                            <p:menuitem  value="#{langues.objectif_opérationnel}" outcome="/objectifoperationnel-district/List"/>
+                            <p:menuitem  value="#{langues.resultat_attendu}" outcome="/resultatattendu-district/List"/>
+                            <p:menuitem  value="#{langues.cibles}" outcome="/cible/index"/>
+                        </p:submenu>
+
+                        <p:menuitem  value="#{langues.activite_correctrice}" outcome="/activitecorrectrice/index"/>
+                        <p:menuitem  value="#{langues.activite_consolidation}" outcome="/activiteconsolidation/index"/>
+
+                        <p:menuitem  value="#{langues.activite_thematique}" outcome="/activite-thematique/List"/>
+
+                        <p:menuitem  value="#{langues.chronogramme}" outcome="/chronogramme/index"/>
+                        <p:menuitem  value="#{langues.cadrage_budgetaire}" outcome="/cadrage/List"/>
+
+                        <p:submenu style=" color:  black;" label="#{langues.priorisation_besoin}">
+                            <p:menuitem  value="#{langues.infrastructures}" outcome="/priorisation-infra/List"/>
+                            <p:menuitem  value="#{langues.equipements}" outcome="/priorisation-equipement/List"/>
+                        </p:submenu>
+
+                    </p:submenu>
+
+                    <p:submenu style=" color:  black;" label="#{langues.analyse}">
+
+                        <p:menuitem  value="#{langues.generer_pdsd}" outcome="/imprimer-pdsd/index"/>                                                
+                        <p:menuitem  value="#{langues.besoin_infrastructure}" outcome="/imprimer-besoininvestissement/index"/>
+
+                        <p:menuitem  value="#{langues.besoin_equipement}" outcome="/imprimer-besoinequipement/index"/>
+
+                        <p:menuitem  value="#{langues.micro_projet}" outcome="/microprojet/index"/>
+                        <p:menuitem disabled="true" value="Consolidation" outcome="/consolidation/index"/>                        
+
+                    </p:submenu>
+
+                    <p:menuitem disabled="true" value="#{langues.aide}"/>
+                    <p:menuitem  value="#{langues.deconnexion}" style="margin-left:2%;color: red" actionListener="#{loginController.logout()}"/>
+                </p:menubar>
+            </h:form>
+        </f:view>
+    </ui:composition>
+</html>

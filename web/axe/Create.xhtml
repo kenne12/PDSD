@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="AxeCreateDlg" widgetVar="AxeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateAxeTitle}">
+            <h:form id="AxeCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText id="code" required="true" style="color: red" requiredMessage="Code :#{langues.requis} " value="#{axeController.axe1.code}"/>
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />                        
+                        <p:inputTextarea id="nom" rows="10" cols="75"  value="#{axeController.axe1.nomFr}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />                        
+                        <p:inputTextarea id="nom_en" rows="10" cols="75"  value="#{axeController.axe1.nomEn}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                        <p:outputLabel value="#{langues.Objectif_strategique} : #{langues.francais}" for="obj_fr" />
+                        <p:inputTextarea id="obj_fr" rows="10" cols="75"  value="#{axeController.axe1.objectifstrategueFr}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                        <p:outputLabel value="#{langues.Objectif_strategique} : #{langues.anglais}" for="obj_en" />
+                        <p:inputTextarea id="obj_en" rows="10" cols="75"  value="#{axeController.axe1.objectifstrategueEn}" queryDelay="750" minQueryLength="4">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{axeController.create()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:AxeListForm:datalist,:AxeListForm:msgErreur" oncomplete="PF('AxeCreateDialog').hide()"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('AxeCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

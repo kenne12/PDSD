@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="PrivilegeEditDlg" widgetVar="PrivilegeEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.EditPrivilegeTitle}">
+            <h:form id="PrivilegeEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{thematiqueActiviteController.selectedActivitethem !=null}">
+
+                        <p:outputLabel value="Thématique " for="groupe" />
+                        <p:selectOneMenu id="groupe" value="#{thematiqueActiviteController.selectedActivitethem.idthematique}" required="true" requiredMessage="Parametre Obligtoire" filter="true" converter="thematiqueConverter" >
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{thematiqueActiviteController.thematiques}" var="item" itemLabel="#{item.nomFr}" itemValue="#{item}"/>                     
+                            <p:ajax listener="#{thematiqueActiviteController.filterGroupeActivite()}" update="access"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Activités" for="groupe" />
+                        <p:selectOneMenu id="access" value="#{thematiqueActiviteController.selectedActivitethem.idactivite}" converter="activiteConverter"  required="true" requiredMessage="#{langues.tache} : #{langues.requis}" filter="true">                            
+                            <f:selectItems value="#{thematiqueActiviteController.activiteSource}" var="item" itemLabel="#{loginController.language eq 'en' ? item.nom : item.nom}" itemValue="#{item}"/>                     
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{thematiqueActiviteController.edit()}" style="float: right;" icon="ui-icon-check" value="#{msg.Valider}" update="display,:PrivilegeListForm:datalist,:PrivilegeListForm:msgErreur" oncomplete="handleSubmit(args, 'PrivilegeEditDialog');"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{msg.Cancel}" onclick="PF('PrivilegeEditDialog').hide()"/>                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

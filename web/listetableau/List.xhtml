@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="ListetableauListForm">
+
+
+        <p:contextMenu id="ListetableauDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('ListetableauListForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('ListetableauListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('ListetableauListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>
+            <p:menuitem value="" icon="ui-icon-search"   ajax="false"/>  
+        </p:contextMenu>
+        <p:dataTable id="datalist"
+                     value="#{listetableauController.listetableaus}"
+                     var="item"
+                     rowKey="#{item.idlisttableau}"
+                     paginator="true"
+                     rows="10"
+                     rowIndexVar="index"
+                     style="width: 70%;margin-left: 15%"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{listetableauController.listetableau}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:ListetableauDataTableContextMenu" listener="#{listetableauController.activeButton()}"/>
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:ListetableauDataTableContextMenu"  listener="#{listetableauController.deactiveButton()}"  />
+            <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('ListetableauListForm:viewButton').click();"  listener="#{listetableauController.activeButton()}" />
+
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.ListListetableauTitle}"/>
+            </f:facet> 
+
+            <p:column style="width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Numero}"/>
+                </f:facet>
+                <h:outputText value="#{index+1}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom_francais}"/>
+                </f:facet>
+                <h:outputText value="#{item.nomFr}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom_anglais}"/>
+                </f:facet>
+                <h:outputText value="#{item.nomEn}"/>
+            </p:column>
+
+        </p:dataTable>
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{listetableauController.prepareCreate()}" update=":ListetableauCreateForm" oncomplete="PF('ListetableauCreateDialog').show()"/>
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" update=":ListetableauCreateForm" oncomplete="PF('ListetableauCreateDialog').show()" disabled="#{listetableauController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{listetableauController.delete()}" update=":growl,datalist" disabled="#{listetableauController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

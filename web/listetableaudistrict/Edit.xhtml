@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog showEffect="blind" hideEffect="blind" id="EtapeadministrativeEditDlg" widgetVar="EtapeadministrativeEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.EditListetableauDistrictTitle}" closeOnEscape="true">
+
+            <h:form id="EtapeadministrativeEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column">            
+
+                        <h:outputLabel value="#{langues.listetableau}" for="etapeRealisation" style=" width: 200px"/>
+                        <p:selectOneMenu id="etapeRealisation" value="#{listetableaudistrictController.listetableauDistrict.idlisttableau}" converter="listetableauConverter" disabled="true">
+                            <f:selectItems value="#{listetableaudistrictController.listetableaus}" var="obj" itemLabel="#{loginController.language eq 'en' ? obj.nomEn : obj.nomFr}" itemValue="#{obj}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="#{langues.ListTablematieren1DistrictTitle_numeropage}"/>
+                        <p:inputText style=" width: 50px" value="#{listetableaudistrictController.listetableauDistrict.numpage}" required="true" />
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{listetableaudistrictController.edit()}" value="#{langues.Save}" update="display,:EtapeadministrativeListForm:datalist,:growl" oncomplete="PF('EtapeadministrativeEditDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('EtapeadministrativeEditDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

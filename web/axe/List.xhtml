@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.axe_strategique}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <f:view locale="#{loginController.language}">
+                <h:form id="AxeListForm">
+                    <p:messages id="msgErreur" closable="true"/>
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:dataTable id="datalist" value="#{axeController.axes}" var="item"
+                                 selectionMode="single" 
+                                 selection="#{axeController.axe1}"
+                                 paginator="true"
+                                 rowKey="#{item.idaxe}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top:1% !important; text-align:left; margin-left:10%; margin-right: 10%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+
+                        <p:ajax event="rowSelect"   update=":AxeListForm:createButton :AxeListForm:editButton :AxeListForm:deleteButton" listener="#{axeController.activeButton()}"/>
+                        <p:ajax event="rowUnselect" update=":AxeListForm:createButton :AxeListForm:editButton :AxeListForm:deleteButton" listener="#{axeController.deactiveButton()}" />
+
+                        <f:facet name="header"> 
+                            <h:outputText class="hardBreak" value="#{langues.ListAxeTitle}"/>
+                        </f:facet> 
+
+
+                        <p:column style="width: 10%">
+                            <f:facet name="header">
+                                <h:outputText value="Code"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.code}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_francais}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.nomFr}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.nom_anglais}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.nomEn}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <center>
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{axeController.prepareCreate()}" update=":AxeCreateForm" oncomplete="PF('AxeCreateDialog').show()"/>                    
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{axeController.prepareEdit()}" update=":AxeCreateForm" oncomplete="PF('AxeCreateDialog').show()" disabled="#{axeController.detail}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}"  update=":AxeDeleteForm" oncomplete="PF('AxeDeleteDialog').show()" disabled="#{axeController.detail}"/> 
+                    </center>
+
+                </h:form>
+
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="Delete.xhtml"/>
+            </f:view>
+        </ui:define>
+
+    </ui:composition>
+
+</html>
